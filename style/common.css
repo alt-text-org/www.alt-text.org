@@ -1,0 +1,148 @@
+@font-face {
+    font-family: 'lexendbold';
+    src: url('fonts/lexend-bold-webfont.woff2') format('woff2'),
+    url('fonts/lexend-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'lexendmedium';
+    src: url('fonts/lexend-medium-webfont.woff2') format('woff2'),
+    url('fonts/lexend-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'montserratregular';
+    src: url('fonts/montserrat-regular-webfont.woff2') format('woff2'),
+    url('fonts/montserrat-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'montserratsemibold';
+    src: url('fonts/montserrat-semibold-webfont.woff2') format('woff2'),
+    url('fonts/montserrat-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --main-body-bg-color: white;
+    --main-body-text-color: black;
+    --title-bar-color: #2E4D4A;
+    --title-bar-text-color: white;
+    --footer-bg-color: white;
+    --footer-text-color: black;
+    --button-color: #0F1A19;
+    --button-text-color: white;
+    --button-shadow-color: #333333;
+    --accent-color: #9D736C
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-body-bg-color);
+}
+
+a, a:visited {
+    text-decoration: none;
+}
+
+.site-header {
+    position: fixed;
+    display: block;
+    vertical-align: bottom;
+    top: 0;
+    padding: 1px 16px;
+    width: 100%;
+    min-height: 50px;
+    background-color: var(--title-bar-color);
+    box-shadow: 0 3px 2px var(--accent-color);
+}
+
+.site-title {
+    vertical-align: bottom;
+    float: left;
+    font-family: lexendbold, serif;
+    font-size: xxx-large;
+    margin: 5px;
+    color: var(--title-bar-text-color);
+}
+
+.resources-link {
+    float: right;
+    vertical-align: center;
+    margin: 20px 0;
+    color: var(--title-bar-text-color);
+    font-family: lexendmedium, serif;
+    font-size: 32px;
+}
+
+.library-link-box {
+    vertical-align: center;
+    text-align: center;
+    float: right;
+    margin: 20px 35px 20px 15px;
+}
+
+.library-link {
+    vertical-align: center;
+    color: var(--button-text-color);
+    background-color: var(--button-color);
+    font-family: lexendmedium, serif;
+    font-size: 32px;
+    border-radius: 10px;
+    border: var(--button-color) 10px solid;
+    box-shadow: 3px 3px 2px var(--button-shadow-color);
+}
+
+.content {
+    overflow: scroll;
+    display: block;
+    width: 95%;
+    padding: 102px 16px 0;
+    font-family: "montserratregular", sans-serif;
+}
+
+.site-footer {
+    vertical-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    padding-top: 1px;
+    background-color: var(--footer-bg-color);
+    font-family: "lexendbold", serif;
+    font-size: large;
+    box-shadow: 0 -3px 2px var(--accent-color);
+}
+
+.contact-link {
+    float: right;
+    color: var(--footer-text-color);
+    margin: 5px 25px 5px 10px;
+}
+
+.tos-link {
+    float: left;
+    color: var(--footer-text-color);
+    margin: 5px 25px 5px 10px;
+}
+
+.privacy-link {
+    float: left;
+    color: var(--footer-text-color);
+    margin: 5px 10px;
+}
