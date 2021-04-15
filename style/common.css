@@ -40,7 +40,8 @@
     --button-color: #9D736C;
     --button-text-color: white;
     --button-shadow-color: #333333;
-    --accent-color: #9D736C
+    --accent-color: #9D736C;
+    --disabled-grey: #AAAAAA;
 }
 
 html {
@@ -68,6 +69,10 @@ a, a:visited {
     border-radius: 10px;
     border: var(--button-color) 10px solid;
     box-shadow: 3px 3px 2px var(--button-shadow-color);
+}
+
+.link-button:hover {
+    opacity: 0.7;
 }
 
 .site-header {
@@ -98,6 +103,10 @@ a, a:visited {
     color: var(--title-bar-text-color);
     font-family: lexendmedium, serif;
     font-size: xx-large;
+}
+
+.resources-link:hover {
+    opacity: 0.7;
 }
 
 .library-link-box {
@@ -165,26 +174,30 @@ a, a:visited {
     box-shadow: 0 -3px 2px var(--accent-color);
 }
 
+.footer-link {
+    color: var(--footer-text-color);
+}
+
+.footer-link:hover {
+    opacity: 0.7;
+}
+
 .about-link {
     float: right;
-    color: var(--footer-text-color);
     margin: 5px 25px 5px 10px;
 }
 
 .tos-link {
     float: left;
-    color: var(--footer-text-color);
     margin: 5px 10px;
 }
 
 .cookie-link {
     float: left;
-    color: var(--footer-text-color);
     margin: 5px 10px;
 }
 
 .privacy-link {
     float: left;
-    color: var(--footer-text-color);
     margin: 5px 10px;
 }

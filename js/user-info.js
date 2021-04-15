@@ -26,6 +26,9 @@ const accountProviderIcons = {
         if (iconPath) {
             userIcon.src = iconPath
         }
+    } else {
+        userName.innerHTML = "Sign In"
+        userIcon.src = accountProviderIcons.anon
     }
 })()
 

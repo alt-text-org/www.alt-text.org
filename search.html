@@ -16,9 +16,10 @@
     <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
 
     <link rel="stylesheet" href="style/common.css">
-    <link rel="stylesheet" href="style/library.css">
+    <link rel="stylesheet" href="style/search.css">
 
     <script defer src="js/user-info.js"></script>
+    <script defer src="js/search.js"></script>
 </head>
 <body>
 <div class="site-header"><a href="index.html" class="site-title">Alt-Text.org</a>
@@ -33,31 +34,32 @@
     <a class="resources-link" href="resources.html">Resources</a>
 </div>
 <div class="content">
-    <div class="search-box">
-        <div class="search-title">Choose an Image</div>
-        <span class="on-computer-search-title">On Your Computer</span>
-        <span class="on-the-web-search-title">On The Web</span>
-        <div class="inner-search-box">
-            <form>
-                <div class="search-input-wrapper">
-                    <input value="search-file" id="file-search-input" name="file-search-input" type="file"
-                           aria-label="Search for file"/>
-                    <label for="file-search-input">Choose a File</label>
-                    <input value="search-url" class="url-search-input" name="url-search-input" type="text"
-                           aria-label="Search for online image"/>
-                </div>
-                <div class="search-button-wrapper">
-                    <button class="search-button" formaction="submit">Search</button>
-                </div>
-            </form>
+    <div class="search-box-wrapper">
+        <div class="search-title">Choose&nbsp;An&nbsp;Image</div>
+        <div class="search-box">
+            <span class="on-computer-search-title search-option-title">On&nbsp;Your&nbsp;Computer</span>
+            <span class="on-the-web-search-title search-option-title">On&nbsp;The&nbsp;Web</span>
+            <div class="inner-search-box">
+                <form>
+                    <div class="search-input-wrapper">
+                        <input value="search-file" id="file-search-input" name="file-search-input" type="file"
+                               aria-label="Search for file"/>
+                        <input value="" placeholder="Image Address" id="url-search-input" name="url-search-input"
+                               type="text" aria-label="Search for online image"/>
+                    </div>
+                    <div class="search-button-wrapper">
+                        <button class="search-button link-button" formaction="submit">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 <div class="site-footer">
-    <a class="privacy-link" href="privacy.html">Privacy Policy</a>
-    <a class="tos-link" href="tos.html">Terms & Conditions</a>
-    <a class="cookie-link" href="cookies.html">Cookie Preferences</a>
-    <a class="about-link" href="about.html">About Us</a>
+    <a class="privacy-link footer-link" href="privacy.html">Privacy Policy</a>
+    <a class="tos-link footer-link" href="tos.html">Terms & Conditions</a>
+    <a class="cookie-link footer-link" href="cookies.html">Cookie Preferences</a>
+    <a class="about-link footer-link" href="about.html">About Us</a>
 </div>
 </body>
 </html>
