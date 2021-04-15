@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Alt-Text.org</title>
+    <title>Alt-Text.org Fetch Error</title>
 
     <meta name="apple-mobile-web-app-title" content="alt-text.org">
     <meta name="application-name" content="alt-text.org">
@@ -16,12 +16,12 @@
     <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
 
     <link rel="stylesheet" href="style/common.css">
-    <link rel="stylesheet" href="style/homepage.css">
+    <link rel="stylesheet" href="style/fetch-error.css">
 
     <script defer src="js/user-info.js"></script>
 </head>
 <body>
-<div class="site-header"><span class="site-title">Alt-Text.org</span>
+<div class="site-header"><a href="index.html" class="site-title">Alt-Text.org</a>
     <span class="user-info">
         <a class="user-name" href="sign-in.html">Sign In</a>
         <img class="user-icon" src="images/anon-user-icon.svg" alt="Anonymous user icon"/>
@@ -32,16 +32,13 @@
     <a class="resources-link" href="resources.html">Resources</a>
 </div>
 <div class="content">
-
-</div>
-<div class="cookie-consent-bar">
-    <span class="cookie-consent-content">
-        <span class="cookies-warning">
-            We use cookies to keep track of which account you're logged into and to save your settings.
-        </span>
-        <span class="cookie-consent-button link-button">I Consent</span>
-        <a class="cookie-settings-button" href="cookies.html">Change My Preferences</a>
-    </span>
+    <div class="error-box">
+        <div class="error-message">
+            The website hosting that image didn’t let Alt-Text.org download it. If you’d like to search for that image,
+            please save it and use the “On Your Computer” option
+        </div>
+        <a class="link-button back-to-search-button" href="search.html">Back&nbsp;to&nbsp;Image&nbsp;Selection</a>
+    </div>
 </div>
 <div class="site-footer">
     <a class="privacy-link" href="privacy.html">Privacy Policy</a>

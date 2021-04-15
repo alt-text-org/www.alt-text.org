@@ -1,0 +1,18 @@
+.error-box {
+    text-align: center;
+    margin: 20% auto;
+    width: 60%;
+    height: 30%;
+}
+
+.error-message {
+    text-align: center;
+    color: var(--main-body-text-color);
+    font-family: "lexendbold", serif;
+    font-size: xx-large;
+    margin-bottom: 25px;
+}
+
+.back-to-search-button {
+    font-size: xx-large;
+}

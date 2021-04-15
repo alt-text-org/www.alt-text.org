@@ -37,7 +37,7 @@
     --title-bar-text-color: white;
     --footer-bg-color: white;
     --footer-text-color: black;
-    --button-color: #0F1A19;
+    --button-color: #9D736C;
     --button-text-color: white;
     --button-shadow-color: #333333;
     --accent-color: #9D736C
@@ -58,6 +58,16 @@ body {
 
 a, a:visited {
     text-decoration: none;
+}
+
+.link-button {
+    vertical-align: center;
+    color: var(--button-text-color);
+    background-color: var(--button-color);
+    font-family: "lexendmedium", serif;
+    border-radius: 10px;
+    border: var(--button-color) 10px solid;
+    box-shadow: 3px 3px 2px var(--button-shadow-color);
 }
 
 .site-header {
@@ -84,35 +94,61 @@ a, a:visited {
 .resources-link {
     float: right;
     vertical-align: center;
-    margin: 20px 0;
+    margin: 20px 10px;
     color: var(--title-bar-text-color);
     font-family: lexendmedium, serif;
-    font-size: 32px;
+    font-size: xx-large;
 }
 
 .library-link-box {
     vertical-align: center;
     text-align: center;
     float: right;
-    margin: 20px 35px 20px 15px;
+    margin: 20px 15px 20px 15px;
 }
 
 .library-link {
-    vertical-align: center;
-    color: var(--button-text-color);
-    background-color: var(--button-color);
-    font-family: lexendmedium, serif;
-    font-size: 32px;
-    border-radius: 10px;
-    border: var(--button-color) 10px solid;
-    box-shadow: 3px 3px 2px var(--button-shadow-color);
+    font-size: xx-large;
+}
+
+.header-break {
+    float: right;
+    vertical-align: middle;
+    width: 3px;
+    height: 60px;
+    display: inline-block;
+    color: var(--title-bar-text-color);
+    background-color: var(--title-bar-text-color);
+    margin: 10px 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    float: right;
+    margin-left: 15px;
+}
+
+.user-icon {
+    height: 60px;
+    max-height: 60px;
+    margin: 10px 25px 10px 10px;
+}
+
+.user-name {
+    vertical-align: middle;
+    margin: 10px 0 10px 0;
+    font-family: "lexendmedium", serif;
+    font-size: x-large;
+    color: var(--title-bar-text-color);
 }
 
 .content {
     overflow: scroll;
     display: block;
     width: 95%;
-    padding: 102px 16px 0;
+    padding: 102px 16px 50px;
     font-family: "montserratregular", sans-serif;
 }
 
@@ -129,7 +165,7 @@ a, a:visited {
     box-shadow: 0 -3px 2px var(--accent-color);
 }
 
-.contact-link {
+.about-link {
     float: right;
     color: var(--footer-text-color);
     margin: 5px 25px 5px 10px;
@@ -138,7 +174,13 @@ a, a:visited {
 .tos-link {
     float: left;
     color: var(--footer-text-color);
-    margin: 5px 25px 5px 10px;
+    margin: 5px 10px;
+}
+
+.cookie-link {
+    float: left;
+    color: var(--footer-text-color);
+    margin: 5px 10px;
 }
 
 .privacy-link {
