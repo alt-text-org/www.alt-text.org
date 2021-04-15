@@ -97,9 +97,9 @@ a, a:visited {
 }
 
 .resources-link {
-    float: right;
-    vertical-align: center;
-    margin: 20px 10px;
+    vertical-align: bottom;
+    float: left;
+    margin: 30px 0 0 30px;
     color: var(--title-bar-text-color);
     font-family: lexendmedium, serif;
     font-size: xx-large;

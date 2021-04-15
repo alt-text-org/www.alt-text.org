@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Alt-Text.org Resources</title>
+    <title>Alt Text Library</title>
 
     <meta name="apple-mobile-web-app-title" content="alt-text.org">
     <meta name="application-name" content="alt-text.org">
@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="style/library.css">
 
     <script defer src="js/user-info.js"></script>
+    <script defer src="js/library.js"></script>
 </head>
 <body>
 <div class="site-header"><a href="index.html" class="site-title">Alt-Text.org</a>
@@ -28,15 +29,54 @@
     </span>
     <hr class="header-break">
     <span class="library-link-box">
-        <a href="search.html" class="library-link link-button">The&nbsp;Library</a>
+        <a href="library.html" class="library-link link-button">The&nbsp;Library</a>
     </span>
     <a class="resources-link" href="resources.html">Resources</a>
 </div>
 <div class="content">
-    <div class="fetch-failure">
-        The website hosting that image didn’t let alt-text.org download it. If you’d like to search for that image,
-        please save it and use the “On Your Computer” option
-        <a href="search.html"></a>
+    <div class="search-box-wrapper">
+        <div class="search-title">Choose&nbsp;An&nbsp;Image</div>
+        <div class="search-box">
+            <span role="button" class="on-computer-search-title search-option-title">On&nbsp;Your&nbsp;Computer</span>
+            <span role="button" class="on-the-web-search-title search-option-title">On&nbsp;The&nbsp;Web</span>
+            <div class="inner-search-box">
+                <form>
+                    <div class="search-input-wrapper">
+                        <input value="search-file" id="file-search-input" name="file-search-input" type="file"
+                               aria-label="Search for file"/>
+                        <input value="" placeholder="Image Address" id="url-search-input" name="url-search-input"
+                               type="text" aria-label="Search for online image"/>
+                    </div>
+                    <div class="search-button-wrapper">
+                        <span role="button" class="search-button link-button">Search</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="loading-anim-wrapper">
+        <img class="loading-anim" src="images/loading.svg"
+             alt="Loading animation. Small circles arranged in a larger circle rhythmically fade in and out."/>
+        <span class="loading-text">Searching...</span>
+    </div>
+    <div class="error-box">
+        <div class="error-message"></div>
+        <span role="button" class="link-button back-to-search-button">Back&nbsp;to&nbsp;Image&nbsp;Selection</span>
+    </div>
+    <div class="favorite">
+
+    </div>
+    <div class="search-results">
+    </div>
+    <div class="not-found">
+        <div class="not-found-message">
+            No existing description found for that image. Would you like to write one?
+        </div>
+        <span role="button" class="link-button back-to-search-button">Back to Search</span>
+        <span role="button" class="link-button open-editor-button">Yes</span>
+    </div>
+    <div class="composer">
+
     </div>
 </div>
 <div class="site-footer">
