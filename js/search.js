@@ -13,6 +13,7 @@ function selectRight(leftTab, rightTab) {
 
 function selectTab(tab) {
     let style = tab.style;
+    style.color = "black"
     style.borderBottom = "hidden"
     style.borderRight = "3px black solid"
     style.borderLeft = "3px black solid"
@@ -22,6 +23,7 @@ function selectTab(tab) {
 
 function deselectTab(tab) {
     let style = tab.style;
+    style.color = "#AAAAAA"
     style.borderTop = "3px #AAAAAA solid"
     style.borderBottom = "3px black solid"
     style.zIndex = "500"

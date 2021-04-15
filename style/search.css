@@ -30,7 +30,6 @@
 
 .search-option-title:hover {
     cursor: pointer;
-    background-color: var(--disabled-grey);
 }
 
 .on-computer-search-title {
@@ -44,6 +43,7 @@
 
 .on-the-web-search-title {
     grid-area: option2;
+    color: var(--disabled-grey);
     border-top: 3px var(--disabled-grey) solid;
     border-right: 3px var(--disabled-grey) solid;
     border-bottom: 3px black solid;
