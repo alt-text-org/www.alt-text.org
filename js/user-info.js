@@ -45,3 +45,7 @@ function clearUserInfo() {
     window.localStorage.removeItem(userStorageKey)
     window.sessionStorage.removeItem(userStorageKey)
 }
+
+function isUserLoggedIn() {
+    return !!window.sessionStorage.getItem(userStorageKey) || !!window.localStorage.getItem(userStorageKey)
+}

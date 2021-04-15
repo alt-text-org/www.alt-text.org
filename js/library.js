@@ -37,6 +37,16 @@ function deselectTab(tab) {
     style.zIndex = "500"
 }
 
+// Prefetch favorites
+async function prefetchFavorites() {
+    if (!isUserLoggedIn()) {
+        return {};
+    }
+}
+
+let favorites = prefetchFavorites();
+
+// UI Setup
 (function () {
     let searchBoxWrapper = document.querySelector(".search-box-wrapper")
     let localSearchTab = document.querySelector(".on-computer-search-title")
