@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="style/common.css">
     <link rel="stylesheet" href="style/library.css">
 
-    <script defer src="js/user-info.js"></script>
+    <script defer src="js/user.js"></script>
+    <script defer src="js/api-client-bundle.js"></script>
+    <script defer src="js/languages.js"></script>
     <script defer src="js/library.js"></script>
 </head>
 <body>
@@ -40,43 +42,125 @@
             <span role="button" class="on-computer-search-title search-option-title">On&nbsp;Your&nbsp;Computer</span>
             <span role="button" class="on-the-web-search-title search-option-title">On&nbsp;The&nbsp;Web</span>
             <div class="inner-search-box">
-                <form>
-                    <div class="search-input-wrapper">
-                        <input value="search-file" id="file-search-input" name="file-search-input" type="file"
-                               aria-label="Search for file"/>
-                        <input value="" placeholder="Image Address" id="url-search-input" name="url-search-input"
-                               type="text" aria-label="Search for online image"/>
-                    </div>
-                    <div class="search-button-wrapper">
-                        <span role="button" class="search-button link-button">Search</span>
-                    </div>
-                </form>
+                <div class="search-input-wrapper">
+                    <input value="search-file" id="file-search-input" name="file-search-input" type="file"
+                           aria-label="Search for file" accept="image/*" hidden/>
+                    <label for="file-search-input" id="file-search-label">Choose&nbsp;Image</label>
+                    <span id="chosen-file"></span>
+                    <input value="" placeholder="Image Address" id="url-search-input" name="url-search-input"
+                           type="text" aria-label="Search for online image"/>
+                </div>
+                <div class="search-button-wrapper">
+                    <span role="button" class="search-button link-button">Search</span>
+                    <select aria-label="Language Select" id="language-select" name="language-select"></select>
+                    <span class="is-text-wrapper">
+                        <input id="is-text" type="checkbox" value="false">
+                        <label for="is-text">This is a picture of text</label>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="loading-anim-wrapper">
-        <img class="loading-anim" src="images/loading.svg"
-             alt="Loading animation. Small circles arranged in a larger circle rhythmically fade in and out."/>
-        <span class="loading-text">Searching...</span>
-    </div>
-    <div class="error-box">
-        <div class="error-message"></div>
-        <span role="button" class="link-button back-to-search-button">Back&nbsp;to&nbsp;Image&nbsp;Selection</span>
-    </div>
-    <div class="favorite">
-
-    </div>
-    <div class="search-results">
-    </div>
-    <div class="not-found">
-        <div class="not-found-message">
-            No existing description found for that image. Would you like to write one?
+    <div class="post-search-select">
+        <div class="image-column">
+            <div class="composer-image-wrapper">
+                <canvas id="image-canvas"></canvas>
+            </div>
+            <div class="search-another-image-wrapper">
+                <span class="search-another-image-button link-button"
+                      role="button">Search&nbsp;Another&nbsp;Image</span>
+            </div>
         </div>
-        <span role="button" class="link-button back-to-search-button">Back&nbsp;to&nbsp;Search</span>
-        <span role="button" class="link-button open-editor-button">Yes</span>
+        <div class="post-search-right-side">
+            <div class="loading-anim-wrapper">
+                <img class="loading-anim" src="images/loading.svg"
+                     alt="Loading animation. Small circles arranged in a larger circle rhythmically fade in and out."/>
+                <span class="loading-text">Searching...</span>
+            </div>
+            <div class="error-box">
+                <div class="error-message"></div>
+                <span role="button"
+                      class="link-button back-to-search-button">Back&nbsp;to&nbsp;Image&nbsp;Selection</span>
+            </div>
+            <div class="not-found">
+                <div class="not-found-message">
+                    No existing description found for that image. Would you like to write one?
+                </div>
+                <span role="button" class="link-button back-to-search-button">Back&nbsp;to&nbsp;Search</span>
+                <span role="button" class="link-button open-editor-button">Yes</span>
+            </div>
+            <div class="favorite-and-owned">
+                <div class="favorite-text-wrapper">
+                    <span class="fave-users-title">Favorite</span>
+                    <div id="favorite-text"></div>
+                </div>
+                <div class="users-text-wrapper">
+                    <span class="fave-users-title">By&nbsp;You</span>
+                    <div id="users-text"></div>
+                </div>
+                <span role="button" class="search-after-faves-button link-button">
+                    Search&nbsp;The&nbsp;Library&nbsp;Instead
+                </span>
+            </div>
+            <div class="search-results">
+                <div class="result-titles">
+                    <span class="exact-match-title result-title" role="button">Exact&nbsp;Matches</span>
+                    <span class="ocr-result-title result-title" role="button">Extracted&nbsp;Text</span>
+                    <span class="strong-match-title result-title" role="button">Strong&nbsp;Matches</span>
+                    <span class="weaker-match-title result-title" role="button">Weaker&nbsp;Matches</span>
+                </div>
+                <div class="result-wrapper">
+                    <div class="exact-matches result-page"></div>
+                    <div class="ocr-result result-page">
+                        <div class="ocr-result-text"></div>
+                        <div class="ocr-result-controls">
+                            <span class="ocr-result-save link-button" role="button">
+                                Publish&nbsp;This&nbsp;Description
+                            </span>
+                            <span class="ocr-edit-button link-button" role="button">
+                                <img class="button-icon" src="images/edit-control.svg" aria-hidden="true"
+                                     alt="Edit icon">Edit
+                            </span>
+                        </div>
+                    </div>
+                    <div class="strong-matches result-page"></div>
+                    <div class="weaker-matches result-page"></div>
+                </div>
+            </div>
+            <div class="composer-wrapper">
+                <label for="composer-textarea">Describe&nbsp;This&nbsp;Image</label>
+                <textarea id="composer-textarea" maxlength="1000" rows="5" cols="200"
+                          placeholder="The goal is to enable people who can't see this image to be full participants in the conversation. Start with a summary sentence, then add all the detail you think is important.">
+                </textarea>
+                <div class="composer-controls">
+                    <span class="composer-char-counter"></span>
+                    <span class="publish-button link-button">Publish</span>
+                </div>
+            </div>
+            <div class="published-wrapper">
+                <div class="published-title">Published!</div>
+                <div class="published-text-wrapper"></div>
+                <div class="publish-controls">
+                    <span class="copy-and-return-button link-button" role="button">
+                        <img src="images/copy-control.svg" aria-hidden="true" alt="Copy icon">
+                        Copy&nbsp;Image&nbsp;Description
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="composer">
-
+</div>
+<div class="copied-modal"></div>
+<div class="report-modal">
+    <div class="modal-title">Report an Image Description</div>
+    <hr class="report-hr"/>
+    <div class="text-to-be-reported"></div>
+    <div class="report-wrapper">
+            <textarea id="report-input" maxlength="250" rows="5" cols="50" aria-label="Report Reason"
+                      placeholder="Why are you reporting this image description?"></textarea>
+        <div class="report-button-wrapper">
+            <span class="submit-report-button link-button" role="button">Submit&nbsp;Report</span>
+        </div>
     </div>
 </div>
 <div class="site-footer">

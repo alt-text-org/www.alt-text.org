@@ -62,7 +62,6 @@ a, a:visited {
 }
 
 .link-button {
-    vertical-align: center;
     color: var(--button-text-color);
     background-color: var(--button-color);
     font-family: "lexendmedium", serif;

@@ -1,4 +1,6 @@
 const userStorageKey = "userInfo";
+const userAuthKey = "userAuth";
+const userSettingsKey = "userSettings";
 
 const accountProviderIcons = {
     google: "images/google-user-icon.svg",
@@ -48,4 +50,56 @@ function clearUserInfo() {
 
 function isUserLoggedIn() {
     return !!window.sessionStorage.getItem(userStorageKey) || !!window.localStorage.getItem(userStorageKey)
+}
+
+
+function getUserSettings() {
+    let rawSettings = window.localStorage.getItem(userSettingsKey);
+    if (rawSettings) {
+        return JSON.parse(rawSettings)
+    } else {
+        return {}
+    }
+}
+
+function getUserSetting(key, defaultValue = null, transform = e => e) {
+    let settings = getUserSettings()
+    if (settings[key]) {
+        return transform(settings[key])
+    } else {
+        return defaultValue
+    }
+}
+
+function setUserSetting(setting, value) {
+    let settings = getUserSettings()
+    if (typeof value === "object" || Array.isArray(value)) {
+        settings[setting] = JSON.stringify(value)
+    } else {
+        settings[setting] = value
+    }
+
+    window.localStorage.setItem(userSettingsKey, JSON.stringify(settings))
+}
+
+function saveUserAuth(token) {
+    let settings = getUserSettings()
+    if (settings.keepMeLoggedIn) {
+        window.localStorage.setItem(userAuthKey, token)
+    } else {
+        window.sessionStorage.setItem(userAuthKey, token)
+    }
+}
+
+function getUserAuth() {
+    let auth = window.sessionStorage.getItem(userAuthKey)
+    if (!auth) {
+        auth = window.localStorage.getItem(userAuthKey)
+    }
+
+    return auth
+}
+
+function logOut() {
+    window.sessionStorage.removeItem()
 }
