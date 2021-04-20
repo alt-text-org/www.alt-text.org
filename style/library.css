@@ -167,12 +167,16 @@
     width: 100%;
     gap: 0;
     grid-template-columns: 33% 33% 33%;
-    grid-template-areas: "  .  rright rright"
+    grid-template-areas: "iimg rright rright"
                          "iimg rright rright"
-                         "but  rright rright";
+                         "iimg rright rright";
 }
 
 .composer-image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
     grid-area: iimg;
     width: 100%;
     height: 100%;
@@ -187,10 +191,7 @@
 
 .search-another-image-wrapper {
     text-align: center;
-}
-
-.search-another-image-button {
-    margin: 5px auto;
+    margin: 15px auto;
 }
 
 .post-search-right-side {
@@ -248,9 +249,21 @@
     margin: 0 auto;
 }
 
+.not-found-wrapper {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    height: 100%;
+}
+
 .not-found-message {
     font-family: "lexendbold", serif;
     font-size: xx-large;
+}
+
+.not-found-controls {
+    margin-top: 15px;
 }
 
 .favorite-and-owned {

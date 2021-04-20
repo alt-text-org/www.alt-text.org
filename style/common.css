@@ -160,7 +160,7 @@ a, a:visited {
 .content {
     overflow: scroll;
     display: block;
-    width: 95%;
+    width: 100%;
     height: 85%;
     padding: 102px 16px 50px;
     font-family: "montserratregular", sans-serif;
