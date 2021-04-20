@@ -518,6 +518,7 @@ function openReportModal(altText) {
 
 function openNotFound(imageHash, language, intensityHist, url, loggedIn) {
     const notFoundWrapper = document.querySelector(".not-found")
+    const postSearch = document.querySelector(".post-search-select")
     const backToSearchButton = getFreshElement(".not-found-back-to-search-button")
     const openComposerButton = getFreshElement(".not-found-open-composer-button")
 
@@ -536,6 +537,7 @@ function openNotFound(imageHash, language, intensityHist, url, loggedIn) {
 
     backToSearchButton.addEventListener("click", () => {
         notFoundWrapper.style.display = "none"
+        postSearch.style.display = "none"
         openSearchPortal()
     })
 
@@ -544,22 +546,12 @@ function openNotFound(imageHash, language, intensityHist, url, loggedIn) {
 
 function displaySearchedImage(bitmap) {
     const canvas = document.querySelector("#image-canvas")
-    // const parent = document.querySelector(".composer-image-wrapper")
     canvas.height = bitmap.height
     canvas.width = bitmap.width
 
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.putImageData(bitmap, 0, 0)
-
-    // const aspectRatio = bitmap.height / bitmap.width
-    // canvas.width = parent.clientWidth
-    // canvas.height = parent.clientHeight
-    //
-    // window.addEventListener("resize", () => {
-    //     canvas.width = parent.clientWidth
-    //     canvas.height = parent.clientHeight
-    // })
 }
 
 function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDiv, faves) {
@@ -780,6 +772,9 @@ function openSearchPortal() {
     const backToSearchFromImageButton = getFreshElement(".search-another-image-button")
     const loading = document.querySelector(".loading-anim-wrapper")
 
+    isTextCheck.checked = false
+    urlSearchInput.value = ""
+    fileSearchInput.value = null
 
     let searchEnabled = false
     let ocrEnabled = false
@@ -886,6 +881,8 @@ function openSearchPortal() {
             search(hash, language, intensityHist, url, ocr, isUserLoggedIn(), null, await favorites)
         }
     })
+
+    searchBoxWrapper.style.display = "block"
 }
 
 function openErrorDisplay(message) {
