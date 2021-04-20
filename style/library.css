@@ -144,24 +144,24 @@
     box-shadow:         1px 1px 2px black;
 }
 
-.error-box {
-    display: none;
-    text-align: center;
-    margin: 15% auto;
-    width: 60%;
-    height: 30%;
-}
-
-.error-message {
-    text-align: center;
-    color: var(--main-body-text-color);
-    font-family: "lexendbold", serif;
-    font-size: xx-large;
-    margin-bottom: 25px;
-}
-
 .back-to-search-button {
     font-size: xx-large;
+}
+
+.post-search-select {
+
+}
+
+.image-column {
+
+}
+
+.composer-image-wrapper {
+
+}
+
+.post-search-right-side {
+
 }
 
 .loading-anim-wrapper {
@@ -182,14 +182,137 @@
     font-family: "lexendmedium", serif;
 }
 
+.error-box {
+    display: none;
+    text-align: center;
+    margin: 15% auto;
+    width: 60%;
+    height: 30%;
+}
+
+.error-message {
+    text-align: center;
+    color: var(--main-body-text-color);
+    font-family: "lexendbold", serif;
+    font-size: xx-large;
+    margin-bottom: 25px;
+}
+
+.not-found {
+
+}
+
+.not-found-message {
+
+}
+
+.favorite-and-owned {
+
+}
+
+.search-results {
+
+}
+
+.result-titles {
+
+}
+
+.result-title {
+
+}
+
+.result-wrapper {
+
+}
+
+.result-page {
+
+}
+
+.composer-wrapper {
+
+}
+
+#composer-textarea {
+
+}
+
+.composer-controls {
+
+}
+
+.public-check-wrapper {
+
+}
+
+.composer-char-counter {
+
+}
+
+.published-title {
+
+}
+
+.published-text-wrapper {
+
+}
+
+.published-edit-button {
+
+}
+
+.published-copy-button {
+
+}
+
+.copied-modal {
+
+}
+
+.report-modal {
+
+}
+
+.modal-title {
+
+}
+
+.text-to-be-reported {
+
+}
+
+.report-wrapper {
+
+}
+
+#report-input {
+
+}
+
+.report-button-wrapper {
+
+}
+
+.submit-report-button {
+
+}
+
 .alt-text-text {
     justify-content: left;
     font-size: medium;
     font-family: "montserratregular", sans-serif;
 }
 
+.alt-text-bg-zebra-dark {
+}
+
+.alt-text-bg-zebra-light {
+
+}
+
 .alt-text-controls {
-    padding: 10px;
+
 }
 
 .alt-text-control {
@@ -197,25 +320,9 @@
 }
 
 .alt-text-left-control {
-    margin-right: 20px;
+
 }
 
 .alt-text-report-control {
 
-}
-
-.favorite-and-owned {
-    display: none;
-}
-
-.search-results {
-    display: none;
-}
-
-.not-found {
-    display: none;
-}
-
-.composer {
-    display: none;
 }

@@ -7,13 +7,13 @@ function validateUrl(url) {
 function selectLeft(leftTab, rightTab) {
     selectTab(leftTab)
     deselectTab(rightTab)
-    rightTab.style.borderRight = "3px #AAAAAA solid"
+    rightTab.style.borderRight = "3px #555555 solid"
 }
 
 function selectRight(leftTab, rightTab) {
     selectTab(rightTab)
     deselectTab(leftTab)
-    leftTab.style.borderLeft = "3px #AAAAAA solid"
+    leftTab.style.borderLeft = "3px #555555 solid"
 }
 
 function selectTab(tab) {
@@ -28,8 +28,8 @@ function selectTab(tab) {
 
 function deselectTab(tab) {
     let style = tab.style;
-    style.color = "#AAAAAA"
-    style.borderTop = "3px #AAAAAA solid"
+    style.color = "#555555"
+    style.borderTop = "3px #555555 solid"
     style.borderBottom = "3px black solid"
     style.zIndex = "500"
 }
@@ -44,7 +44,57 @@ function setButtonEnabled(button, enabled) {
     }
 }
 
-const apiClient = new AltText.Client.AltTextClient()
+// const apiClient = new AltText.Client.AltTextClient()
+/*
+        getBitmapHash(image: ImageData): string
+        getIntensityHist(image: ImageData): string
+        getAltText(imageHash: string, language: string, intensityHist?: string, ocrUrl?: string, minConfidence?: number, matches?: number): Promise<IGetAltTextsForImageResponse>
+        publishAltText(imageHash: string, language: string, altText: string, intensityHist?: string, url?: URL, isPublic?: string): Promise<void>
+        deleteAltText(imageHash: string, language: string): Promise<void>
+        getUserAltText(): Promise<IUserAltText[]>
+        getUserFavorites(): Promise<IUserFavorite[]>
+        favoriteAltText(imageHash: string, userHash: string, language: string): Promise<void>
+        unfavoriteAltText(imageHash: string, userHash: string, language: string): Promise<void>
+        reportAltText(imageHash: string, userHash: string, language: string, reason: string): Promise<void>
+        markAltTextUsed(imageHash: string, userHash: string, language: string): Promise<void>
+ */
+const realApiClient = new AltText.Client.AltTextClient()
+const apiClient = {
+    getBitmapHash: realApiClient.getBitmapHash,
+    getIntensityHist: realApiClient.getIntensityHist,
+    getAltText: (imageHash, language, intensityHist, ocr) => {
+        console.log(`fetching: ${imageHash}:${language} URL: '${ocr}'`)
+        return Promise.resolve({})
+    },
+    publishAltText: (imageHash, language, altText, intensityHist, url, isPublic) => {
+        console.log(`Publishing: ${imageHash}:${language} URL: '${url}' Public: ${isPublic} Hist: ${intensityHist}`)
+        return Promise.resolve()
+    },
+    getUserFavorites: () => {
+        console.log("Returning user favorites")
+        return Promise.resolve([])
+    },
+    getUserAltText: () => {
+        console.log("Returning user texts")
+        return Promise.resolve([])
+    },
+    favoriteAltText: (imageHash, userHash, language) => {
+        console.log(`Got fave: ${imageHash}:${userHash}:${language}`)
+        return Promise.resolve()
+    },
+    unfavoriteAltText: (imageHash, userHash, language) => {
+        console.log(`Got unfave: ${imageHash}:${userHash}:${language}`)
+        return Promise.resolve()
+    },
+    reportAltText: (imageHash, userHash, language, reason) => {
+        console.log(`Got report: ${imageHash}:${userHash}:${language}: ${reason}`)
+        return Promise.resolve()
+    },
+    markAltTextUsed: (imageHash, userHash, language) => {
+        console.log(`Got mark: ${imageHash}:${userHash}:${language}`)
+        return Promise.resolve()
+    }
+}
 
 // Prefetch favorites
 async function prefetchFavorites() {
@@ -129,7 +179,7 @@ function buildResultPage(imageHash, language, results, loggedIn, intensityHist, 
     return resultDiv
 }
 
-function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist, url, faves) {
+function openResultDisplay(imageHash, language, result, loggedIn, intensityHist, url, faves) {
     const exactMatchTitle = document.querySelector(".exact-match-title")
     const exactMatchDiv = document.querySelector(".exact-matches")
     if (exactMatchDiv.firstChild) {
@@ -227,6 +277,23 @@ function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist
     } else {
         throw new Error("No tab selected for start!")
     }
+
+    const searchResults = document.querySelector(".search-results")
+    const openComposerButton = getFreshElement(".result-composer-link")
+    setButtonEnabled(openComposerButton, loggedIn)
+    if (loggedIn) {
+        openComposerButton.innerHTML = "Write&nbsp;Your&nbsp;Own"
+        openComposerButton.addEventListener("click", () => {
+            searchResults.style.display = "none"
+            openComposer(imageHash, language, "", intensityHist, url)
+        })
+    } else {
+        //TODO: Make this open signin page
+        openComposerButton.innerHTML = "Sign&nbsp;In&nbsp;To&nbsp;Write&nbsp;Your&nbsp;Own"
+    }
+    const loading = document.querySelector(".loading-anim-wrapper")
+    loading.style.display = "none"
+    searchResults.style.display = "block"
 }
 
 function changeResultTab(tabToSelect, otherTab1, otherTab2, otherTab3) {
@@ -314,8 +381,8 @@ function splitResults(resultTexts) {
 }
 
 function setupOcrPage(imageHash, language, text, intensityHist, url) {
-    const saveButton = getFreshButton(".ocr-result-save")
-    const editButton = getFreshButton(".ocr-edit-button")
+    const saveButton = getFreshElement(".ocr-result-save")
+    const editButton = getFreshElement(".ocr-edit-button")
 
     const ocrTextDiv = document.querySelector(".ocr-result-text")
     ocrTextDiv.innerHTML = text
@@ -420,7 +487,7 @@ function openCopiedModal(event, msg) {
 
 function openReportModal(altText) {
     let modalDiv = document.querySelector(".report-modal")
-    let reportButton = getFreshButton(".submit-report-button")
+    let reportButton = getFreshElement(".submit-report-button")
 
     let reasonInput = document.querySelector("#report-input")
     reasonInput.value = ""
@@ -446,6 +513,38 @@ function openReportModal(altText) {
     modalDiv.style.display = "block"
 }
 
+function openNotFound(imageHash, language, intensityHist, url, loggedIn) {
+    const notFoundWrapper = document.querySelector(".not-found")
+    const backToSearchButton = getFreshElement(".not-found-back-to-search-button")
+    const openComposerButton = getFreshElement(".not-found-open-composer-button")
+
+    setButtonEnabled(openComposerButton, loggedIn)
+    if (loggedIn) {
+        openComposerButton.innerHTML = "Write&nbsp;Your&nbsp;Own"
+
+        openComposerButton.addEventListener("click", () => {
+            notFoundWrapper.style.display = "none"
+            openComposer(imageHash, language, "", intensityHist, url)
+        })
+    } else {
+        //TODO: Make this open signin page
+        openComposerButton.innerHTML = "Sign&nbsp;In&nbsp;To&nbsp;Write&nbsp;Your&nbsp;Own"
+    }
+
+    backToSearchButton.addEventListener("click", () => {
+        notFoundWrapper.style.display = "none"
+        openSearchPortal()
+    })
+
+    notFoundWrapper.style.display = "block"
+}
+
+function displaySearchedImage(bitmap) {
+    const canvas = document.querySelector("#image-canvas")
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(bitmap, 0, 0)
+}
+
 function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDiv, faves) {
     const loadingDiv = document.querySelector(".loading-anim-wrapper")
     const searchResults = document.querySelector(".search-results")
@@ -457,9 +556,12 @@ function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDi
 
     apiClient.getAltText(imageHash, language, intensityHist, url)
         .then(result => {
-            setupResultDisplay(imageHash, language, result, ocr, loggedIn, intensityHist, url, faves)
-            loadingDiv.style.display = "none"
-            searchResults.style.display = "block"
+            if (result.texts.length > 0 || result.extractedText) {
+                openResultDisplay(imageHash, language, result, ocr, loggedIn, intensityHist, url, faves)
+            } else {
+                loadingDiv.style.display = "none"
+                openNotFound(imageHash, language, intensityHist, url, loggedIn)
+            }
         })
         .catch(err => {
             alert(`Search failed: '${err}'`)
@@ -497,7 +599,7 @@ function openFaveAndOwned(imageHash, language, faved, owned, intensityHistSuppli
         userTextWrapper.style.display = "block"
     }
 
-    const searchButton = getFreshButton(".search-after-faves-button")
+    const searchButton = getFreshElement(".search-after-faves-button")
 
     searchButton.addEventListener("click", () => {
         search(imageHash, language, intensityHistSupplier(), url, ocr, isUserLoggedIn(), faveWrapper, faves)
@@ -547,15 +649,26 @@ async function copyTextToClipboard(text) {
 
 function openComposer(imageHash, language, existingText, intensityHist, url) {
     const wrapper = document.querySelector(".composer-wrapper")
-    const input = document.querySelector("#composer-textarea")
+    const input = getFreshElement("#composer-textarea")
     const publishPublic = document.querySelector("#publish-public")
+    const composerInput = getFreshElement("#composer-textarea")
 
     const charCounter = document.querySelector(".composer-char-counter")
     charCounter.innerHTML = `${existingText.length}/1000`
 
-    const publishButton = getFreshButton(".publish-button")
+    const publishButton = getFreshElement(".publish-button")
+    setButtonEnabled(publishButton, 0 < existingText.length && existingText.length < 1000)
+
+    composerInput.addEventListener("input", () => {
+        setButtonEnabled(publishButton, 0 < composerInput.value.length && composerInput.value.length < 1000)
+        charCounter.innerHTML = `${composerInput.value}/1000`
+    })
 
     publishButton.addEventListener("click", () => {
+        if (0 === composerInput.value.length || composerInput.value.length > 1000) {
+            return
+        }
+
         apiClient.publishAltText(imageHash, language, input.value, intensityHist, url, publishPublic.checked)
             .then(() => {
                 openPublished(imageHash, language, input.value, intensityHist, url)
@@ -573,21 +686,21 @@ function openPublished(imageHash, language, text, intensityHist, url) {
     const publishedTextWrapper = document.querySelector(".published-text-wrapper")
     publishedTextWrapper.innerHTML = text
 
-    const copyButton = getFreshButton(".published-copy-button")
+    const copyButton = getFreshElement(".published-copy-button")
     copyButton.addEventListener("click", async event => {
         await copyTextToClipboard(text)
             .then(() => openCopiedModal(event, "Copied!"))
             .catch(() => openCopiedModal(event, "Couldn't copy that text, you'll have to do it manually."))
     })
 
-    const editButton = getFreshButton("published-edit-button")
+    const editButton = getFreshElement("published-edit-button")
     editButton.addEventListener("click", () => {
         publishWrapper.style.display = "none"
         openComposer(imageHash, language, text, intensityHist, url)
     })
 }
 
-function getFreshButton(selector) {
+function getFreshElement(selector) {
     const original = document.querySelector(selector)
     const copy = original.clone()
     original.replaceWith(copy)
@@ -606,27 +719,21 @@ function getImageBitmapFromUrl(urlSearchInput) {
     };
 }
 
-// UI Setup
-(function () {
+function openSearchPortal() {
     const searchBoxWrapper = document.querySelector(".search-box-wrapper")
     const localSearchTab = document.querySelector(".on-computer-search-title")
     const webSearchTab = document.querySelector(".on-the-web-search-title")
-    const fileSearchInput = document.querySelector("#file-search-input")
-    const urlSearchInput = document.querySelector("#url-search-input")
-    const searchButton = document.querySelector(".search-button")
     const fileChosen = document.querySelector('#chosen-file');
     const fileLabel = document.querySelector("#file-search-label")
-    const languageSelector = document.querySelector("#language-select")
     const isTextWrapper = document.querySelector(".is-text-wrapper")
-    const isTextCheck = document.querySelector("#is-text")
+    const urlSearchInput = getFreshElement("#url-search-input")
+    const fileSearchInput = getFreshElement("#file-search-input")
+    const searchButton = getFreshElement(".search-button")
+    const languageSelector = getFreshElement("#language-select")
+    const isTextCheck = getFreshElement("#is-text")
 
-    const postSearch = document.querySelector(".post-search-select")
+    const postSearch = getFreshElement(".post-search-select")
     const loading = document.querySelector(".loading-anim-wrapper")
-    const errorBox = document.querySelector(".error-box")
-    const errorMessage = document.querySelector(".error-message")
-    const backToSearch = document.querySelector(".back-to-search-button")
-    const composerInput = document.querySelector("#composer-textarea")
-    const charCounter = document.querySelector(".composer-char-counter")
 
     let searchEnabled = false
     let ocrEnabled = false
@@ -687,35 +794,33 @@ function getImageBitmapFromUrl(urlSearchInput) {
         languageSelector.appendChild(option)
     })
 
-    composerInput.addEventListener("input", () => {
-        charCounter.innerHTML = `${composerInput.value}/1000`
-    })
-
     searchButton.addEventListener("click", async () => {
         if (!searchEnabled) {
             alert(`You must input ${requiredThing} to search for.`)
             return
         }
 
-        searchBoxWrapper.style.display = "none"
-        loading.style.display = "block"
-        postSearch.style.display = "grid"
-
         let bitmap;
         try {
             bitmap = bitmapFetcher()
         } catch (err) {
+            let message;
             if (err.match(/CORS/i)) {
-                errorMessage.innerHTML = "The website hosting that image didn't let Alt-Text.org download it. If " +
+                message = "The website hosting that image didn't let Alt-Text.org download it. If " +
                     "you’d like to search for that image, please save it and use the 'On Your Computer' option."
             } else {
-                errorMessage.innerHTML = `Image search failed: '${err}'`
+                message = `Image search failed: '${err}'`
             }
 
             loading.style.display = "none"
-            errorBox.style.display = "block"
+            openErrorDisplay(message)
             return
         }
+
+        displaySearchedImage(bitmap)
+        searchBoxWrapper.style.display = "none"
+        loading.style.display = "block"
+        postSearch.style.display = "grid"
 
         let url = ocrEnabled ? urlSearchInput.value : null
         let ocr = isTextCheck.checked
@@ -730,9 +835,20 @@ function getImageBitmapFromUrl(urlSearchInput) {
             search(hash, language, intensityHist, url, ocr, isUserLoggedIn(), null, await favorites)
         }
     })
+}
+
+function openErrorDisplay(message) {
+    const backToSearch = document.querySelector(".back-to-search-button")
+    const errorBox = document.querySelector(".error-box")
+    const errorMessage = document.querySelector(".error-message")
+
+    errorMessage.innerHTML = message
+    errorBox.style.display = "block"
 
     backToSearch.addEventListener("click", () => {
         errorBox.style.display = "none"
-        searchBoxWrapper.style.display = "block"
+        openSearchPortal()
     })
-})();
+}
+
+openSearchPortal()

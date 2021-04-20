@@ -61,6 +61,11 @@
             </div>
         </div>
     </div>
+    <div class="error-box">
+        <div class="error-message"></div>
+        <span role="button"
+              class="link-button back-to-search-button">Back&nbsp;to&nbsp;Image&nbsp;Selection</span>
+    </div>
     <div class="post-search-select">
         <div class="image-column">
             <div class="composer-image-wrapper">
@@ -77,17 +82,10 @@
                      alt="Loading animation. Small circles arranged in a larger circle rhythmically fade in and out."/>
                 <span class="loading-text">Searching...</span>
             </div>
-            <div class="error-box">
-                <div class="error-message"></div>
-                <span role="button"
-                      class="link-button back-to-search-button">Back&nbsp;to&nbsp;Image&nbsp;Selection</span>
-            </div>
             <div class="not-found">
-                <div class="not-found-message">
-                    No existing description found for that image. Would you like to write one?
-                </div>
-                <span role="button" class="link-button back-to-search-button">Back&nbsp;to&nbsp;Search</span>
-                <span role="button" class="link-button open-editor-button">Yes</span>
+                <div class="not-found-message">No existing description found for that image</div>
+                <span role="button" class="link-button not-found-back-to-search-button">Back&nbsp;to&nbsp;Search</span>
+                <span role="button" class="link-button not-found-open-composer-button"></span>
             </div>
             <div class="favorite-and-owned">
                 <div class="favorite-text-wrapper">
@@ -126,6 +124,9 @@
                     <div class="strong-matches result-page"></div>
                     <div class="weaker-matches result-page"></div>
                 </div>
+                <div class="result-controls">
+                    <span class="result-composer-link link-button"></span>
+                </div>
             </div>
             <div class="composer-wrapper">
                 <label for="composer-textarea">Describe&nbsp;This&nbsp;Image</label>
@@ -133,7 +134,7 @@
                           placeholder="The goal is to enable people who can't see this image to be full participants in the conversation. Start with a summary sentence, then add all the detail you think is important.">
                 </textarea>
                 <div class="composer-controls">
-                    <span>
+                    <span class="public-check-wrapper">
                         <input type="checkbox" id="publish-public" checked>
                         <label for="publish-public">
                             Let&nbsp;Other&nbsp;People&nbsp;Use&nbsp;This&nbsp;Description
