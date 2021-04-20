@@ -237,7 +237,7 @@
 
 .right-side {
     display: none;
-    width: 100%;
+    width: 90%;
     height: 100%;
 }
 
@@ -291,23 +291,52 @@
 }
 
 .composer-wrapper {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
 
+.composer-content {
+    margin-left: 10%;
+    width: 80%;
+}
+
+.composer-title {
+    width: 80%;
+    font-family: "lexendbold", serif;
+    font-size: xxx-large;
 }
 
 #composer-textarea {
-
+    width: 80%;
+    padding: 5px;
+    font-family: "montserratregular", sans-serif;
+    font-size: medium;
+    -moz-box-shadow: inset 0 0 3px black;
+    -webkit-box-shadow: inset 0 0 3px black;
+    box-shadow: inset 0 0 3px black;
 }
 
 .composer-controls {
-
+    width: 80%;
+    margin-top: 10px;
 }
 
 .public-check-wrapper {
-
+    float: left;
 }
 
 .composer-char-counter {
+    float: right;
+    color: var(--misc-grey-color);
+}
 
+.publish-button {
+    float: right;
+    font-size: xx-large;
 }
 
 .published-wrapper {

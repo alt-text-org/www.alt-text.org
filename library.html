@@ -70,7 +70,8 @@
         <div class="composer-image-wrapper">
             <canvas id="image-canvas"></canvas>
             <div class="search-another-image-wrapper">
-                <span class="search-another-image-button link-button" role="button">Search&nbsp;Another&nbsp;Image</span>
+                <span class="search-another-image-button link-button"
+                      role="button">Search&nbsp;Another&nbsp;Image</span>
             </div>
         </div>
         <div class="post-search-right-side">
@@ -131,19 +132,20 @@
                 </div>
             </div>
             <div class="composer-wrapper right-side">
-                <label for="composer-textarea">Describe&nbsp;This&nbsp;Image</label>
-                <textarea id="composer-textarea" maxlength="1000" rows="5" cols="200"
-                          placeholder="The goal is to enable people who can't see this image to be full participants in the conversation. Start with a summary sentence, then add all the detail you think is important.">
-                </textarea>
-                <div class="composer-controls">
+                <div class="composer-content">
+                    <label for="composer-textarea" class="composer-title">Describe&nbsp;This&nbsp;Image</label>
+                    <textarea id="composer-textarea" maxlength="1000" rows="10" cols="100"
+                              placeholder="The goal is to enable people who can't see this image to be full participants in the conversation. Start with a summary sentence, then add all the detail you think is important."></textarea>
+                    <div class="composer-controls">
                     <span class="public-check-wrapper">
                         <input type="checkbox" id="publish-public" checked>
                         <label for="publish-public">
                             Let&nbsp;Other&nbsp;People&nbsp;Use&nbsp;This&nbsp;Description
                         </label>
                     </span>
-                    <span class="composer-char-counter"></span>
-                    <span class="publish-button link-button">Publish</span>
+                        <span class="publish-button link-button">Publish</span>
+                        <span class="composer-char-counter"></span>
+                    </div>
                 </div>
             </div>
             <div class="published-wrapper right-side">

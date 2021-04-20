@@ -44,7 +44,9 @@ function setButtonEnabled(button, enabled) {
     }
 }
 
-// const apiClient = new AltText.Client.AltTextClient()
+saveUserInfo("hannah@alt-text.org", "google")
+updateUserBanner()
+
 /*
         getBitmapHash(image: ImageData): string
         getIntensityHist(image: ImageData): string
@@ -58,7 +60,7 @@ function setButtonEnabled(button, enabled) {
         reportAltText(imageHash: string, userHash: string, language: string, reason: string): Promise<void>
         markAltTextUsed(imageHash: string, userHash: string, language: string): Promise<void>
  */
-const realApiClient = new AltText.Client.AltTextClient()
+const realApiClient = new AltText.Client.AltTextClient(() => getUserAuth())
 const apiClient = {
     getBitmapHash: realApiClient.getBitmapHash,
     getIntensityHist: realApiClient.getIntensityHist,
@@ -696,7 +698,7 @@ function openComposer(imageHash, language, existingText, intensityHist, url) {
 
     composerInput.addEventListener("input", () => {
         setButtonEnabled(publishButton, 0 < composerInput.value.length && composerInput.value.length < 1000)
-        charCounter.innerHTML = `${composerInput.value}/1000`
+        charCounter.innerHTML = `${composerInput.value.length}/1000`
     })
 
     publishButton.addEventListener("click", () => {
@@ -713,7 +715,7 @@ function openComposer(imageHash, language, existingText, intensityHist, url) {
             })
     })
 
-    wrapper.style.display = "block"
+    wrapper.style.display = "flex"
 }
 
 function openPublished(imageHash, language, text, intensityHist, url) {
