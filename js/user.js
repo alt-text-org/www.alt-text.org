@@ -11,36 +11,60 @@ const accountProviderIcons = {
     anon: "images/anon-user-icon.svg"
 };
 
-(function () {
+function updateUserBanner() {
     let userName = document.querySelector(".user-name")
     let userIcon = document.querySelector(".user-icon")
 
-    let rawUserInfo = window.sessionStorage.getItem(userStorageKey)
-    if (!rawUserInfo) {
-        rawUserInfo = window.localStorage.getItem(userStorageKey)
-    }
-
-    if (rawUserInfo) {
-        let userInfo = JSON.parse(rawUserInfo)
+    let userInfo = getUserInfo()
+    if (userInfo.username) {
         userName.innerHTML = userInfo.username
 
         let iconPath = accountProviderIcons[userInfo.provider]
         if (iconPath) {
             userIcon.src = iconPath
+        } else {
+            userIcon.src = accountProviderIcons.anon
         }
     } else {
         userName.innerHTML = "Sign In"
         userIcon.src = accountProviderIcons.anon
     }
-})()
+}
 
-function saveUserInfo(username, provider, storage) {
+function saveUserInfo(username, provider) {
+    let keepUserLoggedIn = getUserSetting("keepMeLoggedIn")
+
+    let storage;
+    if (keepUserLoggedIn) {
+        storage = window.localStorage
+    } else {
+        storage = window.sessionStorage
+    }
+
     let serialized = JSON.stringify({
         username: username,
         provider: provider
     })
 
     storage.setItem(userStorageKey, serialized)
+}
+
+function getUserInfo() {
+    let keepUserLoggedIn = getUserSetting("keepMeLoggedIn")
+
+    let storage;
+    if (keepUserLoggedIn) {
+        storage = window.localStorage
+    } else {
+        storage = window.sessionStorage
+    }
+
+    let rawUserInfo = storage.getItem(userStorageKey)
+    if (rawUserInfo) {
+        return JSON.parse(rawUserInfo)
+    } else {
+        return {}
+    }
 }
 
 function clearUserInfo() {
@@ -51,7 +75,6 @@ function clearUserInfo() {
 function isUserLoggedIn() {
     return !!window.sessionStorage.getItem(userStorageKey) || !!window.localStorage.getItem(userStorageKey)
 }
-
 
 function getUserSettings() {
     let rawSettings = window.localStorage.getItem(userSettingsKey);
@@ -83,12 +106,16 @@ function setUserSetting(setting, value) {
 }
 
 function saveUserAuth(token) {
-    let settings = getUserSettings()
-    if (settings.keepMeLoggedIn) {
-        window.localStorage.setItem(userAuthKey, token)
+    let keepUserLoggedIn = getUserSetting("keepMeLoggedIn")
+
+    let storage;
+    if (keepUserLoggedIn) {
+        storage = window.localStorage
     } else {
-        window.sessionStorage.setItem(userAuthKey, token)
+        storage = window.sessionStorage
     }
+
+    storage.setItem(userAuthKey, token)
 }
 
 function getUserAuth() {
@@ -100,6 +127,21 @@ function getUserAuth() {
     return auth
 }
 
-function logOut() {
-    window.sessionStorage.removeItem()
+function clearUserAuth() {
+    window.sessionStorage.removeItem(userAuthKey)
+    window.localStorage.removeItem(userAuthKey)
 }
+
+function logIn(username, provider, token) {
+    saveUserAuth(token)
+    saveUserInfo(username, provider)
+    updateUserBanner()
+}
+
+function logOut() {
+    clearUserAuth()
+    clearUserInfo()
+    updateUserBanner()
+}
+
+updateUserBanner()
