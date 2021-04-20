@@ -133,6 +133,12 @@
                           placeholder="The goal is to enable people who can't see this image to be full participants in the conversation. Start with a summary sentence, then add all the detail you think is important.">
                 </textarea>
                 <div class="composer-controls">
+                    <span>
+                        <input type="checkbox" id="publish-public" checked>
+                        <label for="publish-public">
+                            Let&nbsp;Other&nbsp;People&nbsp;Use&nbsp;This&nbsp;Description
+                        </label>
+                    </span>
                     <span class="composer-char-counter"></span>
                     <span class="publish-button link-button">Publish</span>
                 </div>
@@ -141,7 +147,10 @@
                 <div class="published-title">Published!</div>
                 <div class="published-text-wrapper"></div>
                 <div class="publish-controls">
-                    <span class="copy-and-return-button link-button" role="button">
+                    <span class="published-edit-button link-button" role="button">
+                        <img src="images/edit-control.svg" aria-hidden="true" alt="Edit icon">Edit
+                    </span>
+                    <span class="published-copy-button link-button" role="button">
                         <img src="images/copy-control.svg" aria-hidden="true" alt="Copy icon">
                         Copy&nbsp;Image&nbsp;Description
                     </span>

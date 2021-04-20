@@ -110,7 +110,26 @@ async function getFavesAndUserTexts(imageHash, language) {
     return foundAny ? result : null
 }
 
-function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist) {
+function buildResultPage(imageHash, language, results, loggedIn, intensityHist, faves) {
+    const resultDiv = document.createElement("div")
+
+    let zebraDark = false
+
+    results.forEach(result => {
+        let faved = false
+        if (faves[imageHash] && faves[imageHash][language] && faves[imageHash][language].userHash === result.userHash) {
+            faved = true
+        }
+
+        let bgClass = zebraDark ? "alt-text-bg-zebra-dark" : "alt-text-bg-zebra-light"
+        let textDiv = buildTextDiv(result, false, loggedIn, faved, () => intensityHist, bgClass)
+        resultDiv.appendChild(textDiv)
+    })
+
+    return resultDiv
+}
+
+function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist, url, faves) {
     const exactMatchTitle = document.querySelector(".exact-match-title")
     const exactMatchDiv = document.querySelector(".exact-matches")
     if (exactMatchDiv.firstChild) {
@@ -147,7 +166,7 @@ function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist
     let start = null
 
     if (pages.exact.length > 0) {
-        let page = buildResultPage(imageHash, language, pages.exact, loggedIn, intensityHist)
+        let page = buildResultPage(imageHash, language, pages.exact, loggedIn, intensityHist, faves)
         exactMatchDiv.appendChild(page)
         exactTab = exactMatchTitle
         start = () => {
@@ -160,7 +179,7 @@ function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist
     }
 
     if (result.extractedText) {
-        setupOcrPage(result.extractedText)
+        setupOcrPage(imageHash, language, result.extractedText, intensityHist, url)
         ocrTab = ocrResultTitle
         if (!start) {
             start = () => {
@@ -174,7 +193,7 @@ function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist
     }
 
     if (pages.strong.length > 0) {
-        let page = buildResultPage(imageHash, language, pages.strong, loggedIn, intensityHist)
+        let page = buildResultPage(imageHash, language, pages.strong, loggedIn, intensityHist, faves)
         strongMatchDiv.appendChild(page)
         strongTab = strongMatchTitle
         if (!start) {
@@ -189,7 +208,7 @@ function setupResultDisplay(imageHash, language, result, loggedIn, intensityHist
     }
 
     if (pages.weak.length > 0) {
-        let page = buildResultPage(imageHash, language, pages.weak, loggedIn, intensityHist)
+        let page = buildResultPage(imageHash, language, pages.weak, loggedIn, intensityHist, faves)
         weakMatchDiv.appendChild(page)
         weakTab = weakMatchTitle
         if (!start) {
@@ -294,37 +313,32 @@ function splitResults(resultTexts) {
     return result
 }
 
-function setupOcrPage(imageHash, language, text, intensityHist) {
-    const saveButton = document.querySelector(".ocr-result-save")
-    const saveClone = saveButton.cloneNode()
-    saveButton.replaceWith(saveClone)
-
-    const editButton = document.querySelector(".ocr-edit-button")
-    const editButtonClone = editButton.cloneNode()
-    editButton.replaceWith(editButtonClone)
+function setupOcrPage(imageHash, language, text, intensityHist, url) {
+    const saveButton = getFreshButton(".ocr-result-save")
+    const editButton = getFreshButton(".ocr-edit-button")
 
     const ocrTextDiv = document.querySelector(".ocr-result-text")
     ocrTextDiv.innerHTML = text
 
     const resultPage = document.querySelector(".search-results")
-    saveClone.addEventListener("click", event => {
-        apiClient.publishAltText(imageHash, language, text, intensityHist)
+    saveButton.addEventListener("click", () => {
+        apiClient.publishAltText(imageHash, language, text, intensityHist, url)
             .then(() => {
                 resultPage.style.display = "none"
-
+                openPublished(imageHash, language, text, intensityHist)
             })
             .catch(err => {
                 alert(`Failed to publish image description: '${err}'`)
             })
     })
 
-    editButtonClone.addEventListener("click", () => {
+    editButton.addEventListener("click", () => {
         resultPage.style.display = "none"
         openComposer(imageHash, language, text, intensityHist)
     })
 }
 
-function buildTextDiv(foundText, owned, loggedIn, faved, intensityHist, backgroundClass) {
+function buildTextDiv(foundText, owned, loggedIn, faved, intensityHistSupplier, backgroundClass) {
     const wrapper = document.createElement("div")
     wrapper.classList.add(backgroundClass)
 
@@ -337,11 +351,20 @@ function buildTextDiv(foundText, owned, loggedIn, faved, intensityHist, backgrou
     controlDiv.classList.add("alt-text-controls")
     wrapper.appendChild(controlDiv)
 
+    let copied = false
     const copySpan = document.createElement("span")
     copySpan.setAttribute("role", "button")
     copySpan.classList.add("alt-text-left-control", "alt-text-control")
     copySpan.innerHTML = `<img src="images/copy-control.svg" aria-hidden="true" alt="Copy">Copy`
     copySpan.addEventListener("click", async event => {
+        if (!copied) {
+            apiClient.markAltTextUsed(foundText.imageHash, foundText.userHash, foundText.language)
+                .catch(err => {
+                    console.log(`Couldn't mark text used: '${err}'`)
+                })
+        }
+        copied = true
+
         await copyTextToClipboard(foundText.text)
             .then(() => openCopiedModal(event, "Copied!"))
             .catch(() => openCopiedModal(event, "Couldn't copy that text, you'll have to do it manually."))
@@ -354,7 +377,7 @@ function buildTextDiv(foundText, owned, loggedIn, faved, intensityHist, backgrou
         editSpan.classList.add("alt-text-left-control", "alt-text-control")
         editSpan.innerHTML = `<img src="images/edit-control.svg" aria-hidden="true" alt="Edit">Edit`
         editSpan.addEventListener("click", () => {
-            openComposer(foundText.imageHash, foundText.language, foundText.text, intensityHist)
+            openComposer(foundText.imageHash, foundText.language, foundText.text, intensityHistSupplier())
         })
         controlDiv.appendChild(editSpan)
 
@@ -397,28 +420,24 @@ function openCopiedModal(event, msg) {
 
 function openReportModal(altText) {
     let modalDiv = document.querySelector(".report-modal")
-
-    let reportButton = document.querySelector(".submit-report-button")
-    let newButton = reportButton.cloneNode();
-    reportButton.replaceWith(newButton)
-
+    let reportButton = getFreshButton(".submit-report-button")
 
     let reasonInput = document.querySelector("#report-input")
     reasonInput.value = ""
     reasonInput.addEventListener("input", () => {
         if (reasonInput.value && reasonInput.value.length < 1000) {
-            newButton.classList.remove("button-disabled")
-            newButton.classList.add("button-enabled")
+            reportButton.classList.remove("button-disabled")
+            reportButton.classList.add("button-enabled")
         } else {
-            newButton.classList.remove("button-enabled")
-            newButton.classList.add("button-disabled")
+            reportButton.classList.remove("button-enabled")
+            reportButton.classList.add("button-disabled")
         }
     })
 
     let reportingText = document.querySelector(".text-to-be-reported")
     reportingText.innerHTML = altText.text
 
-    newButton.addEventListener("click", () => {
+    reportButton.addEventListener("click", () => {
         if (reasonInput.value && reasonInput.value.length < 1000) {
             apiClient.reportAltText(altText.imageHash, altText.userHash, altText.language, reasonInput.value)
         }
@@ -427,7 +446,7 @@ function openReportModal(altText) {
     modalDiv.style.display = "block"
 }
 
-function search(imageHash, language, intensityHist, ocrUrl, loggedIn, originDiv) {
+function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDiv, faves) {
     const loadingDiv = document.querySelector(".loading-anim-wrapper")
     const searchResults = document.querySelector(".search-results")
 
@@ -436,18 +455,26 @@ function search(imageHash, language, intensityHist, ocrUrl, loggedIn, originDiv)
     }
     loadingDiv.style.display = "block"
 
-    apiClient.getAltText(imageHash, language, intensityHist, ocrUrl)
+    apiClient.getAltText(imageHash, language, intensityHist, url)
         .then(result => {
-            setupResultDisplay(imageHash, language, result, loggedIn, intensityHist)
+            setupResultDisplay(imageHash, language, result, ocr, loggedIn, intensityHist, url, faves)
             loadingDiv.style.display = "none"
             searchResults.style.display = "block"
         })
         .catch(err => {
             alert(`Search failed: '${err}'`)
+
+            //This is unfriendly. Maybe try to utilize browser history when it's implemented?
+            const postSearch = document.querySelector(".post-search-select")
+            const searchWrapper = document.querySelector(".search-box-wrapper")
+
+            postSearch.style.display = "none"
+            searchWrapper.style.display = "block"
+            loadingDiv.style.display = "none"
         })
 }
 
-function displayFaveAndOwned(imageHash, language, faved, owned, intensityHist, ocrUrl, loggedIn) {
+function openFaveAndOwned(imageHash, language, faved, owned, intensityHistSupplier, url, ocr, loggedIn, faves) {
     const faveWrapper = document.querySelector(".favorite-text-wrapper")
     const faveText = document.querySelector("#favorite-text")
     if (faveText.firstChild) {
@@ -461,21 +488,19 @@ function displayFaveAndOwned(imageHash, language, faved, owned, intensityHist, o
     }
 
     if (faveText) {
-        faveText.appendChild(buildTextDiv(faveText, false, loggedIn, true, intensityHist, "alt-text-bg-zebra-dark"))
+        faveText.appendChild(buildTextDiv(faveText, false, loggedIn, true, intensityHistSupplier, "alt-text-bg-zebra-dark"))
         faveWrapper.style.display = "block"
     }
 
     if (owned) {
-        userText.appendChild(buildTextDiv(userText, true, loggedIn, false, intensityHist, "alt-text-bg-zebra-dark"))
+        userText.appendChild(buildTextDiv(userText, true, loggedIn, false, intensityHistSupplier, "alt-text-bg-zebra-dark"))
         userTextWrapper.style.display = "block"
     }
 
-    const searchButton = document.querySelector(".search-after-faves-button")
-    const searchButtonClone = searchButton.cloneNode()
-    searchButton.replaceWith(searchButtonClone)
+    const searchButton = getFreshButton(".search-after-faves-button")
 
-    searchButtonClone.addEventListener("click", () => {
-        search()
+    searchButton.addEventListener("click", () => {
+        search(imageHash, language, intensityHistSupplier(), url, ocr, isUserLoggedIn(), faveWrapper, faves)
     })
 }
 
@@ -520,15 +545,53 @@ async function copyTextToClipboard(text) {
     return await navigator.clipboard.writeText(text)
 }
 
-function openComposer(imageHash, language, existingText, intensityHist) {
+function openComposer(imageHash, language, existingText, intensityHist, url) {
     const wrapper = document.querySelector(".composer-wrapper")
     const input = document.querySelector("#composer-textarea")
+    const publishPublic = document.querySelector("#publish-public")
 
-    const publishButton = document.querySelector(".publish-button")
-    const publishClone = publishButton.cloneNode()
-    publishButton.replaceWith(publishClone)
+    const charCounter = document.querySelector(".composer-char-counter")
+    charCounter.innerHTML = `${existingText.length}/1000`
 
+    const publishButton = getFreshButton(".publish-button")
 
+    publishButton.addEventListener("click", () => {
+        apiClient.publishAltText(imageHash, language, input.value, intensityHist, url, publishPublic.checked)
+            .then(() => {
+                openPublished(imageHash, language, input.value, intensityHist, url)
+            })
+            .catch(err => {
+                alert(`Publish failed: '${err}'`)
+            })
+    })
+
+    wrapper.style.display = "block"
+}
+
+function openPublished(imageHash, language, text, intensityHist, url) {
+    const publishWrapper = document.querySelector(".published-wrapper")
+    const publishedTextWrapper = document.querySelector(".published-text-wrapper")
+    publishedTextWrapper.innerHTML = text
+
+    const copyButton = getFreshButton(".published-copy-button")
+    copyButton.addEventListener("click", async event => {
+        await copyTextToClipboard(text)
+            .then(() => openCopiedModal(event, "Copied!"))
+            .catch(() => openCopiedModal(event, "Couldn't copy that text, you'll have to do it manually."))
+    })
+
+    const editButton = getFreshButton("published-edit-button")
+    editButton.addEventListener("click", () => {
+        publishWrapper.style.display = "none"
+        openComposer(imageHash, language, text, intensityHist, url)
+    })
+}
+
+function getFreshButton(selector) {
+    const original = document.querySelector(selector)
+    const copy = original.clone()
+    original.replaceWith(copy)
+    return copy
 }
 
 function getImageBitmapFromFile(fileSearchInput) {
@@ -558,12 +621,12 @@ function getImageBitmapFromUrl(urlSearchInput) {
     const isTextCheck = document.querySelector("#is-text")
 
     const postSearch = document.querySelector(".post-search-select")
-    const faveAndOwned = document.querySelector(".favorite-and-owned")
     const loading = document.querySelector(".loading-anim-wrapper")
     const errorBox = document.querySelector(".error-box")
     const errorMessage = document.querySelector(".error-message")
     const backToSearch = document.querySelector(".back-to-search-button")
-    const searchAfterFaves = document.querySelector(".search-after-faves-button")
+    const composerInput = document.querySelector("#composer-textarea")
+    const charCounter = document.querySelector(".composer-char-counter")
 
     let searchEnabled = false
     let ocrEnabled = false
@@ -624,6 +687,10 @@ function getImageBitmapFromUrl(urlSearchInput) {
         languageSelector.appendChild(option)
     })
 
+    composerInput.addEventListener("input", () => {
+        charCounter.innerHTML = `${composerInput.value}/1000`
+    })
+
     searchButton.addEventListener("click", async () => {
         if (!searchEnabled) {
             alert(`You must input ${requiredThing} to search for.`)
@@ -650,23 +717,17 @@ function getImageBitmapFromUrl(urlSearchInput) {
             return
         }
 
-        let ocrUrl = null
-        if (ocrEnabled && isTextCheck.checked) {
-            ocrUrl = urlSearchInput.value
-        }
-
+        let url = ocrEnabled ? urlSearchInput.value : null
+        let ocr = isTextCheck.checked
         let language = languageSelector.value
         let hash = apiClient.getBitmapHash(bitmap)
-        let favesAndUserTexts = getFavesAndUserTexts(hash, language);
+        let favesAndUserTexts = await getFavesAndUserTexts(hash, language);
         if (favesAndUserTexts) {
-            displayFaveAndOwned(favesAndUserTexts.favorite, favesAndUserTexts.userText)
-            searchAfterFaves.addEventListener("click", () => {
-                let intensityHist = apiClient.getIntensityHist(bitmap)
-                search(hash, language, intensityHist, ocrUrl, faveAndOwned)
-            })
+            openFaveAndOwned(hash, language, favesAndUserTexts.favorite, favesAndUserTexts.userText,
+                () => apiClient.getIntensityHist(bitmap), url, ocr, isUserLoggedIn(), await favorites)
         } else {
             let intensityHist = apiClient.getIntensityHist(bitmap)
-            search(hash, language, intensityHist, ocrUrl)
+            search(hash, language, intensityHist, url, ocr, isUserLoggedIn(), null, await favorites)
         }
     })
 
