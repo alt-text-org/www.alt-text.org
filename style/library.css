@@ -1,6 +1,7 @@
 .search-box-wrapper {
+    display: block;
     margin: 10% auto;
-    width: 50%;
+    width: 80%;
     height: 50%;
     font-family: "lexendmedium", serif;
 }
@@ -44,9 +45,9 @@
 
 .on-the-web-search-title {
     grid-area: option2;
-    color: var(--disabled-grey);
-    border-top: 3px var(--disabled-grey) solid;
-    border-right: 3px var(--disabled-grey) solid;
+    color: var(--misc-grey-color);
+    border-top: 3px var(--misc-grey-color) solid;
+    border-right: 3px var(--misc-grey-color) solid;
     border-bottom: 3px black solid;
     z-index: 500;
 }
@@ -67,9 +68,9 @@
     border: 1px black solid;
     border-radius: 6px;
     height: 35px;
-    -moz-box-shadow:    inset 0 0 3px black;
+    -moz-box-shadow: inset 0 0 3px black;
     -webkit-box-shadow: inset 0 0 3px black;
-    box-shadow:         inset 0 0 3px black;
+    box-shadow: inset 0 0 3px black;
 }
 
 #file-search-label {
@@ -104,7 +105,6 @@
 }
 
 .search-button-wrapper {
-    float: right;
     margin-right: 15%;
 }
 
@@ -139,9 +139,22 @@
     overflow: hidden;
     border-radius: 5px;
     border: 2px black solid;
-    -moz-box-shadow:    1px 1px 2px black;
+    -moz-box-shadow: 1px 1px 2px black;
     -webkit-box-shadow: 1px 1px 2px black;
-    box-shadow:         1px 1px 2px black;
+    box-shadow: 1px 1px 2px black;
+}
+
+.is-text-wrapper {
+    display: none;
+    align-items: center;
+    float: left;
+    margin-left: 20%;
+    vertical-align: middle;
+}
+
+#is-text {
+    width: 20px;
+    height: 20px;
 }
 
 .back-to-search-button {
@@ -149,19 +162,43 @@
 }
 
 .post-search-select {
-
-}
-
-.image-column {
-
+    display: none;
+    height: 100%;
+    width: 100%;
+    gap: 0;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-areas: "  .  rright rright"
+                         "iimg rright rright"
+                         "but  rright rright";
 }
 
 .composer-image-wrapper {
+    grid-area: iimg;
+    width: 100%;
+    height: 100%;
+}
 
+#image-canvas {
+    object-fit: contain;
+    margin: 0 auto;
+    width: 90%;
+    padding: 10px;
+}
+
+.search-another-image-wrapper {
+    /*grid-area: but;*/
+    text-align: center;
+}
+
+.search-another-image-button {
+    margin: 5px auto;
 }
 
 .post-search-right-side {
-
+    grid-area: rright;
+    width: 100%;
+    height: 100%;
+    border-left: 3px var(--misc-grey-color) solid;
 }
 
 .loading-anim-wrapper {
@@ -198,12 +235,23 @@
     margin-bottom: 25px;
 }
 
-.not-found {
+.right-side {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
 
+.not-found {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    vertical-align: center;
+    margin: 0 auto;
 }
 
 .not-found-message {
-
+    font-family: "lexendbold", serif;
+    font-size: xx-large;
 }
 
 .favorite-and-owned {
@@ -250,6 +298,10 @@
 
 }
 
+.published-wrapper {
+
+}
+
 .published-title {
 
 }
@@ -259,35 +311,48 @@
 }
 
 .published-edit-button {
-
+    float: left;
 }
 
 .published-copy-button {
-
+    float: right;
 }
 
 .copied-modal {
-
+    display: none;
+    padding: 5px;
+    box-shadow: 3px 3px 2px var(--button-shadow-color);
 }
 
 .report-modal {
-
+    display: none;
+    top: 25%;
+    left: 20%;
+    width: 60%;
+    height: 50%;
+    padding: 10px;
+    margin: 0 auto;
+    box-shadow: 3px 3px 2px var(--button-shadow-color);
 }
 
 .modal-title {
-
+    font-family: "lexendbold", serif;
+    font-size: xx-large;
 }
 
 .text-to-be-reported {
-
+    margin: 0 auto;
+    background-color: var(--zebra-dark-bg-color);
 }
 
 .report-wrapper {
-
+    margin: 0 auto;
 }
 
 #report-input {
-
+    margin: 0 auto;
+    font-family: "montserratregular", sans-serif;
+    font-size: medium;
 }
 
 .report-button-wrapper {
@@ -295,7 +360,8 @@
 }
 
 .submit-report-button {
-
+    float: right;
+    margin-top: 5px;
 }
 
 .alt-text-text {
@@ -305,10 +371,11 @@
 }
 
 .alt-text-bg-zebra-dark {
+    background-color: var(--zebra-dark-bg-color);
 }
 
 .alt-text-bg-zebra-light {
-
+    background-color: var(--zebra-light-bg-color);
 }
 
 .alt-text-controls {
@@ -316,13 +383,15 @@
 }
 
 .alt-text-control {
-
+    color: var(--misc-grey-color);
 }
 
 .alt-text-left-control {
-
+    float: left;
+    margin: 3px 0 3px 10px;
 }
 
 .alt-text-report-control {
-
+    float: right;
+    margin: 3px 0;
 }

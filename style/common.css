@@ -42,6 +42,9 @@
     --button-shadow-color: #333333;
     --accent-color: #9D736C;
     --disabled-grey: #AAAAAA;
+    --zebra-dark-bg-color: rgba(220, 190, 135, 0.4);
+    --zebra-light-bg-color: white;
+    --misc-grey-color: #555555
 }
 
 html {
@@ -68,10 +71,12 @@ a, a:visited {
     border-radius: 10px;
     border: var(--button-color) 10px solid;
     box-shadow: 3px 3px 2px var(--button-shadow-color);
+    margin: 5px 5px 0 5px;
 }
 
 .link-button:hover {
     opacity: 0.7;
+    cursor: pointer;
 }
 
 .site-header {
@@ -156,6 +161,7 @@ a, a:visited {
     overflow: scroll;
     display: block;
     width: 95%;
+    height: 85%;
     padding: 102px 16px 50px;
     font-family: "montserratregular", sans-serif;
 }

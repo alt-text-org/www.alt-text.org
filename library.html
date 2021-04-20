@@ -55,7 +55,7 @@
                     <select aria-label="Language Select" id="language-select" name="language-select"></select>
                     <span class="is-text-wrapper">
                         <input id="is-text" type="checkbox" value="false">
-                        <label for="is-text">This is a picture of text</label>
+                        <label for="is-text" class="is-text-label">This is a picture of text</label>
                     </span>
                 </div>
             </div>
@@ -67,27 +67,27 @@
               class="link-button back-to-search-button">Back&nbsp;to&nbsp;Image&nbsp;Selection</span>
     </div>
     <div class="post-search-select">
-        <div class="image-column">
-            <div class="composer-image-wrapper">
-                <canvas id="image-canvas"></canvas>
-            </div>
+        <div class="composer-image-wrapper">
+            <canvas id="image-canvas"></canvas>
             <div class="search-another-image-wrapper">
-                <span class="search-another-image-button link-button"
-                      role="button">Search&nbsp;Another&nbsp;Image</span>
+                <span class="search-another-image-button link-button" role="button">Search&nbsp;Another&nbsp;Image</span>
             </div>
         </div>
         <div class="post-search-right-side">
-            <div class="loading-anim-wrapper">
+            <div class="loading-anim-wrapper right-side">
                 <img class="loading-anim" src="images/loading.svg"
                      alt="Loading animation. Small circles arranged in a larger circle rhythmically fade in and out."/>
                 <span class="loading-text">Searching...</span>
             </div>
-            <div class="not-found">
+            <div class="not-found right-side">
                 <div class="not-found-message">No existing description found for that image</div>
-                <span role="button" class="link-button not-found-back-to-search-button">Back&nbsp;to&nbsp;Search</span>
-                <span role="button" class="link-button not-found-open-composer-button"></span>
+                <div class="not-found-controls">
+                    <span role="button"
+                          class="link-button not-found-back-to-search-button">Back&nbsp;to&nbsp;Search</span>
+                    <span role="button" class="link-button not-found-open-composer-button"></span>
+                </div>
             </div>
-            <div class="favorite-and-owned">
+            <div class="favorite-and-owned right-side">
                 <div class="favorite-text-wrapper">
                     <span class="fave-users-title">Favorite</span>
                     <div id="favorite-text"></div>
@@ -100,7 +100,7 @@
                     Search&nbsp;The&nbsp;Library&nbsp;Instead
                 </span>
             </div>
-            <div class="search-results">
+            <div class="search-results right-side">
                 <div class="result-titles">
                     <span class="exact-match-title result-title" role="button">Exact&nbsp;Matches</span>
                     <span class="ocr-result-title result-title" role="button">Extracted&nbsp;Text</span>
@@ -128,7 +128,7 @@
                     <span class="result-composer-link link-button"></span>
                 </div>
             </div>
-            <div class="composer-wrapper">
+            <div class="composer-wrapper right-side">
                 <label for="composer-textarea">Describe&nbsp;This&nbsp;Image</label>
                 <textarea id="composer-textarea" maxlength="1000" rows="5" cols="200"
                           placeholder="The goal is to enable people who can't see this image to be full participants in the conversation. Start with a summary sentence, then add all the detail you think is important.">
@@ -144,7 +144,7 @@
                     <span class="publish-button link-button">Publish</span>
                 </div>
             </div>
-            <div class="published-wrapper">
+            <div class="published-wrapper right-side">
                 <div class="published-title">Published!</div>
                 <div class="published-text-wrapper"></div>
                 <div class="publish-controls">

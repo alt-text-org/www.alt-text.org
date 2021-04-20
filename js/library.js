@@ -7,13 +7,13 @@ function validateUrl(url) {
 function selectLeft(leftTab, rightTab) {
     selectTab(leftTab)
     deselectTab(rightTab)
-    rightTab.style.borderRight = "3px #555555 solid"
+    rightTab.style.borderRight = "3px var(--misc-grey-color) solid"
 }
 
 function selectRight(leftTab, rightTab) {
     selectTab(rightTab)
     deselectTab(leftTab)
-    leftTab.style.borderLeft = "3px #555555 solid"
+    leftTab.style.borderLeft = "3px var(--misc-grey-color) solid"
 }
 
 function selectTab(tab) {
@@ -28,8 +28,8 @@ function selectTab(tab) {
 
 function deselectTab(tab) {
     let style = tab.style;
-    style.color = "#555555"
-    style.borderTop = "3px #555555 solid"
+    style.color = "var(--misc-grey-color)"
+    style.borderTop = "3px var(--misc-grey-color) solid"
     style.borderBottom = "3px black solid"
     style.zIndex = "500"
 }
@@ -64,7 +64,10 @@ const apiClient = {
     getIntensityHist: realApiClient.getIntensityHist,
     getAltText: (imageHash, language, intensityHist, ocr) => {
         console.log(`fetching: ${imageHash}:${language} URL: '${ocr}'`)
-        return Promise.resolve({})
+        return Promise.resolve({
+            texts: [],
+            extractedText: ""
+        })
     },
     publishAltText: (imageHash, language, altText, intensityHist, url, isPublic) => {
         console.log(`Publishing: ${imageHash}:${language} URL: '${url}' Public: ${isPublic} Hist: ${intensityHist}`)
@@ -305,25 +308,25 @@ function changeResultTab(tabToSelect, otherTab1, otherTab2, otherTab3) {
 
     if (otherTab1) {
         otherTab1.style.borderBottom = "3px black solid"
-        otherTab1.style.borderLeft = "3px #555555 solid"
-        otherTab1.style.borderRight = "3px #555555 solid"
-        otherTab1.style.borderTop = "3px #555555 solid"
+        otherTab1.style.borderLeft = "3px var(--misc-grey-color) solid"
+        otherTab1.style.borderRight = "3px var(--misc-grey-color) solid"
+        otherTab1.style.borderTop = "3px var(--misc-grey-color) solid"
         otherTab1.style.zIndex = "500"
     }
 
     if (otherTab2) {
         otherTab2.style.borderBottom = "3px black solid"
-        otherTab2.style.borderLeft = "3px #555555 solid"
-        otherTab2.style.borderRight = "3px #555555 solid"
-        otherTab2.style.borderTop = "3px #555555 solid"
+        otherTab2.style.borderLeft = "3px var(--misc-grey-color) solid"
+        otherTab2.style.borderRight = "3px var(--misc-grey-color) solid"
+        otherTab2.style.borderTop = "3px var(--misc-grey-color) solid"
         otherTab2.style.zIndex = "500"
     }
 
     if (otherTab3) {
         otherTab3.style.borderBottom = "3px black solid"
-        otherTab3.style.borderLeft = "3px #555555 solid"
-        otherTab3.style.borderRight = "3px #555555 solid"
-        otherTab3.style.borderTop = "3px #555555 solid"
+        otherTab3.style.borderLeft = "3px var(--misc-grey-color) solid"
+        otherTab3.style.borderRight = "3px var(--misc-grey-color) solid"
+        otherTab3.style.borderTop = "3px var(--misc-grey-color) solid"
         otherTab3.style.zIndex = "500"
     }
 }
@@ -541,13 +544,26 @@ function openNotFound(imageHash, language, intensityHist, url, loggedIn) {
 
 function displaySearchedImage(bitmap) {
     const canvas = document.querySelector("#image-canvas")
+    // const parent = document.querySelector(".composer-image-wrapper")
+    canvas.height = bitmap.height
+    canvas.width = bitmap.width
+
     let ctx = canvas.getContext("2d");
-    ctx.drawImage(bitmap, 0, 0)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.putImageData(bitmap, 0, 0)
+
+    // const aspectRatio = bitmap.height / bitmap.width
+    // canvas.width = parent.clientWidth
+    // canvas.height = parent.clientHeight
+    //
+    // window.addEventListener("resize", () => {
+    //     canvas.width = parent.clientWidth
+    //     canvas.height = parent.clientHeight
+    // })
 }
 
 function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDiv, faves) {
     const loadingDiv = document.querySelector(".loading-anim-wrapper")
-    const searchResults = document.querySelector(".search-results")
 
     if (originDiv) {
         originDiv.style.display = "none"
@@ -610,8 +626,35 @@ function openFaveAndOwned(imageHash, language, faved, owned, intensityHistSuppli
 function setFaved(text, faved) {
     if (faved) {
         apiClient.favoriteAltText(text.imageHash, text.userHash, text.language)
+            .then(async () => {
+                let faves = await favorites
+                if (!faves[text.imageHash]) {
+                    faves[text.imageHash] = {}
+                }
+
+                faves[text.imageHash][text.language] = {
+                    text: text.text,
+                    imageHash: text.imageHash,
+                    userHash: text.userHash,
+                    language: text.language
+                }
+            })
+            .catch(err => {
+                console.log(`Failed to fave alt text: ${err}`)
+            })
     } else {
         apiClient.unfavoriteAltText(text.imageHash, text.userHash, text.language)
+            .then(async () => {
+                let faves = await favorites
+                if (!faves[text.imageHash]) {
+                    return
+                }
+
+                delete faves[text.imageHash][text.language]
+            })
+            .catch(err => {
+                console.log(`Failed to unfave alt text: ${err}`)
+            })
     }
 }
 
@@ -702,7 +745,7 @@ function openPublished(imageHash, language, text, intensityHist, url) {
 
 function getFreshElement(selector) {
     const original = document.querySelector(selector)
-    const copy = original.clone()
+    const copy = original.cloneNode(true)
     original.replaceWith(copy)
     return copy
 }
@@ -729,11 +772,14 @@ function openSearchPortal() {
     const urlSearchInput = getFreshElement("#url-search-input")
     const fileSearchInput = getFreshElement("#file-search-input")
     const searchButton = getFreshElement(".search-button")
+
     const languageSelector = getFreshElement("#language-select")
     const isTextCheck = getFreshElement("#is-text")
 
-    const postSearch = getFreshElement(".post-search-select")
+    const postSearch = document.querySelector(".post-search-select")
+    const backToSearchFromImageButton = getFreshElement(".search-another-image-button")
     const loading = document.querySelector(".loading-anim-wrapper")
+
 
     let searchEnabled = false
     let ocrEnabled = false
@@ -771,12 +817,12 @@ function openSearchPortal() {
         ocrEnabled = true
         setButtonEnabled(searchButton, searchEnabled)
 
-        isTextWrapper.style.display = "block"
+        isTextWrapper.style.display = "flex"
         urlSearchInput.style.display = "block"
         bitmapFetcher = getImageBitmapFromUrl(urlSearchInput)
     })
 
-    urlSearchInput.addEventListener("change", () => {
+    urlSearchInput.addEventListener("input", () => {
         searchEnabled = validateUrl(urlSearchInput.value);
         setButtonEnabled(searchButton, searchEnabled)
     })
@@ -802,7 +848,7 @@ function openSearchPortal() {
 
         let bitmap;
         try {
-            bitmap = bitmapFetcher()
+            bitmap = await bitmapFetcher()
         } catch (err) {
             let message;
             if (err.match(/CORS/i)) {
@@ -818,6 +864,11 @@ function openSearchPortal() {
         }
 
         displaySearchedImage(bitmap)
+        backToSearchFromImageButton.addEventListener("click", () => {
+            postSearch.style.display = "none"
+            searchBoxWrapper.style.display = "block"
+        })
+
         searchBoxWrapper.style.display = "none"
         loading.style.display = "block"
         postSearch.style.display = "grid"
