@@ -267,11 +267,53 @@
 }
 
 .favorite-and-owned {
+    display: none;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    height: 100%;
+    width: 80%;
+}
 
+.fave-users-title {
+    text-align: center;
+    font-family: "lexendbold", serif;
+    font-size: xx-large;
+    width: 100%;
+}
+
+.favorite-text-wrapper {
+    display: none;
+}
+
+#favorite-text {
+    text-align: left;
+    margin: 0 auto;
+    font-family: "montserratregular", sans-serif;
+    font-size: medium;
+}
+
+.users-text-wrapper {
+    display: none;
+    margin: 10% 0 5%;
+    width: 95%;
+}
+
+
+#users-text {
+}
+
+
+.faves-and-owned-controls {
+    width: 80%;
+}
+
+.search-after-faves-button {
+    float: right;
 }
 
 .search-results {
-
+    display: none;
 }
 
 .result-titles {
@@ -279,7 +321,7 @@
 }
 
 .result-title {
-
+    display: none;
 }
 
 .result-wrapper {
@@ -291,7 +333,7 @@
 }
 
 .composer-wrapper {
-    display: flex;
+    display: none;
     justify-content: center;
     align-content: center;
     flex-direction: column;
@@ -340,7 +382,7 @@
 }
 
 .published-wrapper {
-
+    display: none;
 }
 
 .published-title {

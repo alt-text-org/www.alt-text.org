@@ -60,6 +60,9 @@ updateUserBanner()
         reportAltText(imageHash: string, userHash: string, language: string, reason: string): Promise<void>
         markAltTextUsed(imageHash: string, userHash: string, language: string): Promise<void>
  */
+function hash(str) {
+    return AltText.Hash.hash(str).reduce(((t,e)=>t+e.toString(16).padStart(2,"0")),"")
+}
 const realApiClient = new AltText.Client.AltTextClient(() => getUserAuth())
 const apiClient = {
     getBitmapHash: realApiClient.getBitmapHash,
@@ -67,7 +70,16 @@ const apiClient = {
     getAltText: (imageHash, language, intensityHist, ocr) => {
         console.log(`fetching: ${imageHash}:${language} URL: '${ocr}'`)
         return Promise.resolve({
-            texts: [],
+            texts: [
+                {
+                    text: "I'm an exact match, baby!",
+                    language: "en",
+                    confidence: 1.0,
+                    timesUsed: 15,
+                    imageHash: hash("image"),
+                    userHash: hash("someone")
+                }
+            ],
             extractedText: ""
         })
     },
@@ -77,11 +89,23 @@ const apiClient = {
     },
     getUserFavorites: () => {
         console.log("Returning user favorites")
-        return Promise.resolve([])
+        return Promise.resolve([{
+            imageHash: "76b91723f89a6f100ae68218a899af96faedd82d6925eedbe9f14fa5a2a8f282",
+            userHash: hash("user"),
+            language: "en",
+            text: "I'm a favorite"
+        }])
     },
     getUserAltText: () => {
         console.log("Returning user texts")
-        return Promise.resolve([])
+        return Promise.resolve([{
+            text: "I'm user text",
+            url: "https://zombo.com",
+            language: "en",
+            times_used: 10,
+            image_hash: "76b91723f89a6f100ae68218a899af96faedd82d6925eedbe9f14fa5a2a8f282",
+            public: true
+        }])
     },
     favoriteAltText: (imageHash, userHash, language) => {
         console.log(`Got fave: ${imageHash}:${userHash}:${language}`)
@@ -167,7 +191,6 @@ async function getFavesAndUserTexts(imageHash, language) {
 
 function buildResultPage(imageHash, language, results, loggedIn, intensityHist, faves) {
     const resultDiv = document.createElement("div")
-
     let zebraDark = false
 
     results.forEach(result => {
@@ -401,6 +424,7 @@ function setupOcrPage(imageHash, language, text, intensityHist, url) {
             })
             .catch(err => {
                 alert(`Failed to publish image description: '${err}'`)
+                console.log(`Failed to publish image description: ${err.stack}`)
             })
     })
 
@@ -432,14 +456,17 @@ function buildTextDiv(foundText, owned, loggedIn, faved, intensityHistSupplier, 
         if (!copied) {
             apiClient.markAltTextUsed(foundText.imageHash, foundText.userHash, foundText.language)
                 .catch(err => {
-                    console.log(`Couldn't mark text used: '${err}'`)
+                    console.log(`Failed to mark text used: ${err}\n${err.stack}`)
                 })
         }
         copied = true
 
         await copyTextToClipboard(foundText.text)
             .then(() => openCopiedModal(event, "Copied!"))
-            .catch(() => openCopiedModal(event, "Couldn't copy that text, you'll have to do it manually."))
+            .catch(err => {
+                openCopiedModal(event, "Couldn't copy that text, you'll have to do it manually.");
+                console.log(`Failed to copy text: ${err.stack}`)
+            })
     })
     controlDiv.appendChild(copySpan)
 
@@ -469,7 +496,7 @@ function buildTextDiv(foundText, owned, loggedIn, faved, intensityHistSupplier, 
         if (!owned) {
             const reportSpan = document.createElement("span")
             reportSpan.setAttribute("role", "button")
-            reportSpan.classList.add("alt-text-report-control alt-text-control")
+            reportSpan.classList.add("alt-text-report-control", "alt-text-control")
             reportSpan.innerHTML = `Report<img src="images/report-control.svg" aria-hidden="true" alt="Report">`
             reportSpan.addEventListener("click", () => {
                 openReportModal(foundText)
@@ -558,7 +585,6 @@ function displaySearchedImage(bitmap) {
 
 function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDiv, faves) {
     const loadingDiv = document.querySelector(".loading-anim-wrapper")
-
     if (originDiv) {
         originDiv.style.display = "none"
     }
@@ -567,7 +593,7 @@ function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDi
     apiClient.getAltText(imageHash, language, intensityHist, url)
         .then(result => {
             if (result.texts.length > 0 || result.extractedText) {
-                openResultDisplay(imageHash, language, result, ocr, loggedIn, intensityHist, url, faves)
+                openResultDisplay(imageHash, language, result, loggedIn, intensityHist, url, faves)
             } else {
                 loadingDiv.style.display = "none"
                 openNotFound(imageHash, language, intensityHist, url, loggedIn)
@@ -575,6 +601,7 @@ function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDi
         })
         .catch(err => {
             alert(`Search failed: '${err}'`)
+            console.log(`Search failed: ${err}\n${err.stack}`)
 
             //This is unfriendly. Maybe try to utilize browser history when it's implemented?
             const postSearch = document.querySelector(".post-search-select")
@@ -586,34 +613,40 @@ function search(imageHash, language, intensityHist, url, ocr, loggedIn, originDi
         })
 }
 
-function openFaveAndOwned(imageHash, language, faved, owned, intensityHistSupplier, url, ocr, loggedIn, faves) {
+function openFaveAndOwned(imageHash, language, faveText, ownedText, intensityHistSupplier, url, ocr, loggedIn, faves) {
+    const wrapper = document.querySelector(".favorite-and-owned")
+    const loading = document.querySelector(".loading-anim-wrapper")
+
     const faveWrapper = document.querySelector(".favorite-text-wrapper")
-    const faveText = document.querySelector("#favorite-text")
-    if (faveText.firstChild) {
-        faveText.removeChild(faveText.firstChild)
+    const faveDiv = document.querySelector("#favorite-text")
+    if (faveDiv.firstChild) {
+        faveDiv.removeChild(faveDiv.firstChild)
     }
 
     const userTextWrapper = document.querySelector(".users-text-wrapper")
-    const userText = document.querySelector("#users-text")
-    if (userText.firstChild) {
-        userText.removeChild(userText.firstChild)
+    const userTextDiv = document.querySelector("#users-text")
+    if (userTextDiv.firstChild) {
+        userTextDiv.removeChild(userTextDiv.firstChild)
     }
 
     if (faveText) {
-        faveText.appendChild(buildTextDiv(faveText, false, loggedIn, true, intensityHistSupplier, "alt-text-bg-zebra-dark"))
+        faveDiv.appendChild(buildTextDiv(faveText, false, loggedIn, true, intensityHistSupplier, "alt-text-bg-zebra-dark"))
         faveWrapper.style.display = "block"
     }
 
-    if (owned) {
-        userText.appendChild(buildTextDiv(userText, true, loggedIn, false, intensityHistSupplier, "alt-text-bg-zebra-dark"))
+    if (ownedText) {
+        userTextDiv.appendChild(buildTextDiv(ownedText, true, loggedIn, false, intensityHistSupplier, "alt-text-bg-zebra-dark"))
         userTextWrapper.style.display = "block"
     }
 
     const searchButton = getFreshElement(".search-after-faves-button")
 
     searchButton.addEventListener("click", () => {
-        search(imageHash, language, intensityHistSupplier(), url, ocr, isUserLoggedIn(), faveWrapper, faves)
+        search(imageHash, language, intensityHistSupplier(), url, ocr, isUserLoggedIn(), wrapper, faves)
     })
+
+    loading.style.display = "none"
+    wrapper.style.display = "flex"
 }
 
 
@@ -634,7 +667,7 @@ function setFaved(text, faved) {
                 }
             })
             .catch(err => {
-                console.log(`Failed to fave alt text: ${err}`)
+                console.log(`Failed to fave alt text: ${err}\n${err.stack}`)
             })
     } else {
         apiClient.unfavoriteAltText(text.imageHash, text.userHash, text.language)
@@ -647,7 +680,7 @@ function setFaved(text, faved) {
                 delete faves[text.imageHash][text.language]
             })
             .catch(err => {
-                console.log(`Failed to unfave alt text: ${err}`)
+                console.log(`Failed to unfave alt text: ${err}\n${err.stack}`)
             })
     }
 }
@@ -712,6 +745,7 @@ function openComposer(imageHash, language, existingText, intensityHist, url) {
             })
             .catch(err => {
                 alert(`Publish failed: '${err}'`)
+                console.log(`Failed to publish image description: ${err.stack}`)
             })
     })
 
@@ -727,7 +761,10 @@ function openPublished(imageHash, language, text, intensityHist, url) {
     copyButton.addEventListener("click", async event => {
         await copyTextToClipboard(text)
             .then(() => openCopiedModal(event, "Copied!"))
-            .catch(() => openCopiedModal(event, "Couldn't copy that text, you'll have to do it manually."))
+            .catch(err => {
+                openCopiedModal(event, "Couldn't copy that text, you'll have to do it manually.");
+                console.log(`Failed copy text: ${err.stack}`)
+            })
     })
 
     const editButton = getFreshElement("published-edit-button")
@@ -876,11 +913,13 @@ function openSearchPortal() {
         let hash = apiClient.getBitmapHash(bitmap)
         let favesAndUserTexts = await getFavesAndUserTexts(hash, language);
         if (favesAndUserTexts) {
+            let faves = await favorites;
             openFaveAndOwned(hash, language, favesAndUserTexts.favorite, favesAndUserTexts.userText,
-                () => apiClient.getIntensityHist(bitmap), url, ocr, isUserLoggedIn(), await favorites)
+                () => apiClient.getIntensityHist(bitmap), url, ocr, isUserLoggedIn(), faves)
         } else {
             let intensityHist = apiClient.getIntensityHist(bitmap)
-            search(hash, language, intensityHist, url, ocr, isUserLoggedIn(), null, await favorites)
+            let faves1 = await favorites;
+            search(hash, language, intensityHist, url, ocr, isUserLoggedIn(), null, faves1)
         }
     })
 
