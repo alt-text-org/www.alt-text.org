@@ -1,17 +1,15 @@
 import * as React from 'react';
 
 export default function ReportModal(props) {
-    const [reason, setReason] = React.useState("");
-
     const {
-        record,
+        altText,
         report,
         closeModal
     } = props
+    const [reason, setReason] = React.useState("");
 
     const submitReport = () => {
-        report(record, reason)
-        closeModal()
+        report(reason)
     }
 
     const updateReason = (event) => {
@@ -19,9 +17,10 @@ export default function ReportModal(props) {
     }
 
     return <div className="report-modal">
+        <div className="report-modal-underlay" onClick={closeModal}></div>
         <div className="report-modal-inner-wrapper">
             <div className="report-modal-alt-text">
-                {record.alt_text}
+                {altText}
             </div>
             <div>
                 <label className="report-modal-text-label">Report Reason</label>
@@ -35,5 +34,4 @@ export default function ReportModal(props) {
             </div>
         </div>
     </div>
-
 }

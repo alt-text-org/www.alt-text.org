@@ -6,7 +6,7 @@ export default function SearchResults(props) {
         results,
         fileBase64,
         searchUrl,
-        report,
+        openReportModal,
         copy,
         returnToSearch
     } = props
@@ -19,7 +19,7 @@ export default function SearchResults(props) {
             <SearchResult
                 altText={result.alt_text}
                 score="Exact Match"
-                report={report}
+                report={() => openReportModal(result.author_uuid, result.sha256, result.language)}
                 copy={() => copy(result.alt_text)}
                 bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
             />

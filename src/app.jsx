@@ -5,6 +5,7 @@ import SearchBox from "./search-box";
 import Searching from "./searching";
 import SearchResults from "./search-results";
 import ErrorPage from "./error-page";
+import ReportModal from "./report-modal";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -16,7 +17,9 @@ export default class App extends React.Component {
             searchFile: null,
             fileBase64: null,
             results: null,
-            error: null
+            error: null,
+            reportModalVisible: false,
+            toReport: null
         }
     }
 
@@ -27,7 +30,7 @@ export default class App extends React.Component {
             fileBase64: null,
             results: null,
             error: null,
-            visible: "searching"
+            visible: "searching",
         })
     }
 
@@ -74,13 +77,42 @@ export default class App extends React.Component {
         })
     }
 
-    report(author_uuid, sha256, language, reason) {
-        this.props.altTextOrgClient.report(author_uuid, sha256, language, reason)
+    openReportModal(author_uuid, sha256, language, alt_text) {
+        this.setState({
+            reportModalVisible: true,
+            toReport: {author_uuid, sha256, language, alt_text}
+        })
+    }
+
+    closeReportModal() {
+        this.setState({
+            reportModalVisible: false,
+            toReport: null
+        })
+    }
+
+    async sendReport(reason) {
+        if (!this.state.toReport) {
+            console.log("report() called, but no alt text tagged for reporting")
+            return
+        }
+
+        const { author_uuid, sha256, language } = this.state.toReport
+        const reported = await this.props.altTextOrgClient.report(author_uuid, sha256, language, reason)
+        if (!reported) {
+            console.log("Report failed, continuing")
+        }
+
+        this.setState({
+            reportModalVisible: false,
+            toReport: null
+        })
+
     }
 
     render() {
         return <div className="page-wrapper">
-            <AltTextOrgHeader></AltTextOrgHeader>
+            <AltTextOrgHeader/>
             <div className="content">
                 <div className="content-wrapper">
                     {
@@ -121,9 +153,18 @@ export default class App extends React.Component {
                             /> :
                             ""
                     }
+                    {
+                        this.state.reportModalVisible ?
+                            <ReportModal
+                                altText={this.state.toReport.alt_text}
+                                report={this.sendReport.bind(this)}
+                                closeModal={this.closeReportModal.bind(this)}
+                            /> :
+                            ""
+                    }
                 </div>
             </div>
-            <AltTextOrgFooter></AltTextOrgFooter>
+            <AltTextOrgFooter/>
         </div>
     }
 }

@@ -6,10 +6,11 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
 function FileSearch(props) {
+    const { submit } = props
     const [file, setFile] = React.useState(null);
 
     const handleSubmit = () => {
-        props.submit(file)
+        submit(file)
     }
 
     const handleSelectFile = (event) => {
@@ -27,10 +28,11 @@ function FileSearch(props) {
 }
 
 function UrlSearch(props) {
+    const { submit } = props
     const [url, setUrl] = React.useState("");
 
     const handleSubmit = () => {
-        props.submit(url)
+        submit(url)
     }
 
     const handleChange = (event) => {
@@ -48,6 +50,7 @@ function UrlSearch(props) {
 }
 
 export default function SearchBox(props) {
+    const { submitFile, submitUrl } = [props]
     const [value, setValue] = React.useState('file');
 
     const handleChange = (event, newValue) => {
@@ -64,9 +67,9 @@ export default function SearchBox(props) {
                     </TabList>
                 </Box>
                 <TabPanel value="file">
-                    <FileSearch submit={props.submitFile}></FileSearch>
+                    <FileSearch submit={submitFile}></FileSearch>
                 </TabPanel>
-                <TabPanel value="url"><UrlSearch submit={props.submitUrl}></UrlSearch></TabPanel>
+                <TabPanel value="url"><UrlSearch submit={submitUrl}></UrlSearch></TabPanel>
             </TabContext>
         </Box>
     );
