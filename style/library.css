@@ -201,19 +201,19 @@
     border-left: 3px var(--misc-grey-color) solid;
 }
 
-.loading-anim-wrapper {
+.searching-anim-wrapper {
     text-align: center;
     display: none;
 }
 
-.loading-anim {
+.searching-anim {
     margin: 20% auto 15px auto;
     display: block;
     width: 10%;
     height: 10%;
 }
 
-.loading-text {
+.searching-text {
     margin: 0 auto;
     font-size: xx-large;
     font-family: "lexendmedium", serif;

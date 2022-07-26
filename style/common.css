@@ -1,31 +1,31 @@
 @font-face {
     font-family: 'lexendbold';
-    src: url('fonts/lexend-bold-webfont.woff2') format('woff2'),
-    url('fonts/lexend-bold-webfont.woff') format('woff');
+    src: url('../fonts/lexend-bold-webfont.woff2') format('woff2'),
+    url('../fonts/lexend-bold-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'lexendmedium';
-    src: url('fonts/lexend-medium-webfont.woff2') format('woff2'),
-    url('fonts/lexend-medium-webfont.woff') format('woff');
+    src: url('../fonts/lexend-medium-webfont.woff2') format('woff2'),
+    url('../fonts/lexend-medium-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'montserratregular';
-    src: url('fonts/montserrat-regular-webfont.woff2') format('woff2'),
-    url('fonts/montserrat-regular-webfont.woff') format('woff');
+    src: url('../fonts/montserrat-regular-webfont.woff2') format('woff2'),
+    url('../fonts/montserrat-regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'montserratsemibold';
-    src: url('fonts/montserrat-semibold-webfont.woff2') format('woff2'),
-    url('fonts/montserrat-semibold-webfont.woff') format('woff');
+    src: url('../fonts/montserrat-semibold-webfont.woff2') format('woff2'),
+    url('../fonts/montserrat-semibold-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -100,30 +100,6 @@ a, a:visited {
     color: var(--title-bar-text-color);
 }
 
-.resources-link {
-    vertical-align: bottom;
-    float: left;
-    margin: 30px 0 0 30px;
-    color: var(--title-bar-text-color);
-    font-family: lexendmedium, serif;
-    font-size: xx-large;
-}
-
-.resources-link:hover {
-    opacity: 0.7;
-}
-
-.library-link-box {
-    vertical-align: center;
-    text-align: center;
-    float: right;
-    margin: 20px 15px 20px 15px;
-}
-
-.library-link {
-    font-size: xx-large;
-}
-
 .header-break {
     float: right;
     vertical-align: middle;
@@ -133,28 +109,6 @@ a, a:visited {
     color: var(--title-bar-text-color);
     background-color: var(--title-bar-text-color);
     margin: 10px 0;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    vertical-align: middle;
-    float: right;
-    margin-left: 15px;
-}
-
-.user-icon {
-    height: 60px;
-    max-height: 60px;
-    margin: 10px 25px 10px 10px;
-}
-
-.user-name {
-    vertical-align: middle;
-    margin: 10px 0 10px 0;
-    font-family: "lexendmedium", serif;
-    font-size: large;
-    color: var(--title-bar-text-color);
 }
 
 .content {
