@@ -15,18 +15,23 @@ export default class App extends React.Component {
             visible: "search",
             searchUrl: null,
             searchFile: null,
+            searchType: null,
             fileBase64: null,
             results: null,
             error: null,
             reportModalVisible: false,
             toReport: null
         }
+
+        this.displayResults = this.displayResults.bind(this);
+        this.displayError = this.displayError.bind(this);
     }
 
     submitUrl(url) {
         this.setState({
             searchUrl: url,
             searchFile: null,
+            searchType: "url",
             fileBase64: null,
             results: null,
             error: null,
@@ -38,6 +43,7 @@ export default class App extends React.Component {
         this.setState({
             searchUrl: null,
             searchFile: file,
+            searchType: "file",
             fileBase64: null,
             results: null,
             error: null,
@@ -49,6 +55,7 @@ export default class App extends React.Component {
         this.setState({
             searchUrl: null,
             searchFile: null,
+            searchType: null,
             fileBase64: null,
             results: null,
             error: error,
@@ -60,6 +67,7 @@ export default class App extends React.Component {
         this.setState({
             searchUrl: null,
             searchFile: null,
+            searchType: null,
             fileBase64: fileBase64,
             results: results,
             error: null,
@@ -71,6 +79,7 @@ export default class App extends React.Component {
         this.setState({
             searchUrl: null,
             searchFile: null,
+            searchType: null,
             fileBase64: null,
             results: null,
             visible: "search"
@@ -128,9 +137,10 @@ export default class App extends React.Component {
                             <Searching
                                 searchFile={this.state.searchFile}
                                 searchUrl={this.state.searchUrl}
+                                searchType={this.state.searchType}
                                 altTextOrgClient={this.props.altTextOrgClient}
-                                displayResults={this.displayResults.bind(this)}
-                                displayError={this.displayError.bind(this)}
+                                displayResults={this.displayResults}
+                                displayError={this.displayError}
                             /> :
                             ""
                     }

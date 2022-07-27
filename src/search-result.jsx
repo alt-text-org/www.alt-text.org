@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export default function SearchResult(props) {
     const {
-        altText, score, report, bgClass
+        altText, score, copy, report, bgClass
     } = props
 
     return <div className={"search-result-wrapper " + bgClass}>
@@ -11,8 +11,15 @@ export default function SearchResult(props) {
             <div className="alt-text-text">{altText}</div>
             <div className="alt-text-controls">
                 <span className="alt-text-left-controls">
-                    <button onClick={() => report()}>
+                    <button onClick={report}>
                         <img className="alt-text-control" alt="Report" src="images/report-control.svg"/>
+                        Report
+                    </button>
+                </span>
+                <span className="alt-text-right-control">
+                    <button onClick={copy}>
+                        <img className="alt-text-control" alt="Report" src="images/report-control.svg"/>
+                        Copy
                     </button>
                 </span>
             </div>

@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "crypto-browserify";
 import fetch from "node-fetch";
 import {createCanvas, Image, loadImage} from "canvas";
 

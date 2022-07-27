@@ -8,6 +8,7 @@ export default function SearchResults(props) {
         searchUrl,
         openReportModal,
         copy,
+        report,
         returnToSearch
     } = props
 

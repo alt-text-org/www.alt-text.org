@@ -4,23 +4,23 @@ export default function Searching(props) {
     const {
         searchFile,
         searchUrl,
+        searchType,
         altTextOrgClient,
         displayResults,
         displayError
     } = props
 
-    if (searchFile) {
-        altTextOrgClient.searchFile(searchFile)
-            .then(results => displayResults(results))
-            .catch(err => displayError(err.message))
-    } else if (searchUrl) {
-        altTextOrgClient.searchUrl(searchUrl)
-            .then(results => displayResults(results))
-            .catch(err => displayError(err.message))
-    } else {
-        displayError("Internal error: No search image specified. Please try again.")
-        return ""
-    }
+    React.useEffect(() => {
+        if (searchType === "file") {
+            altTextOrgClient.searchFile(searchFile)
+                .then(results => displayResults(results))
+                .catch(err => displayError(err.message))
+        } else if (searchType === "url") {
+            altTextOrgClient.searchUrl(searchUrl)
+                .then(results => displayResults(results))
+                .catch(err => displayError(err.message))
+        }
+    }, [searchFile, searchUrl])
 
     return <div className="searching-wrapper">
         <div className="searching-anim-wrapper">
