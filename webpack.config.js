@@ -1,7 +1,8 @@
 const path = require('path');
+const webpack = require("webpack");
 
 module.exports = {
-    entry: path.resolve(__dirname, './src/index.jsx'),
+    entry: ["regenerator-runtime/runtime.js", path.resolve(__dirname, './src/index.jsx')],
     module: {
         rules: [
             {
@@ -19,7 +20,7 @@ module.exports = {
     resolve: {
         extensions: ['*', '.js', '.jsx'],
             fallback: {
-                "crypto-browserify": require.resolve('crypto-browserify')
+                buffer: require.resolve('buffer/')
             }
     },
     output: {
@@ -29,4 +30,12 @@ module.exports = {
     devServer: {
         static: path.resolve(__dirname, './dist')
     },
+    optimization: {
+        minimize: false
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+        }),
+    ]
 };

@@ -50,7 +50,7 @@ function UrlSearch(props) {
 }
 
 export default function SearchBox(props) {
-    const { submitFile, submitUrl } = [props]
+    const { submitFile, submitUrl } = props
     const [value, setValue] = React.useState('file');
 
     const handleChange = (event, newValue) => {

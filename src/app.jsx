@@ -63,13 +63,13 @@ export default class App extends React.Component {
         })
     }
 
-    displayResults(results, fileBase64) {
+    displayResults(results) {
         this.setState({
             searchUrl: null,
             searchFile: null,
             searchType: null,
-            fileBase64: fileBase64,
-            results: results,
+            fileDataUrl: results.imageDataUrl,
+            results: results.altText,
             error: null,
             visible: "results"
         })
@@ -149,8 +149,8 @@ export default class App extends React.Component {
                             <SearchResults
                                 results={this.state.results}
                                 searchUrl={this.state.searchUrl}
-                                fileBase64={this.state.fileBase64}
-                                report={this.report.bind(this)}
+                                fileDataUrl={this.state.fileDataUrl}
+                                report={this.openReportModal.bind(this)}
                                 returnToSearch={this.returnToSearch.bind(this)}
                             /> :
                             ""

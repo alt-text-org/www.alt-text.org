@@ -1,94 +1,77 @@
-import crypto from "crypto-browserify";
-import fetch from "node-fetch";
-import {createCanvas, Image, loadImage} from "canvas";
-
 import {DCT, diagonalSnake} from "./dct";
 
 function ts() {
     return new Date().toISOString();
 }
 
-async function loadImageFromApi(url) {
-    await fetch("https://api.alt-text.org/v1/image/proxy", {
-        method: "POST", headers: {
-            "Content-Type": "application/json"
-        }, body: JSON.stringify({
-            image_url: url
-        })
-    }).then(async resp => {
-        if (resp.ok) {
-            return await resp.arrayBuffer();
-        } else if (resp.status === 404) {
-            return null;
-        } else {
-            console.log(`${ts()}: Failed to fetch for url '${url}': Status: ${resp.status} Body: ${await resp.text()}`);
-            return null;
+
+async function loadImageFromUrl(url) {
+    let img = new Image()
+    let promise = new Promise((resolve, reject) => {
+        img.onload = () => {
+            resolve(img)
         }
-    }).then(async buf => {
-        if (buf) {
-            return await loadImage(Buffer.from(buf))
-        } else {
-            return null
+        img.onerror = (err) => {
+            reject(err)
         }
-    }).catch(err => {
-        console.log(`${ts()}: Failed to proxy alt for '${url}: ${err}`);
-        return null;
+    })
+
+    img.src = url
+
+    return await promise.catch((err) => {
+        console.log(`Failed to fetch '${url}' from proxy API`)
+        console.log(err)
+        return null
     })
 }
 
-async function loadImageFromUrl(url) {
-    return await fetch(url, {})
-        .then(async resp => {
-            if (resp && resp.ok) {
-                return await resp.arrayBuffer()
-            } else {
-                console.log(`${ts()}: Failed to fetch '${url}': ${resp.status} ${resp.statusText}`)
-                return null;
-            }
-        })
-        .then(async buf => {
-            if (buf) {
-                return await loadImage(Buffer.from(buf))
-            } else {
-                return null
-            }
-        })
-        .catch(async err => {
-            if (err.message.match(/CORS/i)) {
-                console.log(`${ts()}: CORS failure attempting to fetch '${url}', will try proxy`)
-                return await loadImageFromApi(url)
-            } else {
-                console.log(`${ts()}: Failed to fetch '${url}': ${err}`)
-                return null
-            }
-        })
+async function loadImageByUrl(url) {
+    const sourceLoad = await loadImageFromUrl(url)
+
+    if (sourceLoad) {
+        return sourceLoad
+    } else {
+        console.log(`${ts()}: Couldn't load '${url}' from source, proxying`)
+        return await loadImageFromUrl(`https://api.alt-text.org/v1/image/proxy?url="${url}"`)
+    }
 }
 
 async function searchablesForUrl(url) {
-    let image = await loadImageFromUrl(url)
+    let image = await loadImageByUrl(url)
+    image.crossOrigin = "Anonymous"
     if (!image) {
         console.log(`${ts()}: Failed to load image for ${url}`)
         return null
     }
 
-    const canvas = createCanvas(image.width, image.height);
+    const canvas = document.createElement("canvas")
     let context = canvas.getContext("2d");
     context.drawImage(image, 0, 0);
 
     const imageData = context
         .getImageData(0, 0, canvas.width, canvas.height);
 
-    return searchablesForImageData(image, imageData)
+    return {
+        searches: await searchablesForImageData(image, imageData),
+        imageDataUrl: canvas.toDataURL()
+    }
 }
 
 async function fetchAltTextForUrl(url, lang) {
     return await searchablesForUrl(url)
-        .then(async searchables => {
-            return await fetch("https://api.alt-text.org/v1/alt-library/fetch", {
+        .then(async searches => {
+            if (!searches.searches) {
+                return {
+                    alt_text: null,
+                    imageDataUrl: searches.imageDataUrl
+                };
+            }
+
+            const altTextResult = await fetch("https://api.alt-text.org/v1/alt-library/fetch", {
                 method: "POST", headers: {
                     "Content-Type": "application/json"
                 }, body: JSON.stringify({
-                    searches: searchables, language: lang || "en"
+                    searches: searches.searches, language: lang || "en"
                 })
             }).then(async resp => {
                 if (resp.ok) {
@@ -103,11 +86,16 @@ async function fetchAltTextForUrl(url, lang) {
                 console.log(`${ts()}: Failed to fetch alt for '${url}: ${err}`);
                 return null;
             })
+
+            return {
+                imageDataUrl: searches.imageDataUrl,
+                altText: altTextResult
+            }
         })
 }
 
 async function imageBase64ToImageData(imageBase64) {
-    const image = new Image();
+    const image = document.createElement("img");
 
     let prom = new Promise(res => {
         image.onload = () => {
@@ -118,7 +106,7 @@ async function imageBase64ToImageData(imageBase64) {
     image.src = imageBase64;
     await prom
 
-    const canvas = createCanvas(1, 1);
+    const canvas = document.createElement("canvas")
     const ctx = canvas.getContext("2d");
     canvas.width = image.width;
     canvas.height = image.height;
@@ -127,13 +115,17 @@ async function imageBase64ToImageData(imageBase64) {
 
     return {
         image: image,
-        imageData: ctx.getImageData(0, 0, image.width, image.height)
+        imageData: ctx.getImageData(0, 0, image.width, image.height),
+        imageDataUrl: canvas.toDataURL()
     };
 }
 
 async function fetchAltForImageBase64(imageBase64, lang) {
-    let {image, imageData} = await imageBase64ToImageData(imageBase64)
-    return fetchAltTextForRaw(image, imageData, lang)
+    let {image, imageData, imageDataUrl} = await imageBase64ToImageData(imageBase64)
+    return {
+        altText: await fetchAltTextForRaw(image, imageData, lang),
+        imageDataUrl: imageDataUrl
+    }
 }
 
 async function fetchAltTextForRaw(image, imageData, lang) {
@@ -160,7 +152,7 @@ async function fetchAltTextForRaw(image, imageData, lang) {
 }
 
 function shrinkImage(image, imageData, edgeLength) {
-    let canvas = createCanvas(edgeLength, edgeLength);
+    let canvas = document.createElement("canvas")
 
     let ctx = canvas.getContext("2d");
 
@@ -209,7 +201,7 @@ function toMatrix(arr, rows, cols) {
 
 async function searchablesForImageData(image, imageData) {
     return {
-        sha256: sha256Image(image, imageData),
+        sha256: await sha256Image(image, imageData),
         dct: await dctImage(image, imageData)
     }
 }
@@ -226,13 +218,13 @@ function dctImage(image, imageData) {
     })
 }
 
-function sha256Image(image, imageData) {
+async function sha256Image(image, imageData) {
     let resized = shrinkImage(image, imageData, 100)
     let greyscale = toGreyscale(resized)
-    return crypto
-        .createHash("sha256")
-        .update(Buffer.from(greyscale))
-        .digest("hex");
+    const hash = await crypto.subtle.digest('SHA-256', greyscale)
+    const hashArray = Array.from(new Uint8Array(hash));                     // convert buffer to byte array
+
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 export default class AltTextOrgClient {
@@ -245,11 +237,7 @@ export default class AltTextOrgClient {
         });
 
         const base64 = await toBase64(file)
-
-        return {
-            result: await fetchAltForImageBase64(base64, "ignored"),
-            fileBase64: base64
-        }
+        return await fetchAltForImageBase64(base64, "ignored")
     }
 
     async searchUrl(url) {
