@@ -26,7 +26,12 @@ export default function ReportModal(props) {
                 <label className="report-modal-text-label">Report Reason</label>
             </div>
             <div>
-                <textarea name="report-modal-reason" value={reason} onChange={updateReason}/>
+                <textarea
+                    name="report-modal-reason"
+                    placeholder="Why are you reporting this description?"
+                    value={reason}
+                    onChange={updateReason}
+                />
             </div>
             <div className="report-modal-controls">
                 <button onClick={closeModal}>Cancel</button>
