@@ -18,7 +18,7 @@ export default function SearchResult(props) {
                 </span>
                 <span className="alt-text-right-control">
                     <button onClick={copy}>
-                        <img className="alt-text-control" alt="Report" src="images/report-control.svg"/>
+                        <img className="alt-text-control" alt="Copy" src="images/copy-control.svg"/>
                         Copy
                     </button>
                 </span>

@@ -6,7 +6,9 @@ function ts() {
 
 
 async function loadImageFromUrl(url) {
-    let img = new Image()
+    let img = document.createElement("img")
+    img.crossOrigin = "Anonymous"
+
     let promise = new Promise((resolve, reject) => {
         img.onload = () => {
             resolve(img)
@@ -19,7 +21,7 @@ async function loadImageFromUrl(url) {
     img.src = url
 
     return await promise.catch((err) => {
-        console.log(`Failed to fetch '${url}' from proxy API`)
+        console.log(`${ts()}: Failed to fetch '${url}'`)
         console.log(err)
         return null
     })
@@ -45,6 +47,9 @@ async function searchablesForUrl(url) {
     }
 
     const canvas = document.createElement("canvas")
+    canvas.width = image.width;
+    canvas.height = image.height;
+
     let context = canvas.getContext("2d");
     context.drawImage(image, 0, 0);
 

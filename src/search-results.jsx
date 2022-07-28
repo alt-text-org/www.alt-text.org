@@ -16,7 +16,6 @@ export default function SearchResults(props) {
     let bg = true;
 
     if (results) {
-        console.log(JSON.stringify(results))
         results.exact.forEach(result => {
             resultArray.push(
                 <SearchResult
