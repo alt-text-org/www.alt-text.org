@@ -35,9 +35,7 @@ export default function Searching(props) {
     }, [searchFile, searchUrl])
 
     return <div className="searching-wrapper">
-        <div className="searching-anim-wrapper">
-            <img className="searching-anim" alt="searching animation" src="images/searching.svg"/>
-        </div>
+        <img className="searching-anim" alt="searching animation" src="images/searching.svg"/>
         <div className="searching-text">Searching</div>
     </div>
 }
