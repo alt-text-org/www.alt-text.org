@@ -40,11 +40,12 @@ async function loadImageByUrl(url) {
 
 async function searchablesForUrl(url) {
     let image = await loadImageByUrl(url)
-    image.crossOrigin = "Anonymous"
     if (!image) {
         console.log(`${ts()}: Failed to load image for ${url}`)
         return null
     }
+
+    image.crossOrigin = "Anonymous"
 
     const canvas = document.createElement("canvas")
     canvas.width = image.width;
@@ -65,6 +66,10 @@ async function searchablesForUrl(url) {
 async function fetchAltTextForUrl(url, lang) {
     return await searchablesForUrl(url)
         .then(async searches => {
+            if (!searches) {
+                throw new Error(`Failed to generate searchables for '${url}'`)
+            }
+
             if (!searches.searches) {
                 return {
                     alt_text: null,

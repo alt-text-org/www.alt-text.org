@@ -28,6 +28,14 @@ export default class App extends React.Component {
     }
 
     submitUrl(url) {
+        try {
+            new URL(url)
+        } catch (err) {
+            this.displayError(`Couldn't parse '${url}' as a url. It should look ` +
+                `something like 'https://example.com/picture.jpg'`)
+            return
+        }
+
         this.setState({
             searchUrl: url,
             searchFile: null,

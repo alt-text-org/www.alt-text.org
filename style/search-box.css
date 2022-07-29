@@ -1,0 +1,61 @@
+.search-title {
+    margin: auto;
+    text-align: center;
+    font-size: 3rem;
+    font-family: "montserratsemibold", sans-serif;
+    color: var(--title-bar-color)
+}
+
+.url-search-wrapper {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#url-select {
+    width: 100%;
+    margin: 0 auto;
+    font-family: "montserratregular", sans-serif;
+    font-size: 1rem;
+}
+
+.url-search-label {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2rem;
+    font-family: "montserratsemibold", sans-serif;
+    color: var(--title-bar-color);
+}
+
+.url-search-button {
+    margin: 0.5% 0 0 80%;
+}
+
+.file-search-wrapper {
+    text-align: center;
+    margin: 0 auto;}
+
+#file-select {
+    margin: auto;
+    width: 100%;
+    font-family: "montserratregular", sans-serif;
+    font-size: 1.5rem;
+}
+
+.file-search-button {
+    margin: 0.5% 0 0 80%;
+}
+
+input[type=file]::file-selector-button {
+    padding: .2em .4em;
+    border-radius: .2em;
+    background-color: var(--primary-button-color);
+    color: var(--primary-button-text-color);
+    font-family: "montserratsemibold", sans-serif;
+    font-size: 2rem;
+
+}
+
+input[type=file]::file-selector-button:hover {
+    background-color: var(--primary-button-hover-color);
+    border: 2px solid #00cec9;
+}
