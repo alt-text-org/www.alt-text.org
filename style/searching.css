@@ -1,6 +1,7 @@
 .searching-anim {
     margin: 0 auto;
-    height: 20%;
-    width: auto;
+    max-width: 300%;
+    width: 300%;
+    height: auto;
 }
 

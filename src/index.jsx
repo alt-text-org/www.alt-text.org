@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import App from "./app.jsx";
 import AltTextOrgClient from "./alt-text-org";
 
-const altTextOrgClient = new AltTextOrgClient()
+const altTextOrgClient = new AltTextOrgClient(/*import("opencv-wasm")*/)
 
 ReactDOM.render(
     <React.StrictMode>

@@ -4,7 +4,6 @@ function ts() {
     return new Date().toISOString();
 }
 
-
 async function loadImageFromUrl(url) {
     let img = document.createElement("img")
     img.crossOrigin = "Anonymous"
@@ -38,7 +37,7 @@ async function loadImageByUrl(url) {
     }
 }
 
-async function searchablesForUrl(url) {
+async function searchablesForUrl(cv, url) {
     let image = await loadImageByUrl(url)
     if (!image) {
         console.log(`${ts()}: Failed to load image for ${url}`)
@@ -58,13 +57,13 @@ async function searchablesForUrl(url) {
         .getImageData(0, 0, canvas.width, canvas.height);
 
     return {
-        searches: await searchablesForImageData(image, imageData),
+        searches: await searchablesForImageData(cv, image, imageData),
         imageDataUrl: canvas.toDataURL()
     }
 }
 
-async function fetchAltTextForUrl(url, lang) {
-    return await searchablesForUrl(url)
+async function fetchAltTextForUrl(cv, url, lang) {
+    return await searchablesForUrl(cv, url)
         .then(async searches => {
             if (!searches) {
                 throw new Error(`Failed to generate searchables for '${url}'`)
@@ -130,16 +129,16 @@ async function imageBase64ToImageData(imageBase64) {
     };
 }
 
-async function fetchAltForImageBase64(imageBase64, lang) {
+async function fetchAltForImageBase64(cv, imageBase64, lang) {
     let {image, imageData, imageDataUrl} = await imageBase64ToImageData(imageBase64)
     return {
-        altText: await fetchAltTextForRaw(image, imageData, lang),
+        altText: await fetchAltTextForRaw(cv, image, imageData, lang),
         imageDataUrl: imageDataUrl
     }
 }
 
-async function fetchAltTextForRaw(image, imageData, lang) {
-    let searches = await searchablesForImageData(image, imageData)
+async function fetchAltTextForRaw(cv, image, imageData, lang) {
+    let searches = await searchablesForImageData(cv, image, imageData)
 
     let resp = await fetch("https://api.alt-text.org/v1/alt-library/fetch", {
         method: "POST",
@@ -209,11 +208,22 @@ function toMatrix(arr, rows, cols) {
     return matrix;
 }
 
-async function searchablesForImageData(image, imageData) {
+async function searchablesForImageData(cv, image, imageData) {
     return {
         sha256: await sha256Image(image, imageData),
-        dct: await dctImage(image, imageData)
+        dct: await dctImage(image, imageData),
+        // sift: await siftImage(cv, image)
     }
+}
+
+async function siftImage(cv, image) {
+    const mat = cv.imread(image)
+    const greyscale = cv.cvtColor(mat, cv.COLOR_BGR2GRAY)
+    const sift = cv.SIFT_create()
+    const keyPoints = sift.detect(greyscale)
+    console.log(JSON.stringify(keyPoints))
+
+    return [];
 }
 
 function dctImage(image, imageData) {
@@ -238,20 +248,24 @@ async function sha256Image(image, imageData) {
 }
 
 export default class AltTextOrgClient {
+    // constructor(cvPromise) {
+    //     this.cvPromise = cvPromise
+    // }
+
     async searchFile(file) {
         const toBase64 = f => new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.readAsDataURL(f);
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
+            reader.readAsDataURL(f);
         });
 
         const base64 = await toBase64(file)
-        return await fetchAltForImageBase64(base64, "ignored")
+        return await fetchAltForImageBase64(null, base64, "ignored")
     }
 
     async searchUrl(url) {
-        return await fetchAltTextForUrl(url, "ignored")
+        return await fetchAltTextForUrl(null, url, "ignored")
     }
 
     async report(author_uuid, sha256, language, reason) {
