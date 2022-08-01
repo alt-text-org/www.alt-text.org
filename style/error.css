@@ -1,0 +1,20 @@
+.error-box {
+
+}
+
+.error-title {
+    font-family: "lexendbold", serif;
+    font-size: 3rem;
+    text-align: center;
+}
+
+.error-message {
+    font-family: "montserratregular", sans-serif;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.error-return-button {
+    margin: 1vh auto;
+    text-align: center;
+}

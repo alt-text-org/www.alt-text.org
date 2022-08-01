@@ -1,9 +1,18 @@
+.search-intro {
+    margin: auto;
+    text-align: center;
+    font-size: 3rem;
+    font-family: "montserratsemibold", sans-serif;
+    color: var(--title-bar-color);
+    padding-bottom: 3vh;
+}
+
 .search-title {
     margin: auto;
     text-align: center;
     font-size: 3rem;
     font-family: "montserratsemibold", sans-serif;
-    color: var(--title-bar-color)
+    color: var(--title-bar-color);
 }
 
 .url-search-wrapper {

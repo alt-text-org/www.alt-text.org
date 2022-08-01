@@ -1,6 +1,6 @@
 .result-outer-wrapper {
     display: grid;
-    grid-template-columns: 25vw 3px 70vw;
+    grid-template-columns: 25vw .1vw 74.9vw;
     grid-template-rows: 80vh;
     grid-template-areas: "leftCol divider rightCol";
     margin: 0 20px
@@ -23,6 +23,7 @@
     height: auto;
     object-fit: contain;
     margin: 0 auto;
+    border: 2px solid black
 }
 
 .return-button-wrapper {
@@ -42,7 +43,8 @@
 }
 
 .result-inner-wrapper {
-
+    height: 100%;
+    overflow-y: scroll;
 }
 
 .not-found-wrapper {

@@ -98,16 +98,17 @@ a, a:visited {
     top: 0;
     padding: 1px 16px;
     width: 100%;
+    height: 10vh;
     min-height: 50px;
     background-color: var(--title-bar-color);
     box-shadow: 0 3px 2px var(--accent-color);
 }
 
 .site-title {
-    vertical-align: bottom;
+    vertical-align: center;
     float: left;
     font-family: lexendbold, serif;
-    font-size: xxx-large;
+    font-size: 6vh;
     margin: 5px;
     color: var(--title-bar-text-color);
 }
@@ -136,21 +137,22 @@ a, a:visited {
 }
 
 .footer-wrapper {
-    vertical-align: bottom;
     text-align: right;
     position: fixed;
     bottom: 0;
-    width: 100%;
-    height: 40px;
+    width: 100vw;
+    height: 5vh;
     padding-top: 1px;
     background-color: var(--footer-bg-color);
-    font-family: "lexendbold", serif;
-    font-size: large;
     box-shadow: 0 -3px 2px var(--accent-color);
 }
 
-.footer-link {font-family: "lexendmedium", serif;
-    padding-right: 1%;
+.footer-link {
+    vertical-align: top;
+    font-family: "lexendmedium", serif;
+    font-size: 3vh;
+    height: 3vh;
+    padding-right: 0.5vw;
     color: var(--footer-text-color);
 }
 

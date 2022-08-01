@@ -77,6 +77,7 @@ export default function SearchBox(props) {
 
     return (
         <div>
+            <div className="search-intro">Search the library for a description of an image</div>
             <div className="search-title">CHOOSE AN IMAGE</div>
             <ThemeProvider theme={theme}>
                 <Box sx={{width: '100%'}}>

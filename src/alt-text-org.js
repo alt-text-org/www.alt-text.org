@@ -33,7 +33,7 @@ async function loadImageByUrl(url) {
         return sourceLoad
     } else {
         console.log(`${ts()}: Couldn't load '${url}' from source, proxying`)
-        return await loadImageFromUrl(`https://api.alt-text.org/v1/image/proxy?url="${url}"`)
+        return await loadImageFromUrl(`https://api.alt-text.org/v1/image/proxy?url=${encodeURIComponent(url)}`)
     }
 }
 
