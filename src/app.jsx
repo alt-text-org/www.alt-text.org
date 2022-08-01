@@ -102,10 +102,35 @@ export default class App extends React.Component {
     }
 
     closeReportModal() {
+        console.log("Close: " + JSON.stringify(this.state.toReport))
+
         this.setState({
             reportModalVisible: false,
             toReport: null
         })
+    }
+
+    async copyText(text) {
+        // navigator clipboard api needs a secure context (https)
+        if (navigator.clipboard && window.isSecureContext) {
+            // navigator clipboard api method'
+            return navigator.clipboard.writeText(text);
+        } else {
+            // text area method
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            // make the textarea out of viewport
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            return new Promise((res, rej) => {
+                document.execCommand('copy') ? res() : rej();
+                textArea.remove();
+            });
+        }
     }
 
     async sendReport(reason) {
@@ -114,14 +139,13 @@ export default class App extends React.Component {
             return
         }
 
-        const { author_uuid, sha256, language } = this.state.toReport
+        const {author_uuid, sha256, language} = this.state.toReport
         const reported = await this.props.altTextOrgClient.report(author_uuid, sha256, language, reason)
         if (!reported) {
             console.log("Report failed, continuing")
         }
 
         this.setState({
-            reportModalVisible: false,
             toReport: null
         })
 
@@ -158,7 +182,8 @@ export default class App extends React.Component {
                                 results={this.state.results}
                                 searchUrl={this.state.searchUrl}
                                 fileDataUrl={this.state.fileDataUrl}
-                                report={this.openReportModal.bind(this)}
+                                copy={this.copyText.bind(this)}
+                                openReportModal={this.openReportModal.bind(this)}
                                 returnToSearch={this.returnToSearch.bind(this)}
                             /> :
                             ""

@@ -3,7 +3,7 @@ import SearchResult from "./search-result";
 
 export default function SearchResults(props) {
     const {
-        results, fileDataUrl, searchUrl, openReportModal, copy, report, returnToSearch
+        results, fileDataUrl, searchUrl, openReportModal, copy, returnToSearch
     } = props
 
     const resultArray = []
@@ -14,7 +14,7 @@ export default function SearchResults(props) {
             resultArray.push(<SearchResult
                 altText={result.alt_text}
                 score="Exact Match"
-                report={() => openReportModal(result.author_uuid, result.sha256, result.language)}
+                report={() => openReportModal(result.author_uuid, result.sha256, result.language, result.alt_text)}
                 copy={() => copy(result.alt_text)}
                 bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
             />)
@@ -25,8 +25,8 @@ export default function SearchResults(props) {
             if (result.score >= 0.99) {
                 resultArray.push(<SearchResult
                     altText={result.alt_text}
-                    score={`${Math.floor(result.score * 100)}% Match`}
-                    report={report}
+                    score={`${Math.floor((result.score - 0.9) * 1000)}% Match`}
+                    report={() => openReportModal(result.author_uuid, result.sha256, result.language, result.alt_text)}
                     copy={() => copy(result.alt_text)}
                     bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
                 />)

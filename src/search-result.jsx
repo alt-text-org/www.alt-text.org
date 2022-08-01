@@ -11,14 +11,14 @@ export default function SearchResult(props) {
             <div className="alt-text-text">{altText}</div>
             <div className="alt-text-controls">
                 <span className="alt-text-left-controls">
-                    <button onClick={report}>
-                        <img className="alt-text-control" alt="Report" src="images/report-control.svg"/>
+                    <button className="alt-text-control" onClick={report}>
+                        <img className="alt-text-control-img" alt="" src="images/report-control.svg"/>
                         Report
                     </button>
                 </span>
-                <span className="alt-text-right-control">
-                    <button onClick={copy}>
-                        <img className="alt-text-control" alt="Copy" src="images/copy-control.svg"/>
+                <span className="alt-text-right-controls">
+                    <button className="alt-text-control" onClick={copy}>
+                        <img className="alt-text-control-img" alt="" src="images/copy-control.svg"/>
                         Copy
                     </button>
                 </span>

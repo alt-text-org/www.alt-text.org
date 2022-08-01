@@ -37,9 +37,9 @@
     --title-bar-text-color: white;
     --footer-bg-color: white;
     --footer-text-color: black;
-    --primary-button-color: #7A5752;
+    --primary-button-color: #5A3732;
     --primary-button-disabled-color: #BA9592;
-    --primary-button-hover-color: #5A3732;
+    --primary-button-hover-color: #3A1712;
     --primary-button-text-color: white;
     --primary-button-shadow-color: #333333;
     --secondary-button-text-color: #7A5752;
@@ -61,6 +61,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--main-body-bg-color);
+    overflow-y: hidden;
 }
 
 #root {
@@ -117,7 +118,7 @@ a, a:visited {
     justify-items: center;
     align-items: center;
     grid-template-columns: 5% 90% 5%;
-    grid-template-rows: 5% 85% 10%;
+    grid-template-rows: 5% 90% 5%;
     grid-template-areas:
             ". . ."
             ". c ."
@@ -131,6 +132,7 @@ a, a:visited {
 .content-wrapper {
     justify-self: center;
     grid-area: c;
+    height: 100%;
 }
 
 .footer-wrapper {

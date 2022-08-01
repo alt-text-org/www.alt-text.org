@@ -1,0 +1,100 @@
+.report-modal {
+    display: grid;
+    grid-template-areas:
+            ". . ."
+            ". c ."
+            ". . .";
+    grid-auto-columns: 20% 60% 20%;
+    grid-template-rows: 20% 50% 30%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.report-modal-mask {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 70%;
+    background-color: var(--secondary-button-text-color);
+    z-index: -1000;
+}
+
+.report-modal-inner-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    grid-area: c;
+    background-color: var(--main-body-bg-color);
+    border-radius: 5px;
+    border: 2px solid var(--title-bar-color);
+}
+
+.report-modal-title-bar {
+    font-family: lexendbold, serif;
+    font-size: 1.5rem;
+    color: var(--title-bar-text-color);
+    background-color: var(--title-bar-color);
+    width: calc(100% - 5px);
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.report-modal-alt-text-wrapper {
+    padding: 3px;
+    margin: 3px;
+    background-color: var(--zebra-dark-bg-color);
+}
+
+.report-modal-alt-text {
+    padding: 3px;
+    font-family: "montserratregular", sans-serif;
+    font-size: 1rem;
+}
+
+.report-modal-hr {
+    width: 90%;
+    color: var(--title-bar-color);
+}
+
+.report-modal-text-label {
+    width: 100%;
+    font-family: "lexendmedium", serif;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.report-modal-reason-wrapper {
+    width: 95%;
+    margin: 5px auto;
+}
+
+.report-modal-reason {
+    width: 100%;
+    font-family: "montserratregular", sans-serif;
+    font-size: 1.5rem;
+}
+
+.report-modal-controls {
+    position: absolute;
+    width: calc(100% - 30px);
+    margin: 15px;
+    bottom: 0;
+}
+
+.report-modal-close-ctrl {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.report-modal-submit-ctrl {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}

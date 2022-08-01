@@ -1,7 +1,16 @@
+.searching-wrapper {
+    margin: 0 auto;
+}
+
 .searching-anim {
     margin: 0 auto;
-    max-width: 300%;
-    width: 300%;
+    max-width: 600px;
+    width: 30vw;
     height: auto;
 }
 
+.searching-text {
+    font-family: lexendbold, serif;
+    font-size: 3rem;
+    text-align: center;
+}

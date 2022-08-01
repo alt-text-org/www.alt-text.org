@@ -10,6 +10,7 @@ export default function ReportModal(props) {
 
     const submitReport = () => {
         report(reason)
+        closeModal()
     }
 
     const updateReason = (event) => {
@@ -17,26 +18,33 @@ export default function ReportModal(props) {
     }
 
     return <div className="report-modal">
-        <div className="report-modal-underlay" onClick={closeModal}></div>
         <div className="report-modal-inner-wrapper">
-            <div className="report-modal-alt-text">
-                {altText}
+            <div className="report-modal-title-bar">Report Alt Text</div>
+            <div className="report-modal-alt-text-wrapper">
+                <div className="report-modal-alt-text">
+                    {altText}
+                </div>
             </div>
-            <div>
-                <label className="report-modal-text-label">Report Reason</label>
+            <hr className="report-modal-hr"/>
+            <div className="report-modal-text-label">
+                <label htmlFor="report-modal-reason">Report Reason</label>
             </div>
-            <div>
+            <div className="report-modal-reason-wrapper">
                 <textarea
+                    className="report-modal-reason"
                     name="report-modal-reason"
-                    placeholder="Why are you reporting this description?"
+                    placeholder="Why are you reporting this description? (1000 characters max)"
+                    maxLength="1000"
+                    rows="5"
                     value={reason}
                     onChange={updateReason}
                 />
             </div>
             <div className="report-modal-controls">
-                <button onClick={closeModal}>Cancel</button>
-                <button onClick={submitReport}>Submit Report</button>
+                <button className="report-modal-close-ctrl std-button" onClick={closeModal}>Cancel</button>
+                <button className="report-modal-submit-ctrl std-button" onClick={submitReport}>Submit Report</button>
             </div>
         </div>
+        <div className="report-modal-mask" onClick={closeModal}></div>
     </div>
 }
