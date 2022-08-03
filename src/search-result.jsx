@@ -10,12 +10,12 @@ export default function SearchResult(props) {
             <div className="alt-text-score">{score}</div>
             <div className="alt-text-text">{altText}</div>
             <div className="alt-text-controls">
-                <span className="alt-text-left-controls">
+                {report ? <span className="alt-text-left-controls">
                     <button className="alt-text-control" onClick={report}>
                         <img className="alt-text-control-img" alt="" src="images/report-control.svg"/>
                         Report
                     </button>
-                </span>
+                </span> : ""}
                 <span className="alt-text-right-controls">
                     <button className="alt-text-control" onClick={copy}>
                         <img className="alt-text-control-img" alt="" src="images/copy-control.svg"/>

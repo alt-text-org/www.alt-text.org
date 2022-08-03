@@ -9,7 +9,18 @@ export default function SearchResults(props) {
     const resultArray = []
     let bg = true;
 
-    if (results) {
+    if (results && (results.exact.length + results.fuzzy.length > 0 || results.ocr)) {
+        if (results.ocr) {
+            resultArray.push(<SearchResult
+                altText={results.ocr}
+                score="Extracted Text"
+                report={null}
+                copy={() => copy(results.ocr)}
+                bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
+            />)
+            bg = !bg
+        }
+
         results.exact.forEach(result => {
             resultArray.push(<SearchResult
                 altText={result.alt_text}
@@ -59,7 +70,7 @@ export default function SearchResults(props) {
                 Couldn't find any published alt text for that image.
             </div>
             <div className="not-found-controls">
-                <button className="std-button" onClick={returnToSearch}>Search Another Image</button>
+                <button className="not-found-button std-button" onClick={returnToSearch}>Search Another Image</button>
             </div>
         </div>
     }

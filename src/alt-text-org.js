@@ -37,7 +37,7 @@ async function loadImageByUrl(url) {
     }
 }
 
-async function searchablesForUrl(cv, url) {
+async function searchablesForUrl(url) {
     let image = await loadImageByUrl(url)
     if (!image) {
         console.log(`${ts()}: Failed to load image for ${url}`)
@@ -57,13 +57,13 @@ async function searchablesForUrl(cv, url) {
         .getImageData(0, 0, canvas.width, canvas.height);
 
     return {
-        searches: await searchablesForImageData(cv, image, imageData),
+        searches: await searchablesForImageData(image, imageData),
         imageDataUrl: canvas.toDataURL()
     }
 }
 
-async function fetchAltTextForUrl(cv, url, lang) {
-    return await searchablesForUrl(cv, url)
+async function fetchAltTextForUrl(url, lang) {
+    return await searchablesForUrl(url)
         .then(async searches => {
             if (!searches) {
                 throw new Error(`Failed to generate searchables for '${url}'`)
@@ -80,7 +80,7 @@ async function fetchAltTextForUrl(cv, url, lang) {
                 method: "POST", headers: {
                     "Content-Type": "application/json"
                 }, body: JSON.stringify({
-                    searches: searches.searches, language: lang || "en"
+                    searches: searches.searches, language: lang || "en", image_url: url
                 })
             }).then(async resp => {
                 if (resp.ok) {
@@ -129,16 +129,16 @@ async function imageBase64ToImageData(imageBase64) {
     };
 }
 
-async function fetchAltForImageBase64(cv, imageBase64, lang) {
+async function fetchAltForImageBase64(imageBase64, lang) {
     let {image, imageData, imageDataUrl} = await imageBase64ToImageData(imageBase64)
     return {
-        altText: await fetchAltTextForRaw(cv, image, imageData, lang),
+        altText: await fetchAltTextForRaw(image, imageData, lang),
         imageDataUrl: imageDataUrl
     }
 }
 
-async function fetchAltTextForRaw(cv, image, imageData, lang) {
-    let searches = await searchablesForImageData(cv, image, imageData)
+async function fetchAltTextForRaw(image, imageData, lang) {
+    let searches = await searchablesForImageData(image, imageData)
 
     let resp = await fetch("https://api.alt-text.org/v1/alt-library/fetch", {
         method: "POST",
@@ -208,34 +208,68 @@ function toMatrix(arr, rows, cols) {
     return matrix;
 }
 
-async function searchablesForImageData(cv, image, imageData) {
+async function searchablesForImageData(image, imageData) {
     return {
         sha256: await sha256Image(image, imageData),
         dct: await dctImage(image, imageData),
-        // sift: await siftImage(cv, image)
+        intensity: await intensity(image, imageData),
+        // orb: await orbImage(image)
+        // sift: await siftImage(image)
     }
 }
 
-async function siftImage(cv, image) {
-    const mat = cv.imread(image)
-    const greyscale = cv.cvtColor(mat, cv.COLOR_BGR2GRAY)
-    const sift = cv.SIFT_create()
+function toBoolean(greyed) {
+    let avgIntensity = greyed.reduce((prev, curr) => prev + curr, 0) / greyed.length
+    return greyed.map(pix => pix >= avgIntensity ? 1 : 0)
+}
+
+async function intensity(image, imageData) {
+    let shrunk = shrinkImage(image, imageData, 32);
+    let greyed = toGreyscale(shrunk);
+    let booled = toBoolean(greyed)
+    return Array.from(booled)
+}
+
+async function orbImage(image) {
+    await openCVPromise
+    let openCV = await cv;
+
+    const orig = openCV.imread(image);
+    const orb = new openCV.ORB(1000);
+    const keyPoints = new openCV.KeyPointVector();
+    orb.detect(orig, keyPoints);
+
+    const das = new openCV.Mat();
+    orb.compute(orig, keyPoints, das);
+
+    console.log(keyPoints);   //the keypoint vector is not showing any keypoints like python
+    for (let i = 0; i < keyPoints.size(); i++) {
+        console.log(keyPoints.get(i));  //this is giving error when trying to print points.
+    }
+
+    return []
+}
+
+async function siftImage(image) {
+    await openCVPromise
+    let openCV = await cv;
+
+    const mat = openCV.imread(image)
+    const greyscale = openCV.cvtColor(mat, mat, openCV.COLOR_BGR2GRAY)
+    const sift = openCV.SIFT_create()
     const keyPoints = sift.detect(greyscale)
     console.log(JSON.stringify(keyPoints))
 
     return [];
 }
 
-function dctImage(image, imageData) {
-    return new Promise(resolve => {
-        let shrunk = shrinkImage(image, imageData, 32);
-        let greyed = toGreyscale(shrunk);
-        let matrix = toMatrix(greyed, 32, 32)
-        let dct = DCT(matrix);
-        let trimmed = getTopLeft(dct, 8);
-        let snaked = diagonalSnake(trimmed, 8, 8)
-        resolve(snaked)
-    })
+async function dctImage(image, imageData) {
+    let shrunk = shrinkImage(image, imageData, 32);
+    let greyed = toGreyscale(shrunk);
+    let matrix = toMatrix(greyed, 32, 32)
+    let dct = DCT(matrix);
+    let trimmed = getTopLeft(dct, 8);
+    return diagonalSnake(trimmed, 8, 8)
 }
 
 async function sha256Image(image, imageData) {
@@ -248,10 +282,6 @@ async function sha256Image(image, imageData) {
 }
 
 export default class AltTextOrgClient {
-    // constructor(cvPromise) {
-    //     this.cvPromise = cvPromise
-    // }
-
     async searchFile(file) {
         const toBase64 = f => new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -261,11 +291,11 @@ export default class AltTextOrgClient {
         });
 
         const base64 = await toBase64(file)
-        return await fetchAltForImageBase64(null, base64, "ignored")
+        return await fetchAltForImageBase64(base64, "ignored")
     }
 
     async searchUrl(url) {
-        return await fetchAltTextForUrl(null, url, "ignored")
+        return await fetchAltTextForUrl(url, "ignored")
     }
 
     async report(author_uuid, sha256, language, reason) {

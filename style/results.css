@@ -32,9 +32,10 @@
 
 .result-divider {
     grid-area: divider;
+    vertical-align: center;
     border-left: 3px solid var(--title-bar-color);
     margin: 0 5px;
-    height: 90%;
+    height: 70vh;
 }
 
 .result-right-wrapper {
@@ -43,20 +44,26 @@
 }
 
 .result-inner-wrapper {
-    height: 100%;
+    height: 70vh;
     overflow-y: scroll;
 }
 
 .not-found-wrapper {
-
+    place-self: center;
+    text-align: center;
 }
 
 .not-found-message {
-
+    font-size: 3rem;
+    font-family: "montserratsemibold", sans-serif;
 }
 
 .not-found-controls {
+    margin: 15px auto;
+}
 
+.not-found-button {
+    margin: 0 auto;
 }
 
 .search-result-wrapper {
