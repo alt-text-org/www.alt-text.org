@@ -31,7 +31,7 @@ module.exports = {
         static: path.resolve(__dirname, './dist')
     },
     optimization: {
-        minimize: false
+        minimize: true
     },
     plugins: [
         new webpack.ProvidePlugin({
