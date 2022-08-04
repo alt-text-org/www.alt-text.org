@@ -211,65 +211,17 @@ function toMatrix(arr, rows, cols) {
 async function searchablesForImageData(image, imageData) {
     return {
         sha256: await sha256Image(image, imageData),
-        dct: await dctImage(image, imageData),
-        intensity: await intensity(image, imageData),
-        // orb: await orbImage(image)
-        // sift: await siftImage(image)
+        dct1024: await dct1024Image(image, imageData),
     }
 }
 
-function toBoolean(greyed) {
-    let avgIntensity = greyed.reduce((prev, curr) => prev + curr, 0) / greyed.length
-    return greyed.map(pix => pix >= avgIntensity ? 1 : 0)
-}
-
-async function intensity(image, imageData) {
-    let shrunk = shrinkImage(image, imageData, 32);
+async function dct1024Image(image, imageData) {
+    let shrunk = shrinkImage(image, imageData, 64);
     let greyed = toGreyscale(shrunk);
-    let booled = toBoolean(greyed)
-    return Array.from(booled)
-}
-
-async function orbImage(image) {
-    await openCVPromise
-    let openCV = await cv;
-
-    const orig = openCV.imread(image);
-    const orb = new openCV.ORB(1000);
-    const keyPoints = new openCV.KeyPointVector();
-    orb.detect(orig, keyPoints);
-
-    const das = new openCV.Mat();
-    orb.compute(orig, keyPoints, das);
-
-    console.log(keyPoints);   //the keypoint vector is not showing any keypoints like python
-    for (let i = 0; i < keyPoints.size(); i++) {
-        console.log(keyPoints.get(i));  //this is giving error when trying to print points.
-    }
-
-    return []
-}
-
-async function siftImage(image) {
-    await openCVPromise
-    let openCV = await cv;
-
-    const mat = openCV.imread(image)
-    const greyscale = openCV.cvtColor(mat, mat, openCV.COLOR_BGR2GRAY)
-    const sift = openCV.SIFT_create()
-    const keyPoints = sift.detect(greyscale)
-    console.log(JSON.stringify(keyPoints))
-
-    return [];
-}
-
-async function dctImage(image, imageData) {
-    let shrunk = shrinkImage(image, imageData, 32);
-    let greyed = toGreyscale(shrunk);
-    let matrix = toMatrix(greyed, 32, 32)
+    let matrix = toMatrix(greyed, 64, 64)
     let dct = DCT(matrix);
-    let trimmed = getTopLeft(dct, 8);
-    return diagonalSnake(trimmed, 8, 8)
+    let trimmed = getTopLeft(dct, 32);
+    return diagonalSnake(trimmed, 32, 32)
 }
 
 async function sha256Image(image, imageData) {

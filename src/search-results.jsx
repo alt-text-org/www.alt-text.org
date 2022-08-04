@@ -45,14 +45,15 @@ export default function SearchResults(props) {
             }
         })
 
-        //These are in a weird order to put the image at the end for screen reader users.
-        return <div className="result-outer-wrapper">
+        if (resultArray.length > 0) {
+            //These are in a weird order to put the image at the end for screen reader users.
+            return <div className="result-outer-wrapper">
             <span className="result-right-wrapper">
                 <div className="result-inner-wrapper">
                     {resultArray}
                 </div>
             </span>
-            <span className="result-left-wrapper">
+                <span className="result-left-wrapper">
                 <div className="result-image-wrapper">
                     <img className="searched-image" alt="The searched image"
                          src={fileDataUrl ? fileDataUrl : searchUrl}/>
@@ -61,17 +62,18 @@ export default function SearchResults(props) {
                     <button className="std-button" onClick={returnToSearch}>Search Another Image</button>
                 </div>
             </span>
-            <span className="result-divider"></span>
-        </div>
-    } else {
-        return <div className="not-found-wrapper">
-            <img className="searched-image" alt="The searched image" src={fileDataUrl ? fileDataUrl : searchUrl}/>
-            <div className="not-found-message">
-                Couldn't find any published alt text for that image.
+                <span className="result-divider"></span>
             </div>
-            <div className="not-found-controls">
-                <button className="not-found-button std-button" onClick={returnToSearch}>Search Another Image</button>
-            </div>
-        </div>
+        }
     }
+
+    return <div className="not-found-wrapper">
+        <img className="searched-image" alt="The searched image" src={fileDataUrl ? fileDataUrl : searchUrl}/>
+        <div className="not-found-message">
+            Couldn't find any published alt text for that image.
+        </div>
+        <div className="not-found-controls">
+            <button className="not-found-button std-button" onClick={returnToSearch}>Search Another Image</button>
+        </div>
+    </div>
 }
