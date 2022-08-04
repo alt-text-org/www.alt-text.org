@@ -120,3 +120,9 @@
     width: auto;
     margin-right: 2px;
 }
+
+.result-hr {
+    width: 70%;
+    text-align: center;
+    margin: 5px auto;
+}

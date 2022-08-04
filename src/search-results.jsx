@@ -18,6 +18,7 @@ export default function SearchResults(props) {
                 copy={() => copy(results.ocr)}
                 bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
             />)
+            resultArray.push(<hr className="result-hr"/>)
             bg = !bg
         }
 
@@ -29,6 +30,7 @@ export default function SearchResults(props) {
                 copy={() => copy(result.alt_text)}
                 bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
             />)
+            resultArray.push(<hr className="result-hr"/>)
             bg = !bg
         })
 
@@ -41,11 +43,14 @@ export default function SearchResults(props) {
                     copy={() => copy(result.alt_text)}
                     bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
                 />)
+                resultArray.push(<hr className="result-hr"/>)
                 bg = !bg
             }
         })
 
         if (resultArray.length > 0) {
+            resultArray.pop() // pull off last <hr/>
+
             //These are in a weird order to put the image at the end for screen reader users.
             return <div className="result-outer-wrapper">
             <span className="result-right-wrapper">
