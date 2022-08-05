@@ -35,7 +35,7 @@ export default function SearchResults(props) {
         })
 
         results.fuzzy.forEach(result => {
-            if (result.score >= 0.99) {
+            if (result.score >= 0.98) {
                 resultArray.push(<SearchResult
                     altText={result.alt_text}
                     score={`${Math.floor((result.score - 0.9) * 1000)}% Match`}
