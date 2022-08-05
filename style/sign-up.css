@@ -1,0 +1,15 @@
+.sign-up-headline {
+    font-family: "lexendbold", serif;
+    font-size: 4rem;
+    text-align: center;
+}
+
+.sign-up-explanation {
+    font-family: "montserratregular", sans-serif;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.sign-up-controls {
+    text-align: center;
+}

@@ -87,6 +87,17 @@ a, a:visited {
     font-family: "montserratsemibold", sans-serif;
 }
 
+.big-button {
+    background-color: var(--primary-button-color);
+    box-shadow: var(--primary-button-shadow-color);
+    color: var(--primary-button-text-color);
+    padding: .6em 1.2em;
+    border-radius: .2em;
+    margin: 15px 0;
+    font-size: 4rem;
+    font-family: "montserratsemibold", sans-serif;
+}
+
 .std-button:disabled {
     background-color: var(--primary-button-disabled-color);
 }
@@ -104,13 +115,24 @@ a, a:visited {
     box-shadow: 0 3px 2px var(--accent-color);
 }
 
+.header-contents {
+    display: block;
+    vertical-align: middle;
+}
+
 .site-title {
-    vertical-align: center;
+    vertical-align: middle;
     float: left;
     font-family: lexendbold, serif;
     font-size: 6vh;
     margin: 5px;
     color: var(--title-bar-text-color);
+}
+
+.header-sign-up-button {
+    margin: 1vh 2vw;
+    height: 8vh;
+    float: right;
 }
 
 .content {
