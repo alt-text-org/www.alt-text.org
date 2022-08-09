@@ -76,8 +76,7 @@ export default class App extends React.Component {
             searchUrl: null,
             searchFile: null,
             searchType: null,
-            fileDataUrl: results.imageDataUrl,
-            results: results.altText,
+            results: results,
             error: null,
             visible: "results"
         })

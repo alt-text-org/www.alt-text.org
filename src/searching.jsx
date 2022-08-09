@@ -13,23 +13,11 @@ export default function Searching(props) {
     React.useEffect(() => {
         if (searchType === "file") {
             altTextOrgClient.searchFile(searchFile)
-                .then(results => {
-                    if (results) {
-                        displayResults(results)
-                    } else {
-                        displayError("Failed to generate searchables!")
-                    }
-                })
+                .then(results => displayResults(results))
                 .catch(err => displayError(err.message))
         } else if (searchType === "url") {
             altTextOrgClient.searchUrl(searchUrl)
-                .then(results => {
-                    if (results) {
-                        displayResults(results)
-                    } else {
-                        displayError("Failed to generate searchables!")
-                    }
-                })
+                .then(results => displayResults(results))
                 .catch(err => displayError(err.message))
         }
     }, [searchFile, searchUrl])

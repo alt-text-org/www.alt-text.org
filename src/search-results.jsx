@@ -3,26 +3,28 @@ import SearchResult from "./search-result";
 
 export default function SearchResults(props) {
     const {
-        results, fileDataUrl, searchUrl, openReportModal, copy, returnToSearch
+        results, openReportModal, copy, returnToSearch
     } = props
 
-    const resultArray = []
-    let bg = true;
+    const { alt, img } = results
 
-    if (results && (results.exact.length + results.fuzzy.length > 0 || results.ocr)) {
-        if (results.ocr) {
+    if (alt && (alt.exact.length + alt.fuzzy.length > 0 || alt.ocr)) {
+        const resultArray = []
+        let bg = true;
+
+        if (alt.ocr) {
             resultArray.push(<SearchResult
-                altText={results.ocr}
+                altText={alt.ocr}
                 score="Extracted Text"
                 report={null}
-                copy={() => copy(results.ocr)}
+                copy={() => copy(alt.ocr)}
                 bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
             />)
             resultArray.push(<hr className="result-hr"/>)
             bg = !bg
         }
 
-        results.exact.forEach(result => {
+        alt.exact.forEach(result => {
             resultArray.push(<SearchResult
                 altText={result.alt_text}
                 score="Exact Match"
@@ -34,7 +36,7 @@ export default function SearchResults(props) {
             bg = !bg
         })
 
-        results.fuzzy.forEach(result => {
+        alt.fuzzy.forEach(result => {
             if (result.score >= 0.98) {
                 resultArray.push(<SearchResult
                     altText={result.alt_text}
@@ -50,7 +52,7 @@ export default function SearchResults(props) {
 
         if (resultArray.length > 0) {
             resultArray.pop() // pull off last <hr/>
-
+            console.log("resultArray:" + JSON.stringify(resultArray))
             //These are in a weird order to put the image at the end for screen reader users.
             return <div className="result-outer-wrapper">
             <span className="result-right-wrapper">
@@ -60,8 +62,13 @@ export default function SearchResults(props) {
             </span>
                 <span className="result-left-wrapper">
                 <div className="result-image-wrapper">
-                    <img className="searched-image" alt="The searched image"
-                         src={fileDataUrl ? fileDataUrl : searchUrl}/>
+                    <img className="searched-image" alt="The searched image" crossOrigin="Anonymous"
+                         onError={({ currentTarget }) => {
+                             currentTarget.onerror = null; // prevents looping
+                             currentTarget.src="images/load-failed.svg";
+                         }}
+                         src={img}
+                    />
                 </div>
                 <div className="return-button-wrapper">
                     <button className="std-button" onClick={returnToSearch}>Search Another Image</button>
@@ -73,7 +80,13 @@ export default function SearchResults(props) {
     }
 
     return <div className="not-found-wrapper">
-        <img className="searched-image" alt="The searched image" src={fileDataUrl ? fileDataUrl : searchUrl}/>
+        <img className="searched-image" alt="The searched image" crossOrigin="Anonymous"
+             onError={({ currentTarget }) => {
+                 currentTarget.onerror = null; // prevents looping
+                 currentTarget.src="images/load-failed.svg";
+             }}
+             src={img}
+        />
         <div className="not-found-message">
             Couldn't find any published alt text for that image.
         </div>

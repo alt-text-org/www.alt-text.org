@@ -5,6 +5,7 @@ export default function SearchResult(props) {
         altText, score, copy, report, bgClass
     } = props
 
+    console.log("altText: " + JSON.stringify(altText))
     return <div className={"search-result-wrapper " + bgClass}>
         <div className="search-result">
             <div className="alt-text-score">{score}</div>
