@@ -27,5 +27,12 @@ jobs:
 
       - name: 'Upload to GCS'
         run: |
-          gcloud --quiet alpha storage cp index.html gs://test-www-alt-text-org/
-          gcloud --quiet alpha storage cp --recursive dist gs://test-www-alt-text-org/
+          gcloud --quiet alpha storage cp index.html gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp not-found.html gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp sign-up.html gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp signed-up.html gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp --recursive favicon gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp --recursive fonts gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp --recursive images gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp --recursive style gs://www.alt-text.org/
+          gcloud --quiet alpha storage cp --recursive dist gs://www.alt-text.org/
