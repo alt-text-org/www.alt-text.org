@@ -3,7 +3,7 @@ function ts() {
 }
 
 async function fetchAltTextForUrl(url, lang) {
-    return await fetch("https://api.alt-text.org/v1/alt-library/fetch", {
+    return await fetch("https://api.alt-text.org/library/v1/fetch", {
         method: "POST", headers: {
             "Content-Type": "application/json"
         }, body: JSON.stringify({
@@ -25,7 +25,7 @@ async function fetchAltTextForUrl(url, lang) {
 }
 
 async function fetchAltForImageBase64(base64, lang) {
-    return await fetch("https://api.alt-text.org/v1/alt-library/fetch", {
+    return await fetch("https://api.alt-text.org/library/v1/fetch", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -73,7 +73,7 @@ export default class AltTextOrgClient {
     }
 
     async report(author_uuid, sha256, language, reason) {
-        let resp = await fetch("https://api.alt-text.org/v1/alt-library/report", {
+        let resp = await fetch("https://api.alt-text.org/library/v1/report", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
