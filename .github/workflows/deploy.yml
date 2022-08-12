@@ -21,4 +21,4 @@ jobs:
 
       - name: 'Upload to GCS'
         run: |
-          gcloud alpha storage cp index.html gs://test-www-alt-text-org/
+          gcloud --quiet alpha storage cp index.html gs://test-www-alt-text-org/
