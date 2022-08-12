@@ -6,14 +6,11 @@ on:
   workflow_dispatch:
 
 jobs:
-
-
   deploy:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
+
       - id: 'auth'
         uses: 'google-github-actions/auth@v0'
         with:
@@ -22,10 +19,6 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
-
       - name: 'Upload to GCS'
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          gcloud alpha storage cp index.html gs://test-www-alt-text-org/
