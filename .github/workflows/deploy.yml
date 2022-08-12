@@ -19,6 +19,13 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
 
+      - name: 'Install deps'
+        run: npm install
+
+      - name: 'Build bundle'
+        run: npm run build
+
       - name: 'Upload to GCS'
         run: |
           gcloud --quiet alpha storage cp index.html gs://test-www-alt-text-org/
+          gcloud --quiet alpha storage cp --recursive dist gs://test-www-alt-text-org/
