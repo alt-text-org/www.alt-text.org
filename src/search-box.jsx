@@ -77,8 +77,8 @@ export default function SearchBox(props) {
 
     return (
         <div>
-            <div className="search-intro">Search the library for a description of an image</div>
-            <div className="search-title">CHOOSE AN IMAGE</div>
+            <h2 className="search-intro">Search the library for a description of an image</h2>
+            <h2 className="search-title">CHOOSE AN IMAGE</h2>
             <ThemeProvider theme={theme}>
                 <Box sx={{width: '100%'}}>
                     <TabContext value={value}>

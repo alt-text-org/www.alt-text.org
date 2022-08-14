@@ -104,35 +104,27 @@ a, a:visited {
 
 .header-wrapper {
     position: fixed;
-    display: block;
-    vertical-align: bottom;
     top: 0;
-    padding: 1px 16px;
+    display:flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    height: auto;
     width: 100%;
-    height: 10vh;
-    min-height: 50px;
     background-color: var(--title-bar-color);
     box-shadow: 0 3px 2px var(--accent-color);
 }
 
-.header-contents {
-    display: block;
-    vertical-align: middle;
-}
-
 .site-title {
-    vertical-align: middle;
-    float: left;
-    font-family: lexendbold, serif;
+    font-family: "lexendbold", serif;
     font-size: 6vh;
-    margin: 5px;
+    margin: 0px;
     color: var(--title-bar-text-color);
 }
-
 .header-sign-up-button {
-    margin: 1vh 2vw;
-    height: 8vh;
-    float: right;
+    height: 75px;
+}
+.header-s1, .header-s2{
+    margin: 8px 16px;
 }
 
 .content {
@@ -162,7 +154,7 @@ a, a:visited {
     text-align: right;
     position: fixed;
     bottom: 0;
-    width: 100vw;
+    width: 100%;
     height: 5vh;
     padding-top: 1px;
     background-color: var(--footer-bg-color);
@@ -180,4 +172,23 @@ a, a:visited {
 
 .footer-link:hover {
     opacity: 0.7;
+}
+
+@media screen and (max-width: 576px) {
+    .site-title {
+
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header-wrapper{
+        flex-direction: column;
+    }
+    .header-s1, .header-s2{
+        display:flex;
+        justify-content: center;
+    }
+    .content-wrapper {
+        margin-top: 180px;
+    }
 }
