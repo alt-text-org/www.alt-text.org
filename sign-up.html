@@ -10,7 +10,7 @@
 
     <script>
         async function redirectToTwitter() {
-            const redirUrl = await fetch("https://api.alt-text.org//v1/alt-library/sign-up")
+            const redirUrl = await fetch("https://api.alt-text.org/library/v1/twitter-sign-up")
                 .then(async resp => {
                     if (resp.ok) {
                         const json = await resp.json()
