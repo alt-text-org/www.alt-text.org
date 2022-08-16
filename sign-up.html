@@ -5,8 +5,8 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="icon" href="favicon/favicon.ico"/>
-    <link rel="stylesheet" href="style/common.css">
-    <link rel="stylesheet" href="style/sign-up.css">
+    <link rel="stylesheet" href="style/common.css"/>
+    <link rel="stylesheet" href="style/sign-up.css"/>
 
     <script>
         async function redirectToTwitter() {
@@ -28,30 +28,37 @@
             if (redirUrl) {
                 document.location.href = redirUrl
             } else {
-                alert("Error attempting to begin signup process, please contact admin@alt-text.org or @AltTextOrg on Twitter.")
+                console.log(
+                    `Couldn't get auth URL: ${resp.status} ${resp.statusText}`
+                );
+                return null;
             }
         }
     </script>
 </head>
 <body>
-
 <div class="header-wrapper">
-        <span class="header-contents">
-            <a class="site-title" href="https://alt-text.org">Alt-Text.org</a>
-        </span>
+      <span class="header-s1">
+        <a class="site-title" href="/">Alt-Text.org</a>
+      </span>
 </div>
 
 <div class="content">
     <div class="content-wrapper">
         <div class="sign-up-headline">Help Fill The Library</div>
         <div class="sign-up-explanation">
-            Would you like all the image descriptions you write to be automatically saved in the alt-text.org database?
-            Click "Sign Up" and give us permission, and we'll start right away!
+            Would you like all the image descriptions you write to be
+            automatically saved in the alt-text.org database? Click "Sign Up" and
+            give us permission, and we'll start right away!
         </div>
         <div class="sign-up-controls">
-            <button class="big-button" onclick="redirectToTwitter()">Sign Up</button>
+            <button class="big-button" onclick="redirectToTwitter()">
+                Sign Up
+            </button>
             <br/>
-            <button class="std-button" onclick="document.location.href='/'">Return To Search</button>
+            <button class="std-button" onclick="document.location.href='/'">
+                Return To Search
+            </button>
         </div>
     </div>
 </div>
@@ -59,6 +66,5 @@
 <div class="footer-wrapper">
     <a class="footer-link" href="mailto:admin@alt-text.org">Contact Us</a>
 </div>
-
 </body>
 </html>

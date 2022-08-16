@@ -36,7 +36,7 @@ function FileSearch(props) {
 
     return <div className="file-search-wrapper">
         <input id="file-select" type="file" accept="image/*" onChange={handleSelectFile}/>
-        <div>
+        <div className='file-search-s2'>
             <button className="file-search-button std-button" onClick={handleSubmit} disabled={!file}>Search</button>
         </div>
     </div>
@@ -55,13 +55,12 @@ function UrlSearch(props) {
     }
 
     return <div className="url-search-wrapper">
-        <label className="url-search-label" htmlFor="url-select">
-            Image Address
-        </label>
-        <div>
+
+            <label className="url-search-label" for="url-select">
+                Image Address
+            </label>
             <input type="text" id="url-select" name="url-select" onChange={handleChange}></input>
-        </div>
-        <div>
+        <div className='url-search-s2'>
             <button className="url-search-button std-button" onClick={handleSubmit} disabled={!url}>Search</button>
         </div>
     </div>
@@ -76,22 +75,24 @@ export default function SearchBox(props) {
     };
 
     return (
-        <div>
-            <div className="search-intro">Search the library for a description of an image</div>
-            <div className="search-title">CHOOSE AN IMAGE</div>
+        <div className='search-box-wrapper'>
+            <h2 className="search-intro">Search the library for a description of an image</h2>
+            <h2 className="search-title">CHOOSE AN IMAGE</h2>
             <ThemeProvider theme={theme}>
-                <Box sx={{width: '100%'}}>
+                <Box>
                     <TabContext value={value}>
                         <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                             <TabList onChange={handleChange} variant="fullWidth" aria-label="Image sources">
-                                <Tab label="On Your Computer" value="file"/>
-                                <Tab label="On The Web" value="url"/>
+                                <Tab className='search-tab' label="On Your Computer" value="file"/>
+                                <Tab className='search-tab' label="On The Web" value="url"/>
                             </TabList>
                         </Box>
                         <TabPanel value="file">
                             <FileSearch submit={submitFile}></FileSearch>
                         </TabPanel>
-                        <TabPanel value="url"><UrlSearch submit={submitUrl}></UrlSearch></TabPanel>
+                        <TabPanel value="url">
+                            <UrlSearch submit={submitUrl}></UrlSearch>
+                        </TabPanel>
                     </TabContext>
                 </Box>
             </ThemeProvider>
