@@ -40,7 +40,6 @@
 
 .result-right-wrapper {
     grid-area: rightCol;
-    overflow-y: scroll;
 }
 
 .result-inner-wrapper {

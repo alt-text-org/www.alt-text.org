@@ -140,9 +140,7 @@ a, a:visited {
     display: flex;
     justify-content: center;
   }
- .content-wrapper{
-    overflow: scroll;
- }
+
 
 
 .footer-wrapper {
