@@ -98,3 +98,21 @@
     right: 0;
     bottom: 0;
 }
+
+@media screen and (max-width: 768px) { 
+    .report-modal {
+        display: grid;
+        grid-template-areas:
+                ". . ."
+                ". c ."
+                ". . .";
+        grid-auto-columns: 20% 60% 20%;
+        grid-template-rows: 0% 100% 0%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+    
+}
