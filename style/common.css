@@ -140,7 +140,9 @@ a, a:visited {
     font-family: "montserratregular", sans-serif;
     display: flex;
     justify-content: center;
-}
+
+  }
+
 
 .content-wrapper {
     overflow: scroll;

@@ -1,19 +1,63 @@
-.sign-up-headline {
-    font-family: "lexendbold", serif;
-    font-size: 4rem;
+@media screen and (max-width: 768px) {
+  .header-wrapper {
     text-align: center;
+  }
+}
+.signed-up-wrapper {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.sign-up-headline {
+  font-family: "lexendbold", serif;
+  font-size: 4rem;
+  text-align: center;
 }
 
 .sign-up-explanation {
-    font-family: "montserratregular", sans-serif;
-    font-size: 2rem;
-    text-align: center;
+  font-family: "montserratregular", sans-serif;
+  font-size: 2rem;
+  text-align: center;
 }
 
 .sign-up-controls {
-    text-align: center;
+  text-align: center;
 }
 
 .site-title {
+  padding: 8px 16px;
+}
+.sign-up-wrapper {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+@media screen and (max-width: 768px) {
+  .sign-up-wrapper {
+    margin-top: -90px;
+    padding-bottom: 30px;
+  }
+  .sign-up-controls {
+    margin-bottom: 100px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sign-up-headline {
+    font-family: "lexendbold", serif;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .sign-up-explanation {
+    font-family: "montserratregular", sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .big-button {
+    font-size: 2.2rem;
+  }
+
+  .site-title {
     padding: 8px 16px;
+  }
 }

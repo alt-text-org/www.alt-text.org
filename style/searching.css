@@ -1,9 +1,14 @@
 .searching-wrapper {
-    margin: 0 auto;
+    margin: auto auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50%;
 }
 
 .searching-anim {
-    margin: 0 auto;
+    margin: auto auto;
     max-width: 350px;
     width: 30vw;
     height: auto;
