@@ -31,12 +31,7 @@
           });
 
         if (redirUrl) {
-          document.location.href = redirUrl;
-        } else {
-          console.log(
-            `Couldn't get auth URL: ${resp.status} ${resp.statusText}`
-          );
-          return null;
+          window.open(redirUrl, '_blank')
         }
       }
     </script>
