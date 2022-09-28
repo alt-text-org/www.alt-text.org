@@ -19,9 +19,9 @@ module.exports = {
     },
     resolve: {
         extensions: ['*', '.js', '.jsx'],
-            fallback: {
-                buffer: require.resolve('buffer/')
-            }
+        fallback: {
+            buffer: require.resolve('buffer/')
+        }
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -31,9 +31,14 @@ module.exports = {
         static: path.resolve(__dirname, './dist')
     },
     optimization: {
-        minimize: true
+        minimize: false
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('development')
+            }
+        }),
         new webpack.ProvidePlugin({
             Buffer: ['buffer', 'Buffer'],
         }),

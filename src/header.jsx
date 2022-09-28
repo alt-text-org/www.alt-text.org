@@ -1,14 +1,15 @@
 import * as React from 'react';
+import {NavLink} from "react-router-dom";
 
 export default function AltTextOrgHeader() {
     return <div className="header-wrapper">
-                <div class='header-s1'>
+                <div className='header-s1'>
                 <a href="/"><h1 className="site-title">Alt-Text.org</h1></a>
                 </div>
-                <div class='header-s2'>
-                    <button className="std-button header-sign-up-button" onClick={() => document.location.href='/sign-up.html'}>
+                <div className='header-s2'>
+                    <NavLink className="std-button header-sign-up-button" to={'/sign-up'}>
                         Help Fill The Library
-                    </button>
+                    </NavLink>
                 </div>
             </div>
 }
