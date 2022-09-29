@@ -1,9 +1,11 @@
+const API_HOST = 'api.alt-text.org'
+
 function ts() {
     return new Date().toISOString();
 }
 
 async function fetchAltTextForUrl(url, lang) {
-    return await fetch("https://api.alt-text.org/library/v1/fetch", {
+    return await fetch(`https://${API_HOST}/library/v1/fetch`, {
         method: "POST", headers: {
             "Content-Type": "application/json"
         }, body: JSON.stringify({
@@ -25,7 +27,7 @@ async function fetchAltTextForUrl(url, lang) {
 }
 
 async function fetchAltForImageBase64(base64, lang) {
-    return await fetch("https://api.alt-text.org/library/v1/fetch", {
+    return await fetch(`https://${API_HOST}/library/v1/fetch`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -73,7 +75,7 @@ export default class AltTextOrgClient {
     }
 
     async report(author_uuid, sha256, language, reason) {
-        let resp = await fetch("https://api.alt-text.org/library/v1/report", {
+        let resp = await fetch(`https://${API_HOST}/library/v1/report`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
