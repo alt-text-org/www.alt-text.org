@@ -1,18 +1,28 @@
-import * as React from 'react';
-import {Route, Routes} from 'react-router-dom';
+// import * as React from "react";
+// import { Route, Routes } from "react-router-dom";
 
-import Main from "./main";
-import SignUp from './sign-up'
+// import "./styles/styles.scss";
 
-import AltTextOrgClient from "./alt-text-org";
+// import Main from "./main";
+// import SignUp from "./sign-up";
 
-const altTextOrgClient = new AltTextOrgClient()
+// import AltTextOrgClient from "./alt-text-org";
 
-export default function App() {
-    return <Routes>
-        <Route path="/sign-up" element={<SignUp/>}/>
-        <Route path="/index.html" element={<Main altTextOrgClient={altTextOrgClient}/>}/>
-        <Route path="/www.alt-text.org/index.html" element={<Main altTextOrgClient={altTextOrgClient}/>}/>
-        <Route path="/" element={<Main altTextOrgClient={altTextOrgClient}/>}/>
-    </Routes>
-}
+// const altTextOrgClient = new AltTextOrgClient();
+
+// export default function App() {
+//   return (
+//     <Routes>
+//       <Route path="/sign-up" element={<SignUp />} />
+//       <Route
+//         path="/index.html"
+//         element={<Main altTextOrgClient={altTextOrgClient} />}
+//       />
+//       <Route
+//         path="/www.alt-text.org/index.html"
+//         element={<Main altTextOrgClient={altTextOrgClient} />}
+//       />
+//       <Route path="/" element={<Main altTextOrgClient={altTextOrgClient} />} />
+//     </Routes>
+//   );
+// }
