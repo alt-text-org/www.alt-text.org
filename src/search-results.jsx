@@ -52,7 +52,6 @@ export default function SearchResults(props) {
 
         if (resultArray.length > 0) {
             resultArray.pop() // pull off last <hr/>
-            console.log("resultArray:" + JSON.stringify(resultArray))
             //These are in a weird order to put the image at the end for screen reader users.
             return <div className="result-outer-wrapper">
             <span className="result-right-wrapper">
