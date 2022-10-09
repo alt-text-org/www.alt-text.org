@@ -53,6 +53,7 @@ const Main = (props) => {
   };
 
   const submitUrl = (url) => {
+    console.log(url);
     try {
       new URL(url);
       setSearchUrl(url);
@@ -71,6 +72,7 @@ const Main = (props) => {
   };
 
   const submitFile = (file) => {
+    console.log("go");
     setError(null);
     setSearchFile(file);
     setSearchType("file");
@@ -132,6 +134,7 @@ const Main = (props) => {
       language,
       reason
     );
+
     if (!reported) {
       console.log("Report failed, continuing");
     }
@@ -140,52 +143,62 @@ const Main = (props) => {
   };
 
   return (
-    <div className="page-wrapper">
-      <div className="content">
-        <div className="content-wrapper">
-          {visible === "search" && (
-            <SearchBox submitFile={submitFile} submitUrl={submitUrl} />
-          )}
+    <div className="main">
+      <div className="page-intro">
+        <h2>Search the library for an image description</h2>
+      </div>
 
-          {/* {visible === "searching" && (
-            <Searching
-              searchFile={searchFile}
-              searchUrl={searchUrl}
-              searchType={searchType}
-              altTextOrgClient={props.altTextOrgClient}
-              displayResults={displayResults}
-              displayError={displayError}
-            />
-          )} */}
-
-          {/* {visible === "results" && (
-            <SearchResults
-              results={results}
-              searchUrl={searchUrl}
-              fileDataUrl={fileDataUrl}
-              copy={copyText.bind(this)}
-              openReportModal={openReportModal.bind(this)}
-              returnToSearch={returnToSearch.bind(this)}
-            />
-          )} */}
-
-          {/* {visible === "error" && (
-            <ErrorPage
-              error={error}
-              returnToSearch={returnToSearch.bind(this)}
-            />
-          )}
-
-          {reportModalVisible && (
-            <ReportModal
-              altText={toReport.alt_text}
-              report={sendReport.bind(this)}
-              closeModal={closeReportModal.bind(this)}
-            />
-          )} */}
-        </div>
+      <div className="page-content">
+        <SearchBox submitFile={submitFile} submitUrl={submitUrl} />
       </div>
     </div>
+
+    // <div className="page-wrapper">
+    //   <div className="content">
+    //     <div className="content-wrapper">
+    //       {visible === "search" && (
+    //         <SearchBox submitFile={submitFile} submitUrl={submitUrl} />
+    //       )}
+
+    //       {/* {visible === "searching" && (
+    //         <Searching
+    //           searchFile={searchFile}
+    //           searchUrl={searchUrl}
+    //           searchType={searchType}
+    //           altTextOrgClient={props.altTextOrgClient}
+    //           displayResults={displayResults}
+    //           displayError={displayError}
+    //         />
+    //       )} */}
+
+    //       {/* {visible === "results" && (
+    //         <SearchResults
+    //           results={results}
+    //           searchUrl={searchUrl}
+    //           fileDataUrl={fileDataUrl}
+    //           copy={copyText.bind(this)}
+    //           openReportModal={openReportModal.bind(this)}
+    //           returnToSearch={returnToSearch.bind(this)}
+    //         />
+    //       )} */}
+
+    //       {/* {visible === "error" && (
+    //         <ErrorPage
+    //           error={error}
+    //           returnToSearch={returnToSearch.bind(this)}
+    //         />
+    //       )}
+
+    //       {reportModalVisible && (
+    //         <ReportModal
+    //           altText={toReport.alt_text}
+    //           report={sendReport.bind(this)}
+    //           closeModal={closeReportModal.bind(this)}
+    //         />
+    //       )} */}
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 
