@@ -32,6 +32,10 @@
   justify-content: center;
   align-items: center;
   min-height: 250px;
+
+  form {
+    display: flex;
+  }
 }
 
 .tabs {

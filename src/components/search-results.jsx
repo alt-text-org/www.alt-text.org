@@ -1,10 +1,11 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import SearchResult from "./search-result";
 
 export default function SearchResults(props) {
   const { results, openReportModal, copyText, returnToSearch, goBack } = props;
 
   const { alt, img } = results;
+  const [showImgError, setShowImgError] = useState(false);
 
   if (alt && (alt.exact.length + alt.fuzzy.length > 0 || alt.ocr)) {
     const resultArray = [];
@@ -77,20 +78,27 @@ export default function SearchResults(props) {
       resultArray.pop(); // pull off last <hr/>
       console.log("resultArray:", resultArray);
 
+      console.log(img);
+
       //These are in a weird order to put the image at the end for screen reader users.
       return (
         <div className="search-results">
           <div className="results-preview">
-            <img
-              className="searched-image"
-              alt="The searched image"
-              crossOrigin="Anonymous"
-              onError={({ currentTarget }) => {
-                currentTarget.onerror = null; // prevents looping
-                currentTarget.src = "images/load-failed.svg";
-              }}
-              src={img}
-            />
+            {img && !showImgError && (
+              <img
+                className="searched-image"
+                alt="The searched image"
+                crossOrigin="Anonymous"
+                onError={() => setShowImgError(true)}
+                // onError={({ currentTarget }) => {
+                //   currentTarget.onerror = null; // prevents looping
+                //   currentTarget.src = "images/load-failed.svg";
+                // }}
+                src={img}
+              />
+            )}
+
+            {showImgError && <p>Preview image could not be loaded.</p>}
 
             <button className="std-button" onClick={returnToSearch}>
               Search Another Image
