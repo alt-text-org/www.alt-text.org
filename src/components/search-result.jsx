@@ -1,37 +1,35 @@
 import * as React from "react";
 
-export default function SearchResult(props) {
-  const { altText, score, copyText, report, bgClass } = props;
+import { MdReportProblem, MdContentCopy } from "react-icons/md";
 
-  console.log("altText: " + JSON.stringify(altText));
+export default function SearchResult(props) {
+  const { altText, score, copyText, report, bgClass, openReportModal } = props;
+
+  console.log(altText);
+
   return (
-    <div className={"search-result-wrapper " + bgClass}>
-      <div className="search-result">
-        <div className="alt-text-score">{score}</div>
-        <div className="alt-text-text">{altText}</div>
-        <div className="alt-text-controls">
+    <div className="search-result">
+      <div className="alt-text-score">
+        <p>{score}</p>
+      </div>
+      <div className="alt-text-text">
+        <h2>{altText}</h2>
+      </div>
+      <div className="alt-text-controls">
+        <div className="alt-text-control">
           {report && (
-            <span className="alt-text-left-controls">
-              <button className="alt-text-control" onClick={openReportModal}>
-                <img
-                  className="alt-text-control-img"
-                  alt=""
-                  src="images/report-control.svg"
-                />
-                Report
-              </button>
-            </span>
-          )}
-          <span className="alt-text-right-controls">
-            <button className="alt-text-control" onClick={copyText}>
-              <img
-                className="alt-text-control-img"
-                alt=""
-                src="images/copy-control.svg"
-              />
-              Copy
+            <button onClick={openReportModal}>
+              <MdReportProblem />
+              Report
             </button>
-          </span>
+          )}
+        </div>
+
+        <div className="alt-text-control">
+          <button onClick={copyText}>
+            <MdContentCopy />
+            Copy
+          </button>
         </div>
       </div>
     </div>

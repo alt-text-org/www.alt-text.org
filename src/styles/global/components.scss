@@ -1,0 +1,69 @@
+a,
+a:visited {
+  text-decoration: none;
+  font-size: 2rem;
+  color: $accent-color-1;
+}
+
+button,
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $green;
+  border-radius: 5px;
+  color: white !important;
+  padding: 10px 20px;
+  font-size: 2rem;
+  cursor: pointer !important;
+
+  // If icon is used
+  svg {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: darken($green, 5%);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  height: 80px;
+  width: 100%;
+
+  .header-item {
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: "Montserrat", "Lato", sans-serif;
+    color: $green;
+    font-size: 4rem;
+    font-weight: bold;
+
+    @include respond-below(xs) {
+      font-size: 2rem;
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  height: 60px;
+  width: 100%;
+
+  .footer-item {
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

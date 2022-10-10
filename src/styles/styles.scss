@@ -1,4 +1,9 @@
-@import "./views/common.scss";
+@import "./global/variables.scss";
+@import "./global/breakpoints.scss";
+@import "./global/components.scss";
+@import "./global/fonts.scss";
+@import "./global/layout.scss";
+
 @import "./views/error.scss";
 @import "./views/not-found.scss";
 @import "./views/report.scss";

@@ -18,11 +18,8 @@ export default function SearchResults(props) {
           score="Extracted Text"
           report={false}
           copyText={() => copyText(alt.ocr)}
-          bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
         />
       );
-      resultArray.push(<hr className="result-hr" />);
-      bg = !bg;
     }
 
     alt.exact.forEach((result) => {
@@ -49,11 +46,8 @@ export default function SearchResults(props) {
           //     )
           //   }
           copyText={() => copyText(result.alt_text)}
-          bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
         />
       );
-      resultArray.push(<hr className="result-hr" />);
-      bg = !bg;
     });
 
     alt.fuzzy.forEach((result) => {
@@ -72,43 +66,37 @@ export default function SearchResults(props) {
               );
             }}
             copyText={() => copyText(result.alt_text)}
-            bgClass={bg ? "result-zebra-dark" : "result-zebra-light"}
           />
         );
-        resultArray.push(<hr className="result-hr" />);
+
         bg = !bg;
       }
     });
 
     if (resultArray.length > 0) {
       resultArray.pop(); // pull off last <hr/>
-      console.log("resultArray:" + JSON.stringify(resultArray));
+      console.log("resultArray:", resultArray);
+
       //These are in a weird order to put the image at the end for screen reader users.
       return (
-        <div className="result-outer-wrapper">
-          <span className="result-right-wrapper">
-            <div className="result-inner-wrapper">{resultArray}</div>
-          </span>
-          <span className="result-left-wrapper">
-            <div className="result-image-wrapper">
-              <img
-                className="searched-image"
-                alt="The searched image"
-                crossOrigin="Anonymous"
-                onError={({ currentTarget }) => {
-                  currentTarget.onerror = null; // prevents looping
-                  currentTarget.src = "images/load-failed.svg";
-                }}
-                src={img}
-              />
-            </div>
-            <div className="return-button-wrapper">
-              <button className="std-button" onClick={returnToSearch}>
-                Search Another Image
-              </button>
-            </div>
-          </span>
-          <span className="result-divider"></span>
+        <div className="search-results">
+          <div className="results-preview">
+            <img
+              className="searched-image"
+              alt="The searched image"
+              crossOrigin="Anonymous"
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "images/load-failed.svg";
+              }}
+              src={img}
+            />
+
+            <button className="std-button" onClick={returnToSearch}>
+              Search Another Image
+            </button>
+          </div>
+          <div className="results-list">{resultArray}</div>
         </div>
       );
     }

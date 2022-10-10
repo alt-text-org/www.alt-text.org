@@ -2,8 +2,9 @@ import * as React from "react";
 import ReactDOM from "react-dom";
 import { HelmetProvider } from "react-helmet-async";
 import AppRouter from "./routers/AppRouter";
-import "./styles/styles.scss";
+
 import "antd/dist/antd.css";
+import "./styles/styles.scss";
 
 ReactDOM.render(
   <React.StrictMode>
