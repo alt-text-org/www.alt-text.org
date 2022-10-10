@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Space, Spin } from "antd";
 import SearchBox from "../components/search-box";
 import Searching from "../components/searching";
 import SearchResults from "../components/search-results";
@@ -13,21 +14,24 @@ import {
   searchUrl,
   report,
 } from "../actions/api.js";
+import { blockSize } from "fast-sha256";
 
 const Main = (props) => {
-  const [visible, setVisible] = useState("search");
-  const [searchUrl, setSearchUrl] = useState(null);
-  const [searchFile, setSearchFile] = useState(null);
+  const [visible, setVisible] = useState("searchForm");
+
+  const [searching, setSearching] = useState(false);
+  const [results, setResults] = useState(null);
+  const [reportModal, setReportModal] = useState(null);
+
   const [searchType, setSearchType] = useState(null);
   const [fileBase64, setFileBase64] = useState(null);
-  const [results, setResults] = useState(null);
+
   const [error, setError] = useState(null);
-  const [reportModalVisible, setReportModalVisible] = useState(false);
-  const [toReport, setToReport] = useState(null);
+  // const [reportModalVisible, setReportModalVisible] = useState(false);
+  // const [toReport, setToReport] = useState(null);
 
   const displayResults = (results) => {
     setError(null);
-    setSearchFile(null);
     setSearchType(null);
     setFileBase64(null);
     setResults(results);
@@ -36,7 +40,6 @@ const Main = (props) => {
 
   const displayError = (errorResult) => {
     setError(errorResult);
-    setSearchFile(null);
     setSearchType(null);
     setFileBase64(null);
     setResults(null);
@@ -45,7 +48,6 @@ const Main = (props) => {
 
   const returnToSearch = () => {
     setError(null);
-    setSearchFile(null);
     setSearchType(null);
     setFileBase64(null);
     setResults(null);
@@ -53,48 +55,66 @@ const Main = (props) => {
   };
 
   const submitUrl = (url) => {
-    console.log(url);
-    try {
-      new URL(url);
-      setSearchUrl(url);
-      setError(null);
-      setSearchFile(null);
-      setSearchType("url");
-      setFileBase64(null);
-      setResults(null);
-      setVisible("searching");
-    } catch (err) {
-      return displayError(
-        `Couldn't parse '${url}' as a url. It should look ` +
-          `something like 'https://example.com/picture.jpg'`
-      );
-    }
+    setSearching(true);
+
+    searchUrl(url)
+      .then((results) => {
+        console.log("results", results);
+        setSearching(false);
+        setResults(results);
+        setError(null);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        setError(err);
+      });
+
+    // try {
+    //   new URL(url);
+    //   setSearchUrl(url);
+    //   setError(null);
+    //   setSearchType("url");
+    //   setFileBase64(null);
+    //   setResults(null);
+    //   setVisible("searching");
+    // } catch (err) {
+    //   return displayError(
+    //     `Couldn't parse '${url}' as a url. It should look ` +
+    //       `something like 'https://example.com/picture.jpg'`
+    //   );
+    // }
   };
 
   const submitFile = (file) => {
-    console.log("go");
-    setError(null);
-    setSearchFile(file);
-    setSearchType("file");
-    setFileBase64(null);
-    setResults(null);
-    setVisible("searching");
+    setSearching(true);
+
+    searchFile(file)
+      .then((results) => {
+        console.log("results", results);
+        setSearching(false);
+        setResults(results);
+        setError(null);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        setError(err);
+      });
   };
 
   const openReportModal = (author_uuid, sha256, language, alt_text) => {
-    setToReport({
+    setReportModal({
       author_uuid,
       sha256,
       language,
       alt_text,
     });
-    setReportModalVisible(true);
   };
 
   const closeReportModal = () => {
-    console.log("Close: " + JSON.stringify(toReport));
-    setReportModalVisible(false);
-    setToReport(null);
+    setReportModal(null);
+    // console.log("Close: " + JSON.stringify(toReport));
+    // setReportModalVisible(false);
+    // setToReport(null);
   };
 
   const copyText = async (text) => {
@@ -144,12 +164,45 @@ const Main = (props) => {
 
   return (
     <div className="main">
-      <div className="page-intro">
-        <h2>Search the library for an image description</h2>
-      </div>
-
       <div className="page-content">
-        <SearchBox submitFile={submitFile} submitUrl={submitUrl} />
+        {!results && !searching && (
+          <SearchBox submitFile={submitFile} submitUrl={submitUrl} />
+        )}
+
+        {searching && (
+          <div
+            className="searching"
+            style={{
+              height: "80vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Spin size="large" />
+            <div
+              style={{ display: "block", marginTop: "10px", fontSize: "18px" }}
+            >
+              Searching...
+            </div>
+          </div>
+        )}
+
+        {results && (
+          <SearchResults
+            results={results}
+            openReportModal={openReportModal}
+            goBack={() => {
+              setResults(null);
+            }}
+            copyText={copyText}
+            // searchUrl={searchUrl}
+            // fileDataUrl={fileDataUrl}
+          />
+        )}
+
+        {reportModal && <ReportModal />}
       </div>
     </div>
 

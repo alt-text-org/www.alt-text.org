@@ -34,7 +34,6 @@
 }
 
 .report-modal-title-bar {
-  font-family: lexendbold, serif;
   font-size: 1.5rem;
   color: var(--title-bar-text-color);
   background-color: var(--title-bar-color);
@@ -52,7 +51,6 @@
 
 .report-modal-alt-text {
   padding: 3px;
-  font-family: "montserratregular", sans-serif;
   font-size: 1rem;
 }
 
@@ -63,7 +61,6 @@
 
 .report-modal-text-label {
   width: 100%;
-  font-family: "lexendmedium", serif;
   font-size: 1.5rem;
   text-align: center;
 }
@@ -76,7 +73,6 @@
 
 .report-modal-reason {
   width: calc(100% - 14px);
-  font-family: "montserratregular", sans-serif;
   font-size: 1.5rem;
 }
 

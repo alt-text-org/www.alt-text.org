@@ -3,38 +3,6 @@ body {
   font-family: "Lato", "lexendbold", sans-serif;
 }
 
-@font-face {
-  font-family: "lexendbold";
-  src: url("../fonts/lexend-bold-webfont.woff2") format("woff2"),
-    url("../fonts/lexend-bold-webfont.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "lexendmedium";
-  src: url("../fonts/lexend-medium-webfont.woff2") format("woff2"),
-    url("../fonts/lexend-medium-webfont.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "montserratregular";
-  src: url("../fonts/montserrat-regular-webfont.woff2") format("woff2"),
-    url("../fonts/montserrat-regular-webfont.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "montserratsemibold";
-  src: url("../fonts/montserrat-semibold-webfont.woff2") format("woff2"),
-    url("../fonts/montserrat-semibold-webfont.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital@0;1&display=swap");
 
 $green: #2e4d4a;
@@ -88,13 +56,15 @@ a:visited {
 }
 
 .std-button {
+  cursor: pointer;
   background-color: var(--primary-button-color);
-  box-shadow: var(--primary-button-shadow-color);
+  // box-shadow: var(--primary-button-shadow-color);
   color: var(--primary-button-text-color);
-  padding: 0.2em 0.4em;
-  border-radius: 0.2em;
-  font-size: 2rem;
-  font-family: "montserratsemibold", sans-serif;
+  padding: 10px 30px;
+  border-radius: 5px;
+  font-size: 1.6rem;
+  border: none;
+  cursor: pointer;
 }
 
 .big-button {
@@ -105,7 +75,6 @@ a:visited {
   border-radius: 0.2em;
   margin: 15px 0;
   font-size: 4rem;
-  font-family: "montserratsemibold", sans-serif;
 }
 
 .std-button:disabled {
@@ -121,26 +90,24 @@ a:visited {
   flex-flow: row wrap;
   height: auto;
   width: 100%;
-  background-color: var(--title-bar-color);
-  box-shadow: 0 3px 2px var(--accent-color);
+  color: $green;
+  // background-color: var(--title-bar-color);
+  // box-shadow: 0 3px 2px var(--accent-color);
 }
 
 .site-title {
-  font-family: "lexendbold", serif;
   font-size: 6vh;
   margin: 0px;
-  color: var(--title-bar-text-color);
-}
-
-.header-sign-up-button {
-  height: 75px;
+  color: $green;
+  // color: var(--title-bar-text-color);
 }
 
 .header-s1,
 .header-s2 {
   margin: 8px 16px;
   display: flex;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 
 .content {
@@ -149,7 +116,6 @@ a:visited {
   width: 100%;
   max-width: 100%;
   padding: 120px 0px 0px 0px;
-  font-family: "montserratregular", sans-serif;
   display: flex;
   justify-content: center;
 }
@@ -179,7 +145,6 @@ a:visited {
 
 .footer-link {
   vertical-align: top;
-  font-family: "lexendmedium", serif;
   font-size: 3vh;
   height: 3vh;
   padding-right: 0.5vw;
@@ -253,25 +218,5 @@ a:visited {
 @media (min-width: 1200px) {
   .content {
     width: 1170px;
-  }
-}
-
-.tabs {
-  width: 100%;
-  display: flex;
-
-  .tab {
-    font-size: 20px;
-    cursor: pointer;
-    width: 50%;
-    border: 1px solid black;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .tab-active {
-    background-color: gray;
   }
 }

@@ -97,6 +97,26 @@
 
 .search-box {
   width: 100%;
+
+  input {
+    min-width: 275px;
+    height: 45px;
+    border: 1px solid $green;
+    padding: 5px;
+    font-size: 18px;
+    border-radius: 5px 0 0 5px;
+  }
+
+  button[type="submit"] {
+    padding: 5px;
+    height: 45px;
+    background-color: $green;
+    border: none;
+    border: 1px solid $green;
+    color: white;
+    font-size: 18px;
+    border-radius: 0 5px 5px 0;
+  }
 }
 
 .search-box-panel {
@@ -104,4 +124,31 @@
   justify-content: center;
   align-items: center;
   min-height: 250px;
+}
+
+.tabs {
+  width: 100%;
+  display: flex;
+
+  .tab {
+    transition: all 0.2s ease;
+    font-size: 24px;
+    cursor: pointer;
+    width: 50%;
+    border-bottom: 5px solid white;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tab:hover {
+    border-bottom: 5px solid $green;
+  }
+
+  .tab.active {
+    border-bottom: 5px solid $green;
+    background-color: lighten($green, 10%);
+    color: white;
+  }
 }

@@ -18,11 +18,21 @@ export default function SearchBox(props) {
 
   return (
     <div className="search-box">
+      <div className="page-intro">
+        <h2>Search the library for an image description.</h2>
+      </div>
+
       <div className="tabs">
-        <div className="tab" onClick={() => setSelectedTab("computer")}>
+        <div
+          className={selectedTab === "computer" ? "tab active" : "tab"}
+          onClick={() => setSelectedTab("computer")}
+        >
           On Your Computer
         </div>
-        <div className="tab" onClick={() => setSelectedTab("web")}>
+        <div
+          className={selectedTab === "web" ? "tab active" : "tab"}
+          onClick={() => setSelectedTab("web")}
+        >
           On The Web
         </div>
       </div>
@@ -31,19 +41,16 @@ export default function SearchBox(props) {
           <div className="search-box-panel">
             <button
               type="button"
-              className="btn btn-grey btn-sm"
+              className="std-button"
               style={{
-                height: "75px",
-                width: "150px",
                 position: "relative",
-                color: "black",
               }}
             >
               Upload Image
               <input
                 type="file"
                 name="file"
-                multiple="false"
+                multiple={false}
                 onChange={handleUploadImage}
                 style={{
                   cursor: "pointer",
@@ -67,11 +74,6 @@ export default function SearchBox(props) {
               <input
                 defaultValue={"https://"}
                 onChange={(e) => setUrl(e.target.value)}
-                style={{
-                  height: "30px",
-                  width: "300px",
-                  padding: "5px",
-                }}
               ></input>
               <button
                 type="submit"

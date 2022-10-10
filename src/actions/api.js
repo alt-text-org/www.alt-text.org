@@ -67,7 +67,7 @@ export async function fetchAltForImageBase64(base64, lang) {
     });
 }
 
-export async function searchFile(file) {
+export async function searchFile(file, callback) {
   const toBase64 = (f) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -77,6 +77,10 @@ export async function searchFile(file) {
     });
 
   const base64 = await toBase64(file);
+
+  if (callback) {
+    callback();
+  }
   return {
     img: base64,
     alt: await fetchAltForImageBase64(base64, "ignored"),

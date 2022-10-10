@@ -1,5 +1,5 @@
 .main {
-  height: 95vh;
+  min-height: 95vh;
 }
 
 .page-intro {
@@ -8,8 +8,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+  h2 {
+    font-size: 2rem;
+  }
 }
 
 .page-content {
   width: 100%;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-spin-lg .ant-spin-dot {
+  font-size: 72px;
 }
