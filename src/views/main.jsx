@@ -17,8 +17,6 @@ import {
 import { blockSize } from "fast-sha256";
 
 const Main = (props) => {
-  const [visible, setVisible] = useState("searchForm");
-
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState(null);
   const [reportModal, setReportModal] = useState(null);
@@ -35,7 +33,6 @@ const Main = (props) => {
     setSearchType(null);
     setFileBase64(null);
     setResults(results);
-    setVisible("results");
   };
 
   const displayError = (errorResult) => {
@@ -43,15 +40,6 @@ const Main = (props) => {
     setSearchType(null);
     setFileBase64(null);
     setResults(null);
-    setVisible("error");
-  };
-
-  const returnToSearch = () => {
-    setError(null);
-    setSearchType(null);
-    setFileBase64(null);
-    setResults(null);
-    setVisible("search");
   };
 
   const submitUrl = (url) => {
@@ -66,7 +54,9 @@ const Main = (props) => {
       })
       .catch((err) => {
         console.log("err", err);
-        setError(err);
+        setError(
+          `Couldn't parse '${url}' as a url. It should look something like 'https://example.com/picture.jpg'`
+        );
       });
 
     // try {
@@ -108,13 +98,6 @@ const Main = (props) => {
       language,
       alt_text,
     });
-  };
-
-  const closeReportModal = () => {
-    setReportModal(null);
-    // console.log("Close: " + JSON.stringify(toReport));
-    // setReportModalVisible(false);
-    // setToReport(null);
   };
 
   const copyText = async (text) => {
@@ -168,7 +151,6 @@ const Main = (props) => {
         {!results && !searching && (
           <SearchBox submitFile={submitFile} submitUrl={submitUrl} />
         )}
-
         {searching && (
           <div
             className="searching"
@@ -188,7 +170,6 @@ const Main = (props) => {
             </div>
           </div>
         )}
-
         {results && (
           <SearchResults
             results={results}
@@ -201,8 +182,13 @@ const Main = (props) => {
             // fileDataUrl={fileDataUrl}
           />
         )}
-
-        {reportModal && <ReportModal />}
+        {reportModal && (
+          <ReportModal
+            // altText={toReport.alt_text}
+            // report={sendReport.bind(this)}
+            closeModal={() => setReportModal(null)}
+          />
+        )}
       </div>
     </div>
 
