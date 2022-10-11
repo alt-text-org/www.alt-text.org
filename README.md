@@ -5,3 +5,6 @@ npm -v 8.5.5
 
 RUN `npm install`
 RUN `npm run build && serve -s -n` or `npm run build && npx serve`
+
+RUN `npm run dev`
+To run in development mode.
