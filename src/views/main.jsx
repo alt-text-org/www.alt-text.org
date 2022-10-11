@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "../components/header";
 import { Spin } from "antd";
 import SearchBox from "../components/search-box";
 import SearchResults from "../components/search-results";
@@ -41,6 +42,7 @@ const Main = (props) => {
 
   return (
     <div className="main">
+      <Header startOver={() => setResults(null)} />
       <div className="page-content">
         {error && <div>{error}</div>}
 
