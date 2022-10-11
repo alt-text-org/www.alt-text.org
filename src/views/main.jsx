@@ -63,9 +63,7 @@ const Main = (props) => {
             <Spin size="large" />
             <div
               style={{ display: "block", marginTop: "10px", fontSize: "18px" }}
-            >
-              Searching...
-            </div>
+            ></div>
           </div>
         )}
         {results && (

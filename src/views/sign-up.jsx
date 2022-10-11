@@ -32,18 +32,20 @@ export default function SignUp() {
       <Header />
       <div className="page-content">
         <div className="sign-up-wrapper">
-          <div className="sign-up-headline">Help Fill The Library</div>
+          <div className="sign-up-headline">
+            <h1>Help Fill The Library</h1>
+          </div>
           <div className="sign-up-explanation">
-            Would you like all the image descriptions you write to be
-            automatically saved in the alt-text.org database? Click "Sign Up"
-            and give us permission, and we'll start right away! You don't need
-            to do anything else!
-            <div>
-              <b>
-                *Note: This currently will not work on some mobile devices,
-                Twitter is working on it*
-              </b>
-            </div>
+            <p>
+              Would you like all the image descriptions you write to be
+              automatically saved in the alt-text.org database? Click "Sign Up"
+              and give us permission, and we'll start right away! You don't need
+              to do anything else!
+            </p>
+            <p>
+              *Note: This currently will not work on some mobile devices,
+              Twitter is working on it*
+            </p>
           </div>
           <div className="sign-up-controls">
             <button className="big-button" onClick={redirectToTwitter}>
