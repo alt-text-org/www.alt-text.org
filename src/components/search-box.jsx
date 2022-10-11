@@ -63,7 +63,6 @@ export default function SearchBox(props) {
                 type="submit"
                 style={{
                   cursor: "pointer",
-                  height: "45px",
                   width: "100px",
                   padding: "5px",
                 }}

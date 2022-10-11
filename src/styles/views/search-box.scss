@@ -1,5 +1,7 @@
 .search-box {
   width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
 
   .page-intro {
     padding: 5%;
@@ -8,21 +10,18 @@
 
   input {
     min-width: 275px;
-    height: 45px;
     border: 1px solid $green;
     padding: 5px;
-    font-size: 18px;
     border-radius: 5px 0 0 5px;
   }
 
   button[type="submit"] {
     padding: 5px;
-    height: 45px;
+    height: 50px;
     background-color: $green;
     border: none;
     border: 1px solid $green;
     color: white;
-    font-size: 18px;
     border-radius: 0 5px 5px 0;
   }
 }
