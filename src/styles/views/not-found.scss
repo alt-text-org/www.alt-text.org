@@ -1,6 +1,14 @@
-.page-not-found-message {
+.page-not-found-message,
+.not-found-message {
   font-size: 3rem;
   text-align: center;
+  margin: 35px;
+}
+
+.not-found-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page-not-found-submessage {

@@ -43,4 +43,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @include respond-below(xs) {
+    margin-top: 100px;
+  }
 }

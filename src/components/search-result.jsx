@@ -3,9 +3,31 @@ import * as React from "react";
 import { MdReportProblem, MdContentCopy } from "react-icons/md";
 
 export default function SearchResult(props) {
-  const { altText, score, copyText, report, bgClass, openReportModal } = props;
+  const { altText, score, report, openReportModal } = props;
 
-  console.log(altText);
+  const copyText = async (text) => {
+    // navigator clipboard api needs a secure context (https)
+    if (navigator.clipboard && window.isSecureContext) {
+      // navigator clipboard api method'
+      return navigator.clipboard.writeText(text);
+    } else {
+      // text area method
+      let textArea = document.createElement("textarea");
+      textArea.value = text;
+      // make the textarea out of viewport
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      return new Promise((res, rej) => {
+        document.execCommand("copy") ? res() : rej();
+        textArea.remove();
+      });
+    }
+  };
 
   return (
     <div className="search-result">
@@ -13,7 +35,7 @@ export default function SearchResult(props) {
         <p>{score}</p>
       </div>
       <div className="alt-text-text">
-        <h2>{altText}</h2>
+        <h3>{altText}</h3>
       </div>
       <div className="alt-text-controls">
         <div className="alt-text-control">
@@ -26,7 +48,7 @@ export default function SearchResult(props) {
         </div>
 
         <div className="alt-text-control">
-          <button onClick={copyText}>
+          <button onClick={() => copyText(props.altText)}>
             <MdContentCopy />
             Copy
           </button>

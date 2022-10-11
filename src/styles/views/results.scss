@@ -12,6 +12,10 @@
 .results-list {
   width: 50%;
   padding: 15px;
+
+  @include respond-below(xs) {
+    width: 100%;
+  }
 }
 
 .search-result {
@@ -40,6 +44,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @include respond-below(xs) {
+    width: 100%;
+  }
 
   img {
     width: 100%;

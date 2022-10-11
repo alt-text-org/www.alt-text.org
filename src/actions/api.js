@@ -94,7 +94,7 @@ export async function searchUrl(url) {
   };
 }
 
-export async function report(author_uuid, sha256, language, reason) {
+export async function report(author_uuid, sha256, language, reason, callback) {
   let resp = await fetch(`https://${API_HOST}/library/v1/report`, {
     method: "POST",
     headers: {
@@ -107,6 +107,10 @@ export async function report(author_uuid, sha256, language, reason) {
       reason,
     }),
   });
+
+  if (callback) {
+    callback();
+  }
 
   return resp.ok;
 }

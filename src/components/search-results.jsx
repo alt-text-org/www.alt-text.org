@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from "react";
 import SearchResult from "./search-result";
+import ReportModal from "./report-modal";
 
 export default function SearchResults(props) {
   const { results, openReportModal, copyText, returnToSearch, goBack } = props;
 
   const { alt, img } = results;
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportModalContent, setReportModalContent] = useState(null);
+  const [showReported, setShowReported] = useState(false);
   const [showImgError, setShowImgError] = useState(false);
 
   if (alt && (alt.exact.length + alt.fuzzy.length > 0 || alt.ocr)) {
     const resultArray = [];
-    let bg = true;
 
     if (alt.ocr) {
-      console.log("alt ocr");
       resultArray.push(
-        <SearchResult
-          altText={alt.ocr}
-          score="Extracted Text"
-          report={false}
-          copyText={() => copyText(alt.ocr)}
-        />
+        <SearchResult altText={alt.ocr} score="Extracted Text" report={false} />
       );
     }
 
     alt.exact.forEach((result) => {
+      console.log("result22", result);
       resultArray.push(
         <SearchResult
           result={result}
@@ -31,102 +29,117 @@ export default function SearchResults(props) {
           score="Exact Match"
           report={true}
           openReportModal={() => {
-            openReportModal(
-              result.author_uuid,
-              result.sha256,
-              result.language,
-              result.alt_text
-            );
+            setReportModalContent({
+              author: result.author_uuid,
+              sha: result.sha256,
+              language: result.language,
+              altText: result.alt_text,
+            });
+            setShowReportModal(true);
           }}
-          //   report={() =>
-          //     openReportModal(
-          //       result.author_uuid,
-          //       result.sha256,
-          //       result.language,
-          //       result.alt_text
-          //     )
-          //   }
-          copyText={() => copyText(result.alt_text)}
         />
       );
     });
 
     alt.fuzzy.forEach((result) => {
+      console.log("result45", result);
       if (result.score >= 0.98) {
         resultArray.push(
           <SearchResult
             altText={result.alt_text}
             score={`${Math.floor((result.score - 0.9) * 1000)}% Match`}
             report={true}
+            reportModalContent={reportModalContent}
             openReportModal={() => {
-              openReportModal(
-                result.author_uuid,
-                result.sha256,
-                result.language,
-                result.alt_text
-              );
+              setReportModalContent({
+                author: result.author_uuid,
+                sha: result.sha256,
+                language: result.language,
+                altText: result.alt_text,
+              });
+
+              setShowReportModal(true);
             }}
-            copyText={() => copyText(result.alt_text)}
           />
         );
-
-        bg = !bg;
       }
     });
 
     if (resultArray.length > 0) {
-      resultArray.pop(); // pull off last <hr/>
-      console.log("resultArray:", resultArray);
-
-      console.log(img);
-
       //These are in a weird order to put the image at the end for screen reader users.
       return (
-        <div className="search-results">
-          <div className="results-preview">
-            {img && !showImgError && (
-              <img
-                className="searched-image"
-                alt="The searched image"
-                crossOrigin="Anonymous"
-                onError={() => setShowImgError(true)}
-                // onError={({ currentTarget }) => {
-                //   currentTarget.onerror = null; // prevents looping
-                //   currentTarget.src = "images/load-failed.svg";
-                // }}
-                src={img}
-              />
-            )}
+        <>
+          {showReportModal && (
+            <ReportModal
+              reportModalContent={reportModalContent}
+              close={() => {
+                setReportModalContent(null);
+                setShowReportModal(false);
+                setShowReported(true);
+              }}
+              handleReportSuccess={() => setShowReported(true)}
+            />
+          )}
+          <div className="search-results">
+            <div className="results-preview">
+              {img && !showImgError && (
+                <img
+                  className="searched-image"
+                  alt="The searched image"
+                  crossOrigin="Anonymous"
+                  onError={() => setShowImgError(true)}
+                  src={img}
+                />
+              )}
 
-            {showImgError && <p>Preview image could not be loaded.</p>}
+              {showImgError && <p>Preview image could not be loaded.</p>}
 
-            <button className="std-button" onClick={returnToSearch}>
-              Search Another Image
-            </button>
+              <button onClick={goBack}>Search Another Image</button>
+            </div>
+
+            <div className="results-list">
+              {resultArray}
+              {showReported && (
+                <p
+                  style={{
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    backgroundColor: "#5fd397",
+                    color: "white",
+                    width: "300px",
+                    margin: "15px auto",
+                    padding: "5px",
+                  }}
+                >
+                  Reported successfully.
+                </p>
+              )}
+            </div>
           </div>
-          <div className="results-list">{resultArray}</div>
-        </div>
+        </>
       );
     }
   }
 
   return (
     <div className="not-found-wrapper">
-      <img
-        className="searched-image"
-        alt="The searched image"
-        crossOrigin="Anonymous"
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null; // prevents looping
-          currentTarget.src = "images/load-failed.svg";
-        }}
-        src={img}
-      />
+      {img && !showImgError && (
+        <img
+          className="searched-image"
+          alt="The searched image"
+          crossOrigin="Anonymous"
+          onError={() => setShowImgError(true)}
+          src={img}
+        />
+      )}
+
+      {showImgError && <p>Preview image could not be loaded.</p>}
+
       <div className="not-found-message">
         Couldn't find any published alt text for that image.
       </div>
       <div className="not-found-controls">
-        <button className="not-found-button std-button" onClick={goBack}>
+        <button className="not-found-button" onClick={goBack}>
           Search Another Image
         </button>
       </div>
