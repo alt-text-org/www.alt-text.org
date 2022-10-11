@@ -7,4 +7,4 @@ RUN `npm install`
 RUN `npm run build && serve -s -n` or `npm run build && npx serve`
 
 RUN `npm run dev`
-To run in development mode.
+to run in development mode.
