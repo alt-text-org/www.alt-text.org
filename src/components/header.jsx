@@ -4,13 +4,13 @@ import { NavLink } from "react-router-dom";
 export default function Header(props) {
   return (
     <div className="header">
-      <div
+      <NavLink
         className="header-item logo"
-        style={{ cursor: "pointer" }}
         onClick={() => props.startOver()}
+        to="/"
       >
         Alt-Text.org
-      </div>
+      </NavLink>
 
       <div className="header-item action">
         <NavLink className="button" to={"/sign-up"}>

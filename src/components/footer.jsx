@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default function AltTextOrgFooter() {
+export default function Footer() {
   return (
     <div className="footer">
       <span className="footer-item">

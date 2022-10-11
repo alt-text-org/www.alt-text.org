@@ -15,10 +15,20 @@
 .sign-up-explanation {
   font-size: 2rem;
   text-align: center;
+  max-width: 1000px;
+  margin: 25px;
 }
 
 .sign-up-controls {
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+
+  button {
+    margin: 5px;
+  }
 }
 
 .site-title {
