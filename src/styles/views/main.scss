@@ -1,0 +1,17 @@
+.page-intro {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+  h2 {
+    font-size: 2rem;
+  }
+}
+
+.ant-spin-lg .ant-spin-dot {
+  font-size: 72px;
+}
