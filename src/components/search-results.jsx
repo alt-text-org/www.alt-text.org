@@ -3,7 +3,7 @@ import SearchResult from "./search-result";
 import ReportModal from "./report-modal";
 
 export default function SearchResults(props) {
-  const { results, openReportModal, copyText, returnToSearch, goBack } = props;
+  const { results, goBack } = props;
 
   const { alt, img } = results;
   const [showReportModal, setShowReportModal] = useState(false);
@@ -21,7 +21,6 @@ export default function SearchResults(props) {
     }
 
     alt.exact.forEach((result) => {
-      console.log("result22", result);
       resultArray.push(
         <SearchResult
           result={result}
@@ -42,7 +41,6 @@ export default function SearchResults(props) {
     });
 
     alt.fuzzy.forEach((result) => {
-      console.log("result45", result);
       if (result.score >= 0.98) {
         resultArray.push(
           <SearchResult
