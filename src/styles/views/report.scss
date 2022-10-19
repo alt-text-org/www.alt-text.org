@@ -25,16 +25,18 @@
 }
 
 .report-modal-inner-wrapper {
+  padding: 15px;
+  background-color: white;
   position: relative;
   height: 100%;
   grid-area: c;
-  background-color: var(--main-body-bg-color);
   border-radius: 5px;
-  border: 2px solid var(--title-bar-color);
+  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
 
 .report-modal-title-bar {
-  font-family: lexendbold, serif;
   font-size: 1.5rem;
   color: var(--title-bar-text-color);
   background-color: var(--title-bar-color);
@@ -52,8 +54,7 @@
 
 .report-modal-alt-text {
   padding: 3px;
-  font-family: "montserratregular", sans-serif;
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 
 .report-modal-hr {
@@ -63,7 +64,6 @@
 
 .report-modal-text-label {
   width: 100%;
-  font-family: "lexendmedium", serif;
   font-size: 1.5rem;
   text-align: center;
 }
@@ -76,27 +76,14 @@
 
 .report-modal-reason {
   width: calc(100% - 14px);
-  font-family: "montserratregular", sans-serif;
   font-size: 1.5rem;
 }
 
 .report-modal-controls {
-  position: absolute;
-  width: calc(100% - 30px);
-  margin: 15px;
-  bottom: 0;
-}
-
-.report-modal-close-ctrl {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-}
-
-.report-modal-submit-ctrl {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap-reverse;
 }
 
 @media screen and (max-width: 768px) {
@@ -107,24 +94,5 @@
   .report-modal-inner-wrapper {
     margin-left: 8px;
     margin-right: 8px;
-  }
-
-  .report-modal-controls {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: center;
-    align-items: center;
-    width: calc(100% - 30px);
-    margin: 15px;
-    gap: 10px;
-  }
-  .report-modal-close-ctrl {
-    display: flex;
-    position: relative;
-  }
-
-  .report-modal-submit-ctrl {
-    display: flex;
-    position: relative;
   }
 }

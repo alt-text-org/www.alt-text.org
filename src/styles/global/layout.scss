@@ -1,0 +1,50 @@
+html {
+  margin: 0;
+  padding: 0;
+  font-size: 62.5%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  opacity: 1;
+  overflow: auto;
+}
+
+#root {
+  height: 100%;
+}
+
+.page-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 100%;
+  padding: 120px 0px 0px 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.content-wrapper {
+  overflow: scroll;
+}
+
+.page-content {
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include respond-below(xs) {
+    margin-top: 100px;
+  }
+}

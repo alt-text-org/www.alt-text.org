@@ -1,0 +1,35 @@
+.page-not-found-message,
+.not-found-message {
+  font-size: 3rem;
+  text-align: center;
+  margin: 35px;
+}
+
+.not-found-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-not-found-submessage {
+  font-size: 2rem;
+  text-align: center;
+  margin: 3vh 0 6vh;
+}
+
+.page-not-found-controls {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.not-found-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  img {
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}

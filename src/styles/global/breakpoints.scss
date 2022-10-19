@@ -1,0 +1,25 @@
+// Media queries
+$breakpoints: (
+  t: 349.98px,
+  /* Tiny phones, less than 350px) */ xs: 575.98px,
+  /* Extra small devices (portrait phones, less than 576px) */ sm: 767.98px,
+  /* Small devices (landscape phones, less than 768px) */ md: 991.98px,
+  /* Medium devices (tablets, less than 992px) */ lg: 1199.98px,
+  /* Large devices (desktops, less than 1200px) */ xl: 1919.98px
+    /* Extra-large desktops and monitors  */
+    /* Default is retina (1920 x 1080) */,
+);
+
+// Respond above.
+@mixin respond-below($breakpoint) {
+  // If the breakpoint exists in the map.
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Get the breakpoint value.
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    // Write the media query.
+    @media (max-width: $breakpoint-value) {
+      @content;
+    }
+  }
+}

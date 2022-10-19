@@ -1,0 +1,14 @@
+@import "./global/variables.scss";
+@import "./global/breakpoints.scss";
+@import "./global/components.scss";
+@import "./global/fonts.scss";
+@import "./global/layout.scss";
+
+@import "./views/error.scss";
+@import "./views/not-found.scss";
+@import "./views/report.scss";
+@import "./views/results.scss";
+@import "./views/search-box.scss";
+@import "./views/searching.scss";
+@import "./views/sign-up.scss";
+@import "./views/main.scss";

@@ -4,23 +4,30 @@
   "description": "Site for alt-text.org",
   "main": "index.js",
   "scripts": {
+    "dev": "react-scripts --max_old_space_size=4096 start HOST=0.0.0.0",
     "prebuild": "del-cli dist -f",
     "build": "webpack",
     "execute": "node dist/bundle.js"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@material-ui/core": "^4.12.4",
     "@mui/lab": "^5.0.0-alpha.91",
     "@mui/material": "^5.9.1",
     "@stablelib/base64": "1.0.0",
-    "canvas": "2.8.0",
+    "antd": "^4.23.4",
+    "canvas": "^2.10.1",
+    "express": "^4.18.1",
+    "express-favicon": "^2.0.1",
     "fast-sha256": "^1.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet-async": "^1.3.0",
+    "react-icons": "^4.4.0",
     "react-router-dom": "^6.3.0",
+    "react-scripts": "^5.0.1",
     "regenerator-runtime": "^0.13.9",
     "serve": "^14.0.1"
   },
@@ -38,6 +45,8 @@
     "del-cli": "^3.0.1",
     "path": "^0.12.7",
     "process": "^0.11.10",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.1.0",
     "stream": "^0.0.2",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
@@ -51,5 +60,17 @@
     "url": "git@github.coml:alt-text-org/www.alt-text.org.git"
   },
   "author": "Hannah Kolbeck",
-  "license": "MIT"
+  "license": "MIT",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

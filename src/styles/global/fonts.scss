@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+
+html,
+body {
+  font-family: "Lato", "Roboto", sans-serif;
+}
+
+h1 {
+  font-size: 4rem;
+
+  @include respond-below(xs) {
+    font-size: 3.6rem;
+  }
+}
+
+h2 {
+  font-size: 3.2rem;
+
+  @include respond-below(xs) {
+    font-size: 2.8rem;
+  }
+}
+
+h3 {
+  font-size: 2.8rem;
+}
+
+p,
+input,
+button {
+  font-size: 2.4rem;
+}
