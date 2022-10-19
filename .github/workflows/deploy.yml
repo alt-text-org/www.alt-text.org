@@ -32,5 +32,4 @@ jobs:
           gcloud --quiet alpha storage cp --recursive public gs://www.alt-text.org/
           gcloud --quiet alpha storage cp --recursive favicon gs://www.alt-text.org/
           gcloud --quiet alpha storage cp --recursive images gs://www.alt-text.org/
-          gcloud --quiet alpha storage cp --recursive style gs://www.alt-text.org/
           gcloud --quiet alpha storage cp --recursive dist gs://www.alt-text.org/
