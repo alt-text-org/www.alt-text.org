@@ -33,6 +33,7 @@ button,
   flex-flow: row wrap;
   height: 80px;
   width: 100%;
+  background-color: $green;
 
   .header-item {
     padding: 25px;
@@ -42,8 +43,8 @@ button,
   }
 
   .logo {
-    font-family: "Montserrat", "Lato", sans-serif;
-    color: $green;
+    font-family: "Lexend", "Montserrat", "Lato", sans-serif;
+    color: white;
     font-size: 4rem;
     font-weight: bold;
 
