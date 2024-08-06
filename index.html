@@ -9,19 +9,22 @@
     <meta property="og:type" content="website"/>
     <meta property="og:description" content="Not-for-profit organization making it easier to describe images"/>
 
-
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
     <style>
         @media (prefers-color-scheme: dark) {
             ::backdrop,:root {
                 color-scheme:dark;
                 --bg: #0A1C0D;
-                --accent-bg: #2b2b2b;
+                --accent-bg: #0A400D;
                 --text: #dcdcdc;
                 --text-light: #ababab;
                 --accent: #ffb300;
                 --preformatted: #ccc;
                 --disabled: #111
+            }
+            body > header {
+                background-color: var(--accent-bg);
+                /*border-bottom: 1px solid var(--border);*/
             }
             code {
                 color: #EBB62F;
@@ -31,12 +34,25 @@
         body {
             font-size: 1.3em;
         }
+
+        body > header {
+            padding: 0.2rem 0.5rem 1rem 0.5rem;
+        }
+
+        body > header > h2, h3 {
+            max-width: 1200px;
+            margin: 0.2rem auto;
+        }
+
+        main {
+            padding-top: 0.2rem;
+        }
     </style>
 </head>
 <body>
     <header>
         <h2>Alt-Text.org</h2>
-        <h3>A not-for-profit project to help make the web more accessible</h3>
+        <h3>Not-for-profit helping people make the web more accessible</h3>
     </header>
     <main>
         <p>
@@ -47,23 +63,16 @@
             every platform we can.
         </p>
         <p>
-            The idea for a shared library of alt text has been around since the <code>alt</code> attribute was added to the
-            HTML specification. It's only recently that the technology available to the public has caught up. We're starting
-            with private libraries, but hope to help people share descriptions for popular images in the future, including
-            services for direct access via screenreader.
-        </p>
-        <br/>
-        <p>
             We're a small team right now and hoping for more help in the future, but right now our needs are help with UI/UX
             design and especially consultation or help from Visually Impaired folks on our path forward. We are currently
             without funding, but will pay for that help as soon as we are able.
         </p>
-        <p>
-            If you'd like to help, as questions, or just keep track of progress, please reach out or subscribe to changes:
-        </p>
-        <p><a href="https://social.alt-text.org/@hannah">Founder Mastodon</a></p>
-        <p><a href="mailto:hello@alt-text.org">Email</a></p>
-        <p><a href="https://github.com/alt-text-org">GitHub</a></p>
+        <div>
+            If you'd like to help, ask questions, or just keep track of progress, please reach out or subscribe to changes:
+        </div>
+        <div><a href="https://social.alt-text.org/@hannah">Founder Mastodon</a></div>
+        <div><a href="mailto:hello@alt-text.org">Email</a></div>
+        <div><a href="https://github.com/alt-text-org">GitHub</a></div>
 </main>
 </body>
 </html>
